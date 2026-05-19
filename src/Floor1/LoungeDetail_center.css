@@ -1,0 +1,220 @@
+/* 전체 컨테이너 및 제목 영역 */
+.lounge_center_container {
+    padding: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.back_btn {
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+}
+
+.back_btn:hover {
+    background-color: #555;
+}
+
+.title {
+    margin-bottom: 40px;
+}
+
+/* 🏢 전체 공간 (큰 테두리) */
+.room_box {
+    border: 3px solid #333;
+    padding: 60px 40px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    align-items: center;
+}
+
+/* 🪑 좌석 공통 스타일 - 🟢 빈 좌석 = 초록 */
+.seat {
+    width: 45px;
+    height: 45px;
+    border: 2px solid #2e7d32;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 좌석 번호 텍스트 */
+.seat_number_text {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+    pointer-events: none;
+}
+
+/* 🟢 빈 좌석 hover */
+.seat:not(.reserved):hover {
+    background-color: #388e3c;
+    transform: scale(1.05);
+}
+
+/* 🔵 사용중인 좌석 = 파랑 */
+.seat.reserved {
+    background-color: #1565C0;
+    border: 2px solid #0d47a1;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.seat.reserved .seat_number_text {
+    color: #ffffff;
+}
+
+/* 🟢 상단 구역 */
+.top_section {
+    display: flex;
+    gap: 50px;
+}
+
+.top_group {
+    display: flex;
+    gap: 10px;
+}
+
+/* 🔵 메인 구역 (기둥 4개) */
+.main_section {
+    display: flex;
+    gap: 80px;
+    align-items: center;
+}
+
+/* 1번, 4번 기둥 (단일 좌석 세로 배치) */
+.side_column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* 2번, 3번 기둥 (블록 세로 배치) */
+.center_column {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+/* 2x3 좌석 배치를 위한 Grid */
+.grid_2x3 {
+    display: grid;
+    grid-template-columns: repeat(2, 45px);
+    gap: 10px;
+}
+
+/* 전체 레이아웃 래퍼 */
+.layout_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+/* 모달 배경 */
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* 모달 창 */
+.modal_content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.modal_buttons_row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.close_btn {
+    padding: 10px 20px;
+    background-color: #aaa;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.assign_btn {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close_btn:hover { background-color: #888; }
+.assign_btn:hover { background-color: #0056b3; }
+
+.modern_badge {
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #333;
+    color: white;
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+}
+
+.modal_header {
+    margin-bottom: 10px;
+}
+
+.room_name {
+    color: #888;
+    font-size: 13px;
+    margin: 0 0 4px;
+}
+
+.modal_header h3.seat_number {
+    font-size: 20px;
+    margin: 0 0 12px;
+}
+
+.time_badge {
+    background-color: #f0f4ff;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 13px;
+    color: #555;
+}
+
+.available_time {
+    font-weight: bold;
+    color: #333;
+    margin: 4px 0 0;
+}

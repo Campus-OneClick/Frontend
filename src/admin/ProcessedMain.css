@@ -1,0 +1,30 @@
+.checkbox-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  padding-right: 5px;
+  color: #adacac;
+}
+/* lec,lon의 처리완료 6칸 grid */
+.process-reservation-row {
+  display: grid;
+  grid-template-columns: 50px 50px 140px 1fr 100px 80px;
+  gap: 4px;
+  align-items: center;
+  padding: 12px 8px;
+  border-bottom: 1px solid #f5f5f5;
+  font-size: 13px;
+}
+.process-reservation-row.header {
+  font-weight: bold;
+  background-color: #fafafa;
+  border-bottom: 1px solid #ddd;
+  color: #555;
+}
+/* lec,lon의 처리완료된 시간 ( 승인 및 거절 된 시간) */
+.processed-time-stamp{
+  color: #666;
+  font-size: 11px;
+  margin-top: 2px; 
+  }

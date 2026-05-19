@@ -1,0 +1,44 @@
+.admin-outline {
+  display: grid;
+  grid-template-columns: 30px 80px 120px 100px 1fr 100px;
+  gap: 4px;
+  align-items: center;
+  font-size: 13px;
+  border-bottom: 1px solid #cbcbcb;
+
+  background-color: #FAFAFA;
+  color: #555555;
+  padding: 10px 0;
+}
+
+.ouline-text {
+  text-align: center;
+}
+
+.title-outline{
+  display: grid;
+  grid-template-columns: 30px 80px 120px 100px 1fr 100px;
+  gap: 4px;
+  align-items: center;
+  font-size: 13px;
+  border-bottom: 1px solid #dddddd;
+  padding: 10px 0;
+}
+
+
+/* 수정, 삭제 버튼*/
+.edit-btn {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.del-btn {
+  background: #fff;
+  border: 1px solid red;
+  color: red;
+  padding: 5px 12px;
+  cursor: pointer;
+}

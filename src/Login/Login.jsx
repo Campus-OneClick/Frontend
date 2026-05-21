@@ -1,74 +1,93 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import httpClient from "../api/httpClient";
 import "./Login.css";
 
 function Login() {
+  const [mode, setMode] = useState("login");
   const [inputId, setInputId] = useState("");
+  const [inputName, setInputName] = useState("");
   const navigate = useNavigate();
 
   const handleInputId = (e) => {
     setInputId(e.target.value);
   };
 
-  const onClickLogin = () => {
-    if (inputId.trim() === "") {
-      alert("학번을 입력해주세요.");
-      return;
-    }
-//테스트용
-    const fakeUser = {
-      studentId: "0000000",
-      name: "홍길동",
-    };
-
-    if (inputId.trim() !== fakeUser.studentId) {
-      alert("학번이 일치하지 않습니다.");
-      return;
-    }
-
-    sessionStorage.setItem("studentId", fakeUser.studentId);
-    sessionStorage.setItem("name", fakeUser.name);
-
-    navigate("/");
+  const handleInputName = (e) => {
+    setInputName(e.target.value);
   };
 
-  /*
-  // 실제 백엔드 로그인 API 연결 예정
-  const onClickLogin = () => {
+  const resetFields = () => {
+    setInputId("");
+    setInputName("");
+  };
+
+  const onClickLogin = async () => {
     if (inputId.trim() === "") {
       alert("학번을 입력해주세요.");
       return;
     }
-
-    axios
-      .post("http://127.0.0.1:8080/login", {
-        studentId: inputId,
-      })
-      .then((res) => {
-        if (res.data.success) {
-          const user = res.data.user;
-
-          sessionStorage.setItem("studentId", user.studentId);
-          sessionStorage.setItem("name", user.name);
-
-          navigate("/");
-        } else {
-          alert("학번이 일치하지 않습니다.");
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("서버 연결에 실패했습니다.");
+    try {
+      const res = await httpClient.post("/login", {
+        studentId: inputId.trim(),
       });
+
+      if (!res.data.success) {
+        alert("학번이 일치하지 않습니다.");
+        return;
+      }
+
+      const user = res.data.user;
+      sessionStorage.setItem("studentId", user.studentId);
+      sessionStorage.setItem("name", user.name);
+      sessionStorage.setItem("role", user.role || "USER");
+
+      if (user.role === "ADMIN") {
+        navigate("/admin");
+        return;
+      }
+
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      alert("서버 연결에 실패했습니다.");
+    }
   };
-  */
+
+  const onClickSignup = async () => {
+    if (inputId.trim() === "" || inputName.trim() === "") {
+      alert("학번과 이름을 모두 입력해주세요.");
+      return;
+    }
+
+    try {
+      const res = await httpClient.post("/signup", {
+        studentId: inputId.trim(),
+        name: inputName.trim(),
+      });
+
+      if (!res.data.success) {
+        alert(res.data.message || "회원가입에 실패했습니다.");
+        return;
+      }
+
+      alert("회원가입이 완료되었습니다. 바로 로그인됩니다.");
+      const user = res.data.user;
+      sessionStorage.setItem("studentId", user.studentId);
+      sessionStorage.setItem("name", user.name);
+      sessionStorage.setItem("role", user.role || "USER");
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      alert(error.response?.data?.message || "서버 연결에 실패했습니다.");
+    }
+  };
 
   return (
     <div className="login-page">
       <div className="login-card">
         <p className="login-label">Engineering College</p>
-        <h2>로그인</h2>
+        <h2>{mode === "login" ? "로그인" : "회원가입"}</h2>
 
         <input
           type="text"
@@ -79,8 +98,35 @@ function Login() {
           onChange={handleInputId}
         />
 
-        <button type="button" onClick={onClickLogin}>
-          확인
+        {mode === "signup" && (
+          <input
+            type="text"
+            className="form-control"
+            placeholder="NAME"
+            value={inputName}
+            onChange={handleInputName}
+          />
+        )}
+
+        {mode === "login" ? (
+          <button type="button" onClick={onClickLogin}>
+            로그인
+          </button>
+        ) : (
+          <button type="button" onClick={onClickSignup}>
+            회원가입
+          </button>
+        )}
+
+        <button
+          type="button"
+          className="secondary-button"
+          onClick={() => {
+            setMode(mode === "login" ? "signup" : "login");
+            resetFields();
+          }}
+        >
+          {mode === "login" ? "회원가입으로 이동" : "로그인으로 돌아가기"}
         </button>
       </div>
     </div>

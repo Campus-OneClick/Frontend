@@ -1,6 +1,5 @@
 import './AdminMain.css';
 
-// 🌟 onDeleteSelected를 추가로 받아옵니다.
 export default function AdminControl({ handleText, AddSchedule, onDeleteSelected }){
 
   return(
@@ -9,7 +8,7 @@ export default function AdminControl({ handleText, AddSchedule, onDeleteSelected
         <div className="search-group">
           <input 
             type="text" 
-            placeholder="과목명 또는 강의실 검색" 
+            placeholder="과목명, 교수명 또는 강의실 검색" 
             className="search-input" 
             onChange={handleText} 
           />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import httpClient from "../api/httpClient";
 import "./Mainpage.css";
 
 function MainPage() {
@@ -12,25 +12,26 @@ function MainPage() {
 
   useEffect(() => {
     const savedName = sessionStorage.getItem("name");
+    const savedStudentId = sessionStorage.getItem("studentId");
 
     if (savedName) {
       setName(savedName);
       setIsLogin(true);
     }
-  }, []);
 
-  /*
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8080/seats")
-      .then((res) => {
-        setSeats(res.data.availableSeats);
-      })
-      .catch((err) => {
+    const loadSeats = async () => {
+      try {
+        const res = await httpClient.get("/seats", {
+          params: savedStudentId ? { studentId: savedStudentId } : undefined,
+        });
+        setSeats(Number(res.data.availableSeats || 0));
+      } catch (err) {
         console.error("좌석 정보를 불러오지 못했습니다.", err);
-      });
+      }
+    };
+
+    loadSeats();
   }, []);
-  */
 
   return (
     <div className="main-page">
@@ -110,7 +111,7 @@ function MainPage() {
               오전 시간대 예약을 추천합니다.
             </p>
 
-            <button className="main-btn">
+            <button className="main-btn" onClick={() => navigate("/floor1")}>
               내 예약 확인하기
             </button>
           </section>
@@ -135,7 +136,7 @@ function MainPage() {
         <h3>주요 기능</h3>
 
         <div className="menu-list">
-          <div className="menu-item">
+          <div className="menu-item" onClick={() => navigate("/floor1")}>
             <div className="icon-box">📚</div>
             <div>
               <h4>열람실 좌석 현황</h4>
@@ -144,7 +145,7 @@ function MainPage() {
             <span>›</span>
           </div>
 
-          <div className="menu-item">
+          <div className="menu-item" onClick={() => navigate("/classrooms")}>
             <div className="icon-box">🏫</div>
             <div>
               <h4>빈 강의실 조회</h4>
@@ -153,7 +154,7 @@ function MainPage() {
             <span>›</span>
           </div>
 
-          <div className="menu-item">
+          <div className="menu-item" onClick={() => navigate("/admin")}>
             <div className="icon-box">📝</div>
             <div>
               <h4>공부 시간표</h4>
@@ -162,7 +163,7 @@ function MainPage() {
             <span>›</span>
           </div>
 
-          <div className="menu-item">
+          <div className="menu-item" onClick={() => navigate("/admin")}>
             <div className="icon-box">⚙️</div>
             <div>
               <h4>관리자 시간표 관리</h4>

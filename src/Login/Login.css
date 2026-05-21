@@ -82,6 +82,15 @@ body {
   transform: translateY(-2px);
 }
 
+.secondary-button {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.secondary-button:hover {
+  background-color: #d1d5db;
+}
+
 @media (max-width: 600px) {
   .login-card {
     padding: 40px 28px;

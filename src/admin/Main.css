@@ -1,0 +1,26 @@
+.main-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  gap: 10px; /* 좌우 사이 약간의 간격 */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* 좌우 동일한 비율로 나누기 */
+.layout-side {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc; /* 영역 구분을 위한 선 */
+  padding: 15px;
+  overflow-y: auto; /* 데이터가 많아지면 개별 스크롤 생성 */
+}
+
+.title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 10px;
+}

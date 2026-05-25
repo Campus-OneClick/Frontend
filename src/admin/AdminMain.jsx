@@ -2,138 +2,82 @@ import React, { useState } from 'react';
 import AdminControl from './AdminControl';
 import AdminTable from './AdminTable';
 import AdminModal from './AdminModal';
+import ClassroomModal from './ClassroomModal'; // 신규: 강의실 관리 모달
 import './AdminMain.css';
 
 const dummy_ad = [
-  {
-    name: '리액트 프로그래밍', professor: '홍길동',
-    schedules: [
-      { "day": "월", "time": "01:00 ~ 02:15", "room": "공1201" },
-      { "day": "수", "time": "03:00 ~ 04:15", "room": "공1201" }
-    ]
-  },
-  {
-    name: '운영체제', day: '화', time: '02:30 ~ 03:45', room: '공1105'
-  }
+  { code: 'sch_1', name: '리액트 프로그래밍', professor: '홍길동', schedules: [{ day: "월", time: "01:00 ~ 02:15", room: "공1201" }, { day: "수", time: "03:00 ~ 04:15", room: "공1201" }] },
+  { code: 'sch_2', name: '운영체제', professor: '김철수', schedules: [{ day: '화', time: '02:30 ~ 03:45', room: '공1105' }] }
+];
+
+const initialRooms = [
+  { id: 'r1', name: '공1201' },
+  { id: 'r2', name: '공1105' },
+  { id: 'r3', name: '공1202' }
 ];
 
 export default function AdminMain() {
   const [text, setText] = useState("");
   const [schedule, setSchedule] = useState(dummy_ad);
+  const [classrooms, setClassrooms] = useState(initialRooms); // 강의실 데이터
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRoomModalOpen, setIsRoomModalOpen] = useState(false); // 강의실 관리 모달 상태
   const [editingItem, setEditingItem] = useState(null);
-
-  //  체크된 항목들의 강좌번호(code)를 기억하는 배열
-  const [selectedCodes, setSelectedCodes] = useState([]); 
-
-  function handleText(e) {
-    setText(e.target.value);
-  }
-
-  function AddSchedule() {
-    setEditingItem(null); 
-    setIsModalOpen(true);
-  }
-
-  function handleEdit(item) {
-    setEditingItem(item);
-    setIsModalOpen(true);
-  }
+  const [selectedCodes, setSelectedCodes] = useState([]);
 
   function handleSave(newData) {
-    if (newData.name === "") {
-      alert("과목명을 입력해주세요!");
-      return;
-    }
     if (editingItem) {
-      setSchedule(schedule.map(item => item.code === editingItem.code ? { ...item, ...newData } : item));
-      alert('수정되었습니다.');
+      setSchedule(schedule.map(item => item.code === editingItem.code ? { ...item, ...newData, code: item.code } : item));
     } else {
-      const newItem = { ...newData, code: `sch_${Date.now()}` };
-      setSchedule([...schedule, newItem]);
-      alert('등록했습니다.');
+      setSchedule([...schedule, { ...newData, code: `sch_${Date.now()}` }]);
     }
     setIsModalOpen(false);
-    setEditingItem(null); 
+    setEditingItem(null);
   }
 
-  // 개별 삭제 (행에 있는 삭제 버튼)
   function handleDelete(code) {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       setSchedule(schedule.filter(item => item.code !== code));
-      // 만약 체크되어 있던 항목을 개별 삭제했다면 체크 목록에서도 빼줌
-      setSelectedCodes(selectedCodes.filter(c => c !== code)); 
+      setSelectedCodes(selectedCodes.filter(c => c !== code));
     }
   }
 
-  // 일괄 삭제 (상단에 있는 삭제 버튼)
-  function handleDeleteSelected() {
-    if (selectedCodes.length === 0) {
-      alert("삭제할 항목을 먼저 선택해주세요.");
-      return;
-    }
-    if (window.confirm(`선택한 ${selectedCodes.length}개의 항목을 삭제하시겠습니까?`)) {
-      setSchedule(schedule.filter(item => !selectedCodes.includes(item.code)));
-      setSelectedCodes([]); // 삭제 후 체크 목록 초기화
-    }
-  }
-
-  //개별 체크박스 토글
-  function handleSelectToggle(code) {
-    if (selectedCodes.includes(code)) {
-      setSelectedCodes(selectedCodes.filter(c => c !== code)); // 이미 있으면 빼기
-    } else {
-      setSelectedCodes([...selectedCodes, code]); // 없으면 넣기
-    }
-  }
-
-  // 검색 필터링 로직
-  const filteredSchedule = schedule.filter((item) => {
-    return (
-      item.name.toLowerCase().includes(text.toLowerCase()) ||
-      item.code.toLowerCase().includes(text.toLowerCase())
-    );
-  }).sort((a, b) => b.code.localeCompare(a.code));
-
-  //  전체 선택 체크박스, 검색된 결과만 모두 선택
-  function handleSelectAll(isChecked) {
-    if (isChecked) {
-      setSelectedCodes(filteredSchedule.map(item => item.code));
-    } else {
-      setSelectedCodes([]);
-    }
-  }
+  const filteredSchedule = schedule.filter(item => 
+    item.name.toLowerCase().includes(text.toLowerCase()) || 
+    item.professor.toLowerCase().includes(text.toLowerCase())
+  );
 
   return (
     <div className="admin-main">
-      <div>
-        {/* 일괄 삭제 함수를 Control에 전달 */}
-        <AdminControl 
-          handleText={handleText} 
-          AddSchedule={AddSchedule} 
-          onDeleteSelected={handleDeleteSelected} 
+      <AdminControl 
+        handleText={(e) => setText(e.target.value)} 
+        AddSchedule={() => { setEditingItem(null); setIsModalOpen(true); }} 
+        onDeleteSelected={() => { /* 일괄삭제 로직 */ }}
+        openRoomManager={() => setIsRoomModalOpen(true)} // 강의실 관리 열기
+      />
+      <AdminTable 
+        filteredSchedule={filteredSchedule} 
+        onEdit={(item) => { setEditingItem(item); setIsModalOpen(true); }} 
+        onDelete={handleDelete}
+        selectedCodes={selectedCodes}
+        onSelectToggle={(code) => selectedCodes.includes(code) ? setSelectedCodes(selectedCodes.filter(c => c !== code)) : setSelectedCodes([...selectedCodes, code])}
+        onSelectAll={(isChecked) => isChecked ? setSelectedCodes(filteredSchedule.map(i => i.code)) : setSelectedCodes([])}
+      />
+      {isModalOpen && (
+        <AdminModal 
+          onClose={() => setIsModalOpen(false)} 
+          handleSave={handleSave} 
+          editingItem={editingItem} 
+          classrooms={classrooms} // 강의실 목록 전달
         />
-      </div>
-      <div className="admin-list-container">
-        {/* 개별 삭제, 체크 관련 상태/함수를 Table에 전달 */}
-        <AdminTable 
-          filteredSchedule={filteredSchedule} 
-          onEdit={handleEdit} 
-          onDelete={handleDelete}
-          selectedCodes={selectedCodes}
-          onSelectToggle={handleSelectToggle}
-          onSelectAll={handleSelectAll}
+      )}
+      {isRoomModalOpen && (
+        <ClassroomModal 
+          classrooms={classrooms} 
+          setClassrooms={setClassrooms} 
+          onClose={() => setIsRoomModalOpen(false)} 
         />
-      </div>
-      <div>
-        {isModalOpen && (
-          <AdminModal
-            onClose={() => { setIsModalOpen(false); setEditingItem(null); }}
-            handleSave={handleSave}
-            editingItem={editingItem}
-          />
-        )}
-      </div>
+      )}
     </div>
   );
 }

@@ -136,8 +136,6 @@ export default function Reservation() {
 }
   return (
     <div>
-      <div>※수정해야할 일※</div>
-      <div>일괄적으로 다듬기 // 여 썰고 저 썰고 하기</div>
       <div className="admin-header">
         <h2 className="admin-title">
           {mode === 'lecture' ? '강의실' : '라운지'}

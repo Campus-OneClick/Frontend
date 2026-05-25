@@ -6,14 +6,14 @@ import './AdminMain.css';
 
 const dummy_ad = [
   {
-    id: '1', code: '11111', name: '리액트 프로그래밍', professor: '홍길동', section: '01',
+    name: '리액트 프로그래밍', professor: '홍길동',
     schedules: [
       { "day": "월", "time": "01:00 ~ 02:15", "room": "공1201" },
       { "day": "수", "time": "03:00 ~ 04:15", "room": "공1201" }
     ]
   },
   {
-    id: '2', code: '11112', name: '운영체제', section: '02', day: '화', time: '02:30 ~ 03:45', room: '공1105'
+    name: '운영체제', day: '화', time: '02:30 ~ 03:45', room: '공1105'
   }
 ];
 
@@ -23,7 +23,7 @@ export default function AdminMain() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
 
-  // 🌟 새롭게 추가: 체크된 항목들의 강좌번호(code)를 기억하는 배열
+  //  체크된 항목들의 강좌번호(code)를 기억하는 배열
   const [selectedCodes, setSelectedCodes] = useState([]); 
 
   function handleText(e) {
@@ -41,22 +41,23 @@ export default function AdminMain() {
   }
 
   function handleSave(newData) {
-    if (newData.code === "" || newData.name === "" || newData.section === "") {
-      alert("빈칸을 모두 채워주세요!");
+    if (newData.name === "") {
+      alert("과목명을 입력해주세요!");
       return;
     }
     if (editingItem) {
       setSchedule(schedule.map(item => item.code === editingItem.code ? { ...item, ...newData } : item));
       alert('수정되었습니다.');
     } else {
-      setSchedule([...schedule, newData]);
+      const newItem = { ...newData, code: `sch_${Date.now()}` };
+      setSchedule([...schedule, newItem]);
       alert('등록했습니다.');
     }
     setIsModalOpen(false);
     setEditingItem(null); 
   }
 
-  // 🌟 [추가] 개별 삭제 (행에 있는 삭제 버튼)
+  // 개별 삭제 (행에 있는 삭제 버튼)
   function handleDelete(code) {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       setSchedule(schedule.filter(item => item.code !== code));
@@ -65,7 +66,7 @@ export default function AdminMain() {
     }
   }
 
-  // 🌟 [추가] 일괄 삭제 (상단에 있는 삭제 버튼)
+  // 일괄 삭제 (상단에 있는 삭제 버튼)
   function handleDeleteSelected() {
     if (selectedCodes.length === 0) {
       alert("삭제할 항목을 먼저 선택해주세요.");
@@ -77,7 +78,7 @@ export default function AdminMain() {
     }
   }
 
-  // 🌟 [추가] 개별 체크박스 토글
+  //개별 체크박스 토글
   function handleSelectToggle(code) {
     if (selectedCodes.includes(code)) {
       setSelectedCodes(selectedCodes.filter(c => c !== code)); // 이미 있으면 빼기
@@ -94,7 +95,7 @@ export default function AdminMain() {
     );
   }).sort((a, b) => b.code.localeCompare(a.code));
 
-  // 🌟 [추가] 전체 선택 체크박스 (검색된 결과만 모두 선택)
+  //  전체 선택 체크박스, 검색된 결과만 모두 선택
   function handleSelectAll(isChecked) {
     if (isChecked) {
       setSelectedCodes(filteredSchedule.map(item => item.code));
@@ -106,7 +107,7 @@ export default function AdminMain() {
   return (
     <div className="admin-main">
       <div>
-        {/* 🌟 일괄 삭제 함수를 Control에 전달 */}
+        {/* 일괄 삭제 함수를 Control에 전달 */}
         <AdminControl 
           handleText={handleText} 
           AddSchedule={AddSchedule} 
@@ -114,7 +115,7 @@ export default function AdminMain() {
         />
       </div>
       <div className="admin-list-container">
-        {/* 🌟 개별 삭제, 체크 관련 상태/함수를 Table에 전달 */}
+        {/* 개별 삭제, 체크 관련 상태/함수를 Table에 전달 */}
         <AdminTable 
           filteredSchedule={filteredSchedule} 
           onEdit={handleEdit} 

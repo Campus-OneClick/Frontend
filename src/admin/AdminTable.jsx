@@ -1,6 +1,6 @@
 import './AdminTable.css'
 
-// 🌟 삭제와 체크박스 관련 props를 모두 받아옵니다.
+// 삭제와 체크박스 관련 props를 모두 받아옵니다.
 export default function AdminTable({ 
   filteredSchedule, 
   onEdit, 
@@ -16,13 +16,12 @@ export default function AdminTable({
   return (
     <div>
       <div className='admin-outline'>
-        {/* 🌟 헤더의 전체 선택 체크박스 연결 */}
+        {/* 헤더의 전체 선택 체크박스 연결 */}
         <input 
           type="checkbox" 
           checked={isAllSelected}
           onChange={(e) => onSelectAll(e.target.checked)}
         />
-        <div className='ouline-text'>강좌번호</div>
         <div className='ouline-text'>과목명</div>
         <div className='ouline-text'>담당교수</div>
         <div>강의시간(강의실)</div>
@@ -32,14 +31,13 @@ export default function AdminTable({
       <div>
         {filteredSchedule && filteredSchedule.map((sch) => (
           <div className='title-outline' key={sch.code}>
-            {/* 🌟 각 행의 개별 체크박스 연결 */}
+            {/* 각 행의 개별 체크박스 연결 */}
             <input 
               type="checkbox" 
               checked={selectedCodes.includes(sch.code)}
               onChange={() => onSelectToggle(sch.code)}
             />
             
-            <div className='ouline-text'>{sch.code} - {sch.section}</div>
             <div>{sch.name}</div>
             <div className='ouline-text'>{sch.professor || '-'}</div>
 
@@ -55,7 +53,7 @@ export default function AdminTable({
 
             <div>
               <button className="edit-btn" onClick={() => onEdit(sch)}>수정</button>
-              {/* 🌟 개별 삭제 버튼에 삭제 함수 연결 */}
+              {/* 개별 삭제 버튼에 삭제 함수 연결 */}
               <button className='del-btn' onClick={() => onDelete(sch.code)}>삭제</button>
             </div>
           </div>

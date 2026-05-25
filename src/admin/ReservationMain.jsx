@@ -69,7 +69,7 @@ export default function Reservation() {
   ]);
   
   function setStatus(num, newStatus) {
-    // 🌟 1. [수락/거절] 버튼을 누른 바로 '지금' 이 순간의 날짜와 시간 구하기
+    //1. [수락/거절] 버튼을 누른 바로 '지금' 이 순간의 날짜와 시간 구하기
     const now = new Date();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const date = String(now.getDate()).padStart(2, '0');
@@ -81,14 +81,14 @@ export default function Reservation() {
 
     setReservations(prevList =>
       prevList.map(item => {
-        // 🌟 버그 방지: num과 함께 현재 활성화된 모드(type)도 일치하는지 정확히 검사!
+        // 버그 방지: num과 함께 현재 활성화된 모드(type)도 일치하는지 정확히 검사!
         const isTarget = item.num === num && item.type === mode;
 
         return isTarget 
           ? { 
               ...item, 
               status: newStatus,             // 1(수락) 또는 2(거절)로 변경
-              processedAt: currentTimeString // 🌟 null 자리에 시간 도장 쾅!
+              processedAt: currentTimeString // null 자리에 시간 도장 쾅!
             } 
           : item;
       })

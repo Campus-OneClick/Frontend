@@ -13,7 +13,7 @@ export default function ProcessedMain({
   selectedNums,
 }) {
 
-  // 🌟 [핵심] 이제 num이 아니라 {num, type} 객체들로 비교합니다.
+  // [핵심] 이제 num이 아니라 {num, type} 객체들로 비교합니다.
   const isAllSelected = data && data.length > 0 && data.every(item => 
     selectedNums.some(s => s.num === item.num && s.type === item.type)
   );
@@ -64,11 +64,11 @@ export default function ProcessedMain({
       </div>
 
       {data && data.map((item, index) => (
-        // 🌟 key도 타입과 번호를 조합해서 유니크하게 만듭니다.
+        // key도 타입과 번호를 조합해서 유니크하게 만듭니다.
         <div className="process-reservation-row" key={`${item.type}-${item.num}`}>
           <input
             type="checkbox"
-            // 🌟 체크 상태를 객체 비교로 확인
+            // 체크 상태를 객체 비교로 확인
             checked={selectedNums.some(s => s.num === item.num && s.type === item.type)}
             onChange={() => handleSelectToggle(item.num, item.type)}
             style={{ cursor: 'pointer' }}
@@ -96,7 +96,7 @@ export default function ProcessedMain({
           </span>
 
           <div className="col-actions">
-            {/* 🌟 삭제 시 type 전달 */}
+            {/* 삭제 시 type 전달 */}
             <button
               className="delete-btn"
               onClick={() => deleteReservation(item.num, item.type)}

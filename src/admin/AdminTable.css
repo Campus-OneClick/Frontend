@@ -1,6 +1,6 @@
 .admin-outline {
   display: grid;
-  grid-template-columns: 30px 80px 120px 100px 1fr 100px;
+  grid-template-columns: 30px 120px 100px 1fr 100px;
   gap: 4px;
   align-items: center;
   font-size: 13px;
@@ -17,14 +17,13 @@
 
 .title-outline{
   display: grid;
-  grid-template-columns: 30px 80px 120px 100px 1fr 100px;
+  grid-template-columns: 30px 120px 100px 1fr 100px;
   gap: 4px;
   align-items: center;
   font-size: 13px;
   border-bottom: 1px solid #dddddd;
   padding: 10px 0;
 }
-
 
 /* 수정, 삭제 버튼*/
 .edit-btn {

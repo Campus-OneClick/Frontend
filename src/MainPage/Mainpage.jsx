@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import httpClient from "../api/httpClient";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 import "./Mainpage.css";
 
 function MainPage() {
@@ -44,6 +46,22 @@ function MainPage() {
     loadSeats();
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      if (sessionStorage.getItem("authProvider") === "firebase") {
+        await signOut(auth);
+      }
+    } catch (err) {
+      console.error("Firebase 로그아웃 실패", err);
+    } finally {
+      sessionStorage.clear();
+      setIsLogin(false);
+      setRole("");
+      setName("");
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="main-page">
       <header className="top-bar">
@@ -53,8 +71,26 @@ function MainPage() {
         </div>
 
         {isLogin ? (
-          <div className="profile-circle">
-            {name ? name.charAt(0) : "?"}
+          <div className="profile-menu-wrap">
+            <div className="profile-circle">
+              {name ? name.charAt(0) : "?"}
+            </div>
+            <div className="profile-actions">
+              <button
+                className="profile-action-btn"
+                type="button"
+                onClick={() => navigate("/my-info")}
+              >
+                내정보 보기
+              </button>
+              <button
+                className="profile-action-btn logout"
+                type="button"
+                onClick={handleLogout}
+              >
+                로그아웃
+              </button>
+            </div>
           </div>
         ) : (
           <button className="login-btn" onClick={() => navigate("/login")}>

@@ -13,14 +13,14 @@ export default function Main() {
   useEffect(() => {
     const userRole = localStorage.getItem('userRole'); 
 
-    if (userRole !== 'admin') {
+    if (userRole !== 'ADMIN') {
       alert('권한이 없습니다!');
       navigate('/'); // 메인으로 보내버리기
     }
   }, [navigate]);
 
   const userRole = localStorage.getItem('userRole');
-  if (userRole !== 'admin') {
+  if (userRole !== 'ADMIN') {
     return null; // 관리자가 아니면 아예 아무것도 안 보여줌
   }
   /* f12 > application > local stroage > http://localhost:3000 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import './LoungeDetail_side.css';
+import './LoungeDetailCenter.css'; 
 import { CongestionBar } from './CongestionBar';
-import { SeatBox } from './SeatBox';
+import { SeatBox } from './SeatBox'; 
 
-export function LoungeDetail_side({ 
+export function LoungeDetailCenter({ 
     reservedSeats, 
     myReservedSeat, 
     bookingEndTime, 
@@ -12,16 +12,9 @@ export function LoungeDetail_side({
     onExtend, 
     onBack 
 }) {
+    // 모달용 상태 (화면 UI 조작용이므로 여기에 남겨둡니다)
     const [selectedSeat, setSelectedSeat] = useState(null);
-
-    // 좌석 구성:
-    // 왼쪽 열: 8석 (1~8)
-    // 중앙 왼쪽 상단 3x2: 9~14
-    // 중앙 왼쪽 하단 3x2: 15~20
-    // 중앙 오른쪽 상단 3x2: 21~26
-    // 중앙 오른쪽 하단 3x2: 27~32
-    // 오른쪽 열: 8석 (33~40)
-    const TOTAL_SEATS = 40;
+    const TOTAL_SEATS = 38;
 
     const getAvailableTime = () => {
         const now = new Date();
@@ -41,7 +34,7 @@ export function LoungeDetail_side({
         if (isReserved) {
             alert('이미 예약된 좌석입니다');
         } else if (myReservedSeat !== null) {
-            alert(`이미 ${myReservedSeat}번 좌석을 예약했습니다.`);
+            alert(`이미 ${myReservedSeat}번 좌석을 예약했습니다.`); 
         } else {
             setSelectedSeat(seatId);
         }
@@ -63,49 +56,45 @@ export function LoungeDetail_side({
         });
     };
 
+    // 모달에서 '배정하기'를 눌렀을 때 실행되는 함수
     const handleConfirmReserve = () => {
         if (selectedSeat !== null) {
+            // 부모가 넘겨준 예약 함수를 호출합니다
             onReserve(selectedSeat);
+            // 예약 완료 후 모달 닫기
             setSelectedSeat(null);
         }
     };
 
     return (
-        <div className="lounge_side_container">
+        <div className="lounge_center_container">
             <button className="back_btn" onClick={onBack}>
                 ⬅ 도면으로 돌아가기
             </button>
-            <h2 className="title">옆 라운지 예약</h2>
-
+            <h2 className="title">중앙 라운지 예약</h2>
+                
             <div className="layout_wrapper">
                 <div className="room_box">
+                    <div className="top_section">
+                        <div className="top_group">{renderSeats(1, 2)}</div>
+                        <div className="top_group">{renderSeats(3, 2)}</div>
+                        <div className="top_group">{renderSeats(5, 2)}</div>
+                    </div>
                     <div className="main_section">
-
-                        {/* 왼쪽 열: 8석 (1~8) */}
-                        <div className="side_column">
-                            {renderSeats(1, 8)}
-                        </div>
-
-                        {/* 중앙 왼쪽: 3x2 블록 2개 */}
+                        <div className="side_column">{renderSeats(7, 4)}</div>
                         <div className="center_column">
-                            <div className="grid_3x2">{renderSeats(9, 6)}</div>
-                            <div className="grid_3x2">{renderSeats(15, 6)}</div>
+                            <div className="grid_2x3">{renderSeats(11, 6)}</div>
+                            <div className="grid_2x3">{renderSeats(17, 6)}</div>
                         </div>
-
-                        {/* 중앙 오른쪽: 3x2 블록 2개 */}
                         <div className="center_column">
-                            <div className="grid_3x2">{renderSeats(21, 6)}</div>
-                            <div className="grid_3x2">{renderSeats(27, 6)}</div>
+                            <div className="grid_2x3">{renderSeats(23, 6)}</div>
+                            <div className="grid_2x3">{renderSeats(29, 6)}</div>
                         </div>
-
-                        {/* 오른쪽 열: 8석 (33~40) */}
-                        <div className="side_column">
-                            {renderSeats(33, 8)}
-                        </div>
-
+                        <div className="side_column">{renderSeats(35, 4)}</div>
                     </div>
                 </div>
 
+                {/* 부모에게서 받은 함수들을 그대로 넘겨줍니다 */}
                 <CongestionBar 
                     total={TOTAL_SEATS}
                     reserved={reservedSeats.length}
@@ -113,7 +102,7 @@ export function LoungeDetail_side({
                     bookingEndTime={bookingEndTime}
                     onReturn={onReturn}
                     onExtend={onExtend}
-                />
+                ></CongestionBar>
             </div>
 
             {selectedSeat !== null && (
@@ -123,7 +112,7 @@ export function LoungeDetail_side({
                         <div className="modern_badge">No.{selectedSeat}</div>
                         
                         <div className="modal_header">
-                            <p className="room_name">옆 라운지</p>
+                            <p className="room_name">중앙 라운지</p>
                             <h3 className="seat_number">좌석 배정</h3>
                             <div className="time_badge">
                                 <span>이용 시간</span>

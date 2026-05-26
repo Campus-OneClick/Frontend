@@ -4,8 +4,8 @@ import httpClient from "../api/httpClient";
 import './Floor1.css';
 import floor1Image from './img/floor1.jpg';
 
-import { LoungeDetailCenter } from './LoungeDetailCenter';
-import { LoungeDetailSide } from './LoungeDetailSide';
+import { LoungeDetailCenter } from './LoungeDetail_center';
+import { LoungeDetailSide } from './LoungeDetail_side';
 
 export function Floor1() {
     const navigate = useNavigate();

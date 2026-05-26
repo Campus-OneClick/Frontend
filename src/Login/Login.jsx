@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import httpClient from "../api/httpClient";
-import { app as firebaseApp } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -17,6 +16,7 @@ function Login() {
   const [inputDepartment, setInputDepartment] = useState("");
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+  const [authMessage, setAuthMessage] = useState("");
   const navigate = useNavigate();
 
   const departments = [
@@ -42,25 +42,28 @@ function Login() {
     "환경공학과",
   ];
 
-  const firebaseReady = Boolean(firebaseApp);
-
   const handleInputId = (e) => {
+    setAuthMessage("");
     setInputId(e.target.value);
   };
 
   const handleInputName = (e) => {
+    setAuthMessage("");
     setInputName(e.target.value);
   };
 
   const handleInputDepartment = (e) => {
+    setAuthMessage("");
     setInputDepartment(e.target.value);
   };
 
   const handleInputEmail = (e) => {
+    setAuthMessage("");
     setInputEmail(e.target.value);
   };
 
   const handleInputPassword = (e) => {
+    setAuthMessage("");
     setInputPassword(e.target.value);
   };
 
@@ -70,6 +73,7 @@ function Login() {
     setInputDepartment("");
     setInputEmail("");
     setInputPassword("");
+    setAuthMessage("");
   };
 
   const getFirebaseAuthMessage = (error) => {
@@ -101,7 +105,7 @@ function Login() {
 
   const onClickLogin = async () => {
     if (inputEmail.trim() === "" || inputPassword.trim() === "") {
-      alert("이메일과 비밀번호를 입력해주세요.");
+      setAuthMessage("이메일과 비밀번호를 입력해주세요.");
       return;
     }
 
@@ -125,7 +129,7 @@ function Login() {
 
       if (!res.data.success) {
         await signOut(auth);
-        alert(res.data.message || "등록된 사용자 정보를 찾지 못했습니다.");
+        setAuthMessage(res.data.message || "등록된 사용자 정보를 찾지 못했습니다.");
         return;
       }
 
@@ -149,11 +153,11 @@ function Login() {
       const firebaseMessage = getFirebaseAuthMessage(error);
 
       if (firebaseMessage) {
-        alert(firebaseMessage);
+        setAuthMessage(firebaseMessage);
         return;
       }
 
-      alert(error?.response?.data?.message || error?.message || "로그인에 실패했습니다.");
+      setAuthMessage(error?.response?.data?.message || error?.message || "로그인에 실패했습니다.");
     }
   };
 
@@ -165,7 +169,7 @@ function Login() {
       inputEmail.trim() === "" ||
       inputPassword.trim() === ""
     ) {
-      alert("이메일, 비밀번호, 학번, 이름, 학과를 모두 입력해주세요.");
+      setAuthMessage("이메일, 비밀번호, 학번, 이름, 학과를 모두 입력해주세요.");
       return;
     }
 
@@ -217,11 +221,10 @@ function Login() {
             console.warn("Firebase 계정 정리 실패", deleteError);
           }
         }
-        alert(res.data.message || "회원가입에 실패했습니다.");
+        setAuthMessage(res.data.message || "회원가입에 실패했습니다.");
         return;
       }
 
-      alert("회원가입이 완료되었습니다. 바로 로그인됩니다.");
       const user = res.data.user;
       sessionStorage.setItem("studentId", user.studentId);
       sessionStorage.setItem("name", user.name);
@@ -236,11 +239,11 @@ function Login() {
       const firebaseMessage = getFirebaseAuthMessage(error);
 
       if (firebaseMessage) {
-        alert(firebaseMessage);
+        setAuthMessage(firebaseMessage);
         return;
       }
 
-      alert(error?.response?.data?.message || error?.message || "로그인 처리에 실패했습니다.");
+      setAuthMessage(error?.response?.data?.message || error?.message || "로그인 처리에 실패했습니다.");
     }
   };
 
@@ -252,45 +255,25 @@ function Login() {
 
       <div className="login-page">
         <section className="login-intro">
-          <div className="hero-pill">Campus Oneclick</div>
-          <h1>한 번의 로그인으로 좌석과 강의실을 바로 확인하세요.</h1>
+          <div className="hero-pill">좌석과 공간을 한 번에</div>
+          <h1>Campus OneClick</h1>
+          <p className="intro-lead">복잡한 학교 생활, 보다 간단하게</p>
           <p className="intro-copy">
-            Firebase Auth로 인증하고, PostgreSQL에는 학번·학과·권한 같은 프로필을
-            저장하는 구조입니다. 지금은 실제 서비스 느낌이 나도록 로그인 화면을
-            더 또렷하고 깔끔하게 정리했습니다.
+            강의실 조회부터 열람실 예약까지, 필요한 기능만 깔끔하게 모았습니다.
           </p>
-
-          <div className="feature-grid">
-            <article>
-              <strong>Firebase 인증</strong>
-              <span>이메일과 비밀번호로 로그인</span>
-            </article>
-            <article>
-              <strong>학사 프로필</strong>
-              <span>학번, 이름, 학과를 저장</span>
-            </article>
-            <article>
-              <strong>관리자 구분</strong>
-              <span>DB의 role로 /admin 분기</span>
-            </article>
-          </div>
 
           <div className="intro-footer">
             <span className="mini-dot" />
-            <p>이미 Firebase 초기화와 백엔드 토큰 검증이 연결되어 있습니다.</p>
+            <p>지금 바로 시작해보세요.</p>
           </div>
         </section>
 
         <section className="login-card">
           <div className="card-topline">
-            <div className="brand-mark">C</div>
             <div>
-              <p className="card-kicker">Secure Access</p>
-              <p className="card-kicker-sub">
-                {firebaseReady ? "Firebase 연결 준비됨" : "Firebase 연결 대기중"}
-              </p>
+              <p className="card-kicker">Campus OneClick</p>
+              <p className="card-kicker-sub">빠르게 시작하고 바로 이동</p>
             </div>
-            <span className={firebaseReady ? "status-dot ready" : "status-dot waiting"} />
           </div>
 
           <div className="mode-switch">
@@ -316,12 +299,14 @@ function Login() {
             </button>
           </div>
 
-          <h2>{mode === "login" ? "Firebase 로그인" : "학생 계정 만들기"}</h2>
+          <h2>{mode === "login" ? "로그인" : "회원가입"}</h2>
           <p className="card-desc">
             {mode === "login"
-              ? "학교 계정으로 로그인하면 백엔드가 토큰을 검증하고 사용자 정보를 불러옵니다."
-              : "가입 시 Firebase Auth 계정과 PostgreSQL 프로필을 함께 만듭니다."}
+              ? "이메일과 비밀번호를 입력해 로그인하세요."
+              : "이메일과 비밀번호, 학번, 이름, 학과를 입력하세요."}
           </p>
+
+          {authMessage ? <p className="auth-message">{authMessage}</p> : null}
 
           {mode === "login" ? (
             <>
@@ -330,7 +315,7 @@ function Login() {
                 <input
                   type="email"
                   className="form-control"
-                  placeholder="admin@campus-oneclick.com"
+                  placeholder=""
                   value={inputEmail}
                   onChange={handleInputEmail}
                   autoComplete="email"
@@ -342,7 +327,7 @@ function Login() {
                 <input
                   type="password"
                   className="form-control"
-                  placeholder="비밀번호"
+                  placeholder=""
                   value={inputPassword}
                   onChange={handleInputPassword}
                   autoComplete="current-password"
@@ -352,10 +337,6 @@ function Login() {
               <button type="button" className="primary-button" onClick={onClickLogin}>
                 로그인
               </button>
-
-              <button type="button" className="secondary-button" disabled>
-                Firebase 로그인은 설정 후 활성화됩니다
-              </button>
             </>
           ) : (
             <>
@@ -364,7 +345,7 @@ function Login() {
                 <input
                   type="email"
                   className="form-control"
-                  placeholder="school@email.com"
+                  placeholder="example@example.com"
                   value={inputEmail}
                   onChange={handleInputEmail}
                   autoComplete="email"
@@ -376,7 +357,7 @@ function Login() {
                 <input
                   type="password"
                   className="form-control"
-                  placeholder="8자 이상 권장"
+                  placeholder="8자 이상 입력해주세요"
                   value={inputPassword}
                   onChange={handleInputPassword}
                   autoComplete="new-password"
@@ -389,7 +370,7 @@ function Login() {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="20241234"
+                    placeholder="학번"
                     value={inputId}
                     onChange={handleInputId}
                     autoComplete="username"
@@ -401,7 +382,7 @@ function Login() {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="홍길동"
+                    placeholder="이름"
                     value={inputName}
                     onChange={handleInputName}
                     autoComplete="name"
@@ -434,8 +415,8 @@ function Login() {
 
           <p className="helper-text">
             {mode === "login"
-              ? "로그인 성공 시 관리자 계정은 자동으로 /admin 으로 이동합니다."
-              : "입력값은 Firebase Auth와 PostgreSQL에 역할별로 분리되어 저장됩니다."}
+              ? "로그인 후 메인 화면으로 이동합니다."
+              : "회원가입 후 바로 로그인 상태로 연결됩니다."}
           </p>
         </section>
       </div>

@@ -4,8 +4,8 @@ import httpClient from "../api/httpClient";
 import './Floor1.css';
 import floor1Image from './img/floor1.jpg';
 
-import { LoungeDetail_center } from './LoungeDetail_center';
-import { LoungeDetail_side } from './LoungeDetail_side';
+import { LoungeDetailCenter } from './LoungeDetailCenter';
+import { LoungeDetailSide } from './LoungeDetailSide';
 
 export function Floor1() {
     const navigate = useNavigate();
@@ -61,7 +61,7 @@ export function Floor1() {
 
     useEffect(() => {
         loadSeatState();
-    }, []);
+    }, [loadSeatState]);
 
     const handleCenterReserve = async (seatId) => {
         const studentId = getStudentId();
@@ -221,7 +221,7 @@ export function Floor1() {
 
     if (currentView === 'center_lounge') {
         return (
-            <LoungeDetail_center
+            <LoungeDetailCenter
                 reservedSeats={centerReservedSeats}
                 myReservedSeat={centerMyReservedSeat}
                 bookingEndTime={centerBookingEndTime}
@@ -235,7 +235,7 @@ export function Floor1() {
 
     if (currentView === 'side_lounge') {
         return (
-            <LoungeDetail_side
+            <LoungeDetailSide
                 reservedSeats={sideReservedSeats}
                 myReservedSeat={sideMyReservedSeat}
                 bookingEndTime={sideBookingEndTime}

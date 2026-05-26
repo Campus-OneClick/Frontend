@@ -91,42 +91,20 @@ body {
   letter-spacing: -0.05em;
 }
 
+.intro-lead {
+  margin: 12px 0 0;
+  color: #1e3a5f;
+  font-size: clamp(18px, 2.2vw, 24px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
 .intro-copy {
   margin: 22px 0 0;
   max-width: 540px;
   color: #4b5563;
   line-height: 1.76;
   font-size: 16px;
-}
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 28px;
-}
-
-.feature-grid article {
-  min-height: 122px;
-  padding: 18px 18px 16px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(30, 58, 95, 0.1);
-  backdrop-filter: blur(18px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
-
-.feature-grid strong {
-  display: block;
-  margin-bottom: 10px;
-  color: #1e3a5f;
-  font-size: 15px;
-}
-
-.feature-grid span {
-  color: #6b7280;
-  line-height: 1.55;
-  font-size: 14px;
 }
 
 .intro-footer {
@@ -176,20 +154,6 @@ body {
   font-size: 13px;
 }
 
-.brand-mark {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-  color: #04111f;
-  font-size: 18px;
-  font-weight: 900;
-  box-shadow: 0 12px 30px rgba(14, 165, 233, 0.22);
-  flex-shrink: 0;
-}
-
 .card-kicker {
   margin: 0;
   color: #1e3a5f;
@@ -201,23 +165,6 @@ body {
   margin: 3px 0 0;
   color: #6b7280;
   font-size: 13px;
-}
-
-.status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  flex-shrink: 0;
-}
-
-.status-dot.ready {
-  background: #34d399;
-  box-shadow: 0 0 0 5px rgba(52, 211, 153, 0.14);
-}
-
-.status-dot.waiting {
-  background: #fbbf24;
-  box-shadow: 0 0 0 5px rgba(251, 191, 36, 0.12);
 }
 
 .mode-switch {
@@ -233,10 +180,10 @@ body {
 
 .mode-button {
   height: 44px;
-  border: none;
+  border: 1px solid #1e3a5f;
   border-radius: 12px;
-  background: transparent;
-  color: #5b6472;
+  background: #ffffff;
+  color: #1e3a5f;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -244,7 +191,7 @@ body {
 }
 
 .mode-button.active {
-  background: linear-gradient(135deg, rgba(30, 58, 95, 0.92), rgba(39, 56, 79, 0.92));
+  background: #1e3a5f;
   color: #ffffff;
 }
 
@@ -264,6 +211,18 @@ body {
   color: #6b7280;
   line-height: 1.6;
   font-size: 14px;
+}
+
+.auth-message {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: rgba(254, 242, 242, 0.95);
+  color: #dc2626;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
 }
 
 .field-label {
@@ -318,13 +277,14 @@ body {
 }
 
 .primary-button {
-  background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
-  color: #04111f;
-  box-shadow: 0 16px 30px rgba(14, 165, 233, 0.18);
+  background: #1e3a5f;
+  color: #ffffff;
+  box-shadow: 0 16px 30px rgba(30, 58, 95, 0.18);
 }
 
 .primary-button:hover {
   transform: translateY(-2px);
+  background: #27384f;
 }
 
 .secondary-button {
@@ -360,10 +320,6 @@ body {
 
   .login-intro {
     padding: 0;
-  }
-
-  .feature-grid {
-    grid-template-columns: 1fr;
   }
 
   .login-intro h1 {
@@ -402,12 +358,12 @@ body {
     font-size: 31px;
   }
 
-  .intro-copy {
-    font-size: 15px;
+  .intro-lead {
+    font-size: 18px;
   }
 
-  .feature-grid article {
-    min-height: auto;
+  .intro-copy {
+    font-size: 15px;
   }
 
   .field-row {

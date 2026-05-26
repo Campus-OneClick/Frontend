@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import httpClient from "../api/httpClient";
 import './Floor1.css';
@@ -21,43 +21,56 @@ export function Floor1() {
 
     const getStudentId = () => sessionStorage.getItem('studentId');
 
-    const loadSeatState = async () => {
-        const studentId = getStudentId();
+const loadSeatState = useCallback(async () => {
+    const studentId = getStudentId();
 
-        if (!studentId) {
-            navigate('/login');
-            return;
+    if (!studentId) {
+        navigate('/login');
+        return;
+    }
+
+    try {
+        const res = await httpClient.get('/seats', {
+            params: { studentId },
+        });
+
+        setCenterReservedSeats(res.data.centerSeats ?? []);
+        setSideReservedSeats(res.data.sideSeats ?? []);
+
+        const mySeat = res.data.mySeat;
+
+        if (mySeat?.lounge === 'center') {
+            setCenterMyReservedSeat(mySeat.seatId ?? null);
+            setCenterBookingEndTime(
+                mySeat.endTime ? new Date(mySeat.endTime) : null
+            );
+
+            setSideMyReservedSeat(null);
+            setSideBookingEndTime(null);
+
+        } else if (mySeat?.lounge === 'side') {
+
+            setSideMyReservedSeat(mySeat.seatId ?? null);
+            setSideBookingEndTime(
+                mySeat.endTime ? new Date(mySeat.endTime) : null
+            );
+
+            setCenterMyReservedSeat(null);
+            setCenterBookingEndTime(null);
+
+        } else {
+
+            setCenterMyReservedSeat(null);
+            setCenterBookingEndTime(null);
+
+            setSideMyReservedSeat(null);
+            setSideBookingEndTime(null);
         }
 
-        try {
-            const res = await httpClient.get('/seats', {
-                params: { studentId },
-            });
-
-            setCenterReservedSeats(res.data.centerSeats ?? []);
-            setSideReservedSeats(res.data.sideSeats ?? []);
-
-            const mySeat = res.data.mySeat;
-            if (mySeat?.lounge === 'center') {
-                setCenterMyReservedSeat(mySeat.seatId ?? null);
-                setCenterBookingEndTime(mySeat.endTime ? new Date(mySeat.endTime) : null);
-                setSideMyReservedSeat(null);
-                setSideBookingEndTime(null);
-            } else if (mySeat?.lounge === 'side') {
-                setSideMyReservedSeat(mySeat.seatId ?? null);
-                setSideBookingEndTime(mySeat.endTime ? new Date(mySeat.endTime) : null);
-                setCenterMyReservedSeat(null);
-                setCenterBookingEndTime(null);
-            } else {
-                setCenterMyReservedSeat(null);
-                setCenterBookingEndTime(null);
-                setSideMyReservedSeat(null);
-                setSideBookingEndTime(null);
-            }
-        } catch (err) {
-            console.error('좌석 정보 불러오기 실패:', err);
-        }
-    };
+    } catch (err) {
+        console.error('좌석 정보 불러오기 실패:', err);
+    }
+}, [navigate]);
 
     useEffect(() => {
         loadSeatState();

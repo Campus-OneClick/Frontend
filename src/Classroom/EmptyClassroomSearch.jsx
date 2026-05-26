@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import httpClient from "../api/httpClient";
 
 export default function EmptyClassroomSearch() {
   const [day, setDay] = useState("MON");
@@ -7,7 +7,7 @@ export default function EmptyClassroomSearch() {
   const [rooms, setRooms] = useState([]);
 
   const search = async () => {
-    const res = await axios.get(
+    const res = await httpClient.get(
       `/api/classrooms/empty?day=${day}&time=${time}`
     );
     setRooms(res.data);

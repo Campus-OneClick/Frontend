@@ -1,151 +1,83 @@
-import React, { useEffect, useState } from 'react';
-import httpClient from '../api/httpClient';
+import React, { useState } from 'react';
 import AdminControl from './AdminControl';
 import AdminTable from './AdminTable';
 import AdminModal from './AdminModal';
+import ClassroomModal from './ClassroomModal'; // 신규: 강의실 관리 모달
 import './AdminMain.css';
+
+const dummy_ad = [
+  { code: 'sch_1', name: '리액트 프로그래밍', professor: '홍길동', schedules: [{ day: "월", time: "01:00 ~ 02:15", room: "공1201" }, { day: "수", time: "03:00 ~ 04:15", room: "공1201" }] },
+  { code: 'sch_2', name: '운영체제', professor: '김철수', schedules: [{ day: '화', time: '02:30 ~ 03:45', room: '공1105' }] }
+];
+
+const initialRooms = [
+  { id: 'r1', name: '공1201' },
+  { id: 'r2', name: '공1105' },
+  { id: 'r3', name: '공1202' }
+];
 
 export default function AdminMain() {
   const [text, setText] = useState("");
-  const [schedules, setSchedules] = useState([]);
+  const [schedule, setSchedule] = useState(dummy_ad);
+  const [classrooms, setClassrooms] = useState(initialRooms); // 강의실 데이터
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRoomModalOpen, setIsRoomModalOpen] = useState(false); // 강의실 관리 모달 상태
   const [editingItem, setEditingItem] = useState(null);
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedCodes, setSelectedCodes] = useState([]);
 
-  useEffect(() => {
-    loadSchedules();
-  }, []);
-
-  async function loadSchedules() {
-    try {
-      const res = await httpClient.get('/schedules');
-      setSchedules(res.data || []);
-    } catch (error) {
-      console.error('시간표 정보를 불러오지 못했습니다.', error);
+  function handleSave(newData) {
+    if (editingItem) {
+      setSchedule(schedule.map(item => item.code === editingItem.code ? { ...item, ...newData, code: item.code } : item));
+    } else {
+      setSchedule([...schedule, { ...newData, code: `sch_${Date.now()}` }]);
     }
+    setIsModalOpen(false);
+    setEditingItem(null);
   }
 
-  function handleText(e) {
-    setText(e.target.value);
-  }
-
-  function AddSchedule() {
-    setEditingItem(null); 
-    setIsModalOpen(true);
-  }
-
-  function handleEdit(item) {
-    setEditingItem(item);
-    setIsModalOpen(true);
-  }
-
-  async function handleSave(newData) {
-    if (!newData.classroomId || !newData.subject || !newData.day || !newData.startTime || !newData.endTime) {
-      alert('필수 항목을 모두 채워주세요!');
-      return;
-    }
-
-    try {
-      if (editingItem) {
-        await httpClient.put(`/schedules/${editingItem.scheduleId}`, newData);
-        alert('수정되었습니다.');
-      } else {
-        await httpClient.post('/schedules', newData);
-        alert('등록했습니다.');
-      }
-
-      setIsModalOpen(false);
-      setEditingItem(null);
-      await loadSchedules();
-    } catch (error) {
-      alert(error.response?.data?.message || '저장에 실패했습니다.');
-      console.error(error);
-    }
-  }
-
-  async function handleDelete(scheduleId) {
+  function handleDelete(code) {
     if (window.confirm("정말 삭제하시겠습니까?")) {
-      try {
-        await httpClient.delete(`/schedules/${scheduleId}`);
-        setSelectedIds(selectedIds.filter((id) => id !== scheduleId));
-        await loadSchedules();
-      } catch (error) {
-        alert(error.response?.data?.message || '삭제에 실패했습니다.');
-        console.error(error);
-      }
+      setSchedule(schedule.filter(item => item.code !== code));
+      setSelectedCodes(selectedCodes.filter(c => c !== code));
     }
   }
 
-  async function handleDeleteSelected() {
-    if (selectedIds.length === 0) {
-      alert("삭제할 항목을 먼저 선택해주세요.");
-      return;
-    }
-    if (window.confirm(`선택한 ${selectedIds.length}개의 항목을 삭제하시겠습니까?`)) {
-      try {
-        await Promise.all(selectedIds.map((scheduleId) => httpClient.delete(`/schedules/${scheduleId}`)));
-        setSelectedIds([]);
-        await loadSchedules();
-      } catch (error) {
-        alert(error.response?.data?.message || '삭제에 실패했습니다.');
-        console.error(error);
-      }
-    }
-  }
-
-  function handleSelectToggle(scheduleId) {
-    if (selectedIds.includes(scheduleId)) {
-      setSelectedIds(selectedIds.filter((id) => id !== scheduleId));
-    } else {
-      setSelectedIds([...selectedIds, scheduleId]);
-    }
-  }
-
-  const filteredSchedules = schedules.filter((item) => {
-    const classroomId = item.classroomEntity?.classroomId || item.classroomId || '';
-    return (
-      (item.subject || '').toLowerCase().includes(text.toLowerCase()) ||
-      classroomId.toLowerCase().includes(text.toLowerCase()) ||
-      (item.professor || '').toLowerCase().includes(text.toLowerCase())
-    );
-  }).sort((a, b) => b.scheduleId - a.scheduleId);
-
-  function handleSelectAll(isChecked) {
-    if (isChecked) {
-      setSelectedIds(filteredSchedules.map(item => item.scheduleId));
-    } else {
-      setSelectedIds([]);
-    }
-  }
+  const filteredSchedule = schedule.filter(item => 
+    item.name.toLowerCase().includes(text.toLowerCase()) || 
+    item.professor.toLowerCase().includes(text.toLowerCase())
+  );
 
   return (
     <div className="admin-main">
-      <div>
-        <AdminControl 
-          handleText={handleText} 
-          AddSchedule={AddSchedule} 
-          onDeleteSelected={handleDeleteSelected} 
+      <AdminControl 
+        handleText={(e) => setText(e.target.value)} 
+        AddSchedule={() => { setEditingItem(null); setIsModalOpen(true); }} 
+        onDeleteSelected={() => { /* 일괄삭제 로직 */ }}
+        openRoomManager={() => setIsRoomModalOpen(true)} // 강의실 관리 열기
+      />
+      <AdminTable 
+        filteredSchedule={filteredSchedule} 
+        onEdit={(item) => { setEditingItem(item); setIsModalOpen(true); }} 
+        onDelete={handleDelete}
+        selectedCodes={selectedCodes}
+        onSelectToggle={(code) => selectedCodes.includes(code) ? setSelectedCodes(selectedCodes.filter(c => c !== code)) : setSelectedCodes([...selectedCodes, code])}
+        onSelectAll={(isChecked) => isChecked ? setSelectedCodes(filteredSchedule.map(i => i.code)) : setSelectedCodes([])}
+      />
+      {isModalOpen && (
+        <AdminModal 
+          onClose={() => setIsModalOpen(false)} 
+          handleSave={handleSave} 
+          editingItem={editingItem} 
+          classrooms={classrooms} // 강의실 목록 전달
         />
-      </div>
-      <div className="admin-list-container">
-        <AdminTable 
-          filteredSchedules={filteredSchedules} 
-          onEdit={handleEdit} 
-          onDelete={handleDelete}
-          selectedIds={selectedIds}
-          onSelectToggle={handleSelectToggle}
-          onSelectAll={handleSelectAll}
+      )}
+      {isRoomModalOpen && (
+        <ClassroomModal 
+          classrooms={classrooms} 
+          setClassrooms={setClassrooms} 
+          onClose={() => setIsRoomModalOpen(false)} 
         />
-      </div>
-      <div>
-        {isModalOpen && (
-          <AdminModal
-            onClose={() => { setIsModalOpen(false); setEditingItem(null); }}
-            handleSave={handleSave}
-            editingItem={editingItem}
-          />
-        )}
-      </div>
+      )}
     </div>
   );
 }

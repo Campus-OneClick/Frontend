@@ -1,24 +1,13 @@
-import './AdminMain.css';
-
-export default function AdminControl({ handleText, AddSchedule, onDeleteSelected }){
-
+export default function AdminControl({ handleText, AddSchedule, onDeleteSelected, openRoomManager }){
   return(
-    <div>
-      <div className="admin-header">
-        <div className="search-group">
-          <input 
-            type="text" 
-            placeholder="과목명, 교수명 또는 강의실 검색" 
-            className="search-input" 
-            onChange={handleText} 
-          />
-          <button className="search-btn">검색</button>
-        </div>
-        <div className="action-group">
-          <button className="reg-btn" onClick={AddSchedule}>등록</button>
-          {/* 🌟 상단 삭제 버튼에 일괄 삭제 함수 연결 */}
-          <button className="del-btn" onClick={onDeleteSelected}>삭제</button>
-        </div>
+    <div className="admin-header">
+      <div className="search-group">
+        <input type="text" placeholder="과목명 또는 교수 검색" className="search-input" onChange={handleText} />
+      </div>
+      <div className="action-group">
+        <button className="room-btn" onClick={openRoomManager} style={{ backgroundColor: '#666', color: '#fff' }}>강의실 관리</button>
+        <button className="reg-btn" onClick={AddSchedule}>시간표 등록</button>
+        <button className="del-btn" onClick={onDeleteSelected}>일괄 삭제</button>
       </div>
     </div>
   );

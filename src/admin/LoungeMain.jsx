@@ -36,7 +36,6 @@ export default function LoungeMain({
 
           <div className="col-user-room">
             <span className="user-name">{item.user}</span>
-            {/* 🌟 중요: 강의실은 lecture였지만, 라운지는 desknum을 그려줍니다! */}
             <span className="room-name">라운지 {item.desknum}번</span>
           </div>
 

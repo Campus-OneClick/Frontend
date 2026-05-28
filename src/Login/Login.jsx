@@ -142,11 +142,6 @@ function Login() {
       sessionStorage.setItem("role", user.role || "USER");
       sessionStorage.setItem("authProvider", "firebase");
 
-      if (user.role === "ADMIN") {
-        navigate("/admin");
-        return;
-      }
-
       navigate("/");
     } catch (error) {
       console.error(error);

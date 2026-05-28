@@ -11,7 +11,7 @@ export default function Main() {
   const navigate = useNavigate();
   // 🌟 새로 추가: 로그인한 사람이 관리자인가?"를 체크하는 것
   useEffect(() => {
-    const userRole = localStorage.getItem('userRole'); 
+    const userRole = sessionStorage.getItem('role'); 
 
     if (userRole !== 'ADMIN') {
       alert('권한이 없습니다!');
@@ -19,7 +19,7 @@ export default function Main() {
     }
   }, [navigate]);
 
-  const userRole = localStorage.getItem('userRole');
+  const userRole = sessionStorage.getItem('role');
   if (userRole !== 'ADMIN') {
     return null; // 관리자가 아니면 아예 아무것도 안 보여줌
   }

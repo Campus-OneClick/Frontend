@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './AdminModal.css';
+import './ClassroomModal.css';
 
 export default function ClassroomModal({ classrooms, setClassrooms, onClose }) {
   const [newRoom, setNewRoom] = useState("");
@@ -18,21 +18,29 @@ export default function ClassroomModal({ classrooms, setClassrooms, onClose }) {
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content" style={{ width: '400px' }}>
+      <div className="modal-content">
         <h2>강의실 관리</h2>
-        <div className="input-group" style={{ flexDirection: 'row', gap: '10px' }}>
-          <input type="text" placeholder="새 강의실 이름" value={newRoom} onChange={(e) => setNewRoom(e.target.value)} />
-          <button className="save-btn" onClick={addRoom} style={{ width: '80px' }}>추가</button>
+
+        <div className="input-group">
+          <input
+            type="text"
+            placeholder="새 강의실 이름"
+            value={newRoom}
+            onChange={(e) => setNewRoom(e.target.value)}
+          />
+          <button className="save-btn" onClick={addRoom}>추가</button>
         </div>
-        <ul style={{ listStyle: 'none', padding: 0, marginTop: '20px', maxHeight: '200px', overflowY: 'auto' }}>
+
+        <ul className="room-list">
           {classrooms.map(room => (
-            <li key={room.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', borderBottom: '1px solid #eee' }}>
+            <li key={room.id} className="room-item">
               {room.name}
               <button className="del-btn" onClick={() => deleteRoom(room.id)}>삭제</button>
             </li>
           ))}
         </ul>
-        <button className="close-btn" onClick={onClose} style={{ marginTop: '20px', width: '100%' }}>닫기</button>
+
+        <button className="close-btn" onClick={onClose}>닫기</button>
       </div>
     </div>
   );

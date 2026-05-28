@@ -4,43 +4,40 @@
   justify-content: space-between;
   align-items: center;
   padding: 15px 5px;
-  border-bottom: 2px solid #333;
-  margin-bottom: 20px;
+  border-bottom: 2px solid #e2e8f0 !important;
+  margin-bottom: 5px !important;
 }
-/* 테이블 헤더 구격 */
-.reservation-row.header {
-  font-weight: bold;
-  background-color: #fafafa;
-  border-bottom: 1px solid #ddd;
-  color: #555;
-}
-/* 강의실, 라운지 폰트 및 밑줄 */
+
+/* 강의실/라운지 타이틀 */
 .admin-title {
   margin: 0;
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 700;
+  color: #1e3a5f;
 }
 
-/* 상단 메뉴 토글 */
+/* 상단 메뉴 토글 (슬라이드형) */
 .mode-toggle-container {
   position: relative;
   display: flex;
-  background-color: #f0f0f0;
+  background-color: #eef2f7;
   border-radius: 20px;
-  width: 150px;
-  height: 34px;
-  padding: 2px;
+  width: 160px;
+  height: 40px;
+  padding: 4px;
   cursor: pointer;
+  border: 1px solid rgba(30, 58, 95, 0.1);
 }
 
 .toggle-background {
   position: absolute;
-  width: 73px;
-  height: 30px;
-  background-color: rgb(67, 67, 67);
-  border-radius: 17px;
-  transition: transform 0.3s ease-in-out;
+  width: 76px;
+  height: 32px;
+  background-color: #1e3a5f;
+  border-radius: 16px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .toggle-background.lecture {
@@ -48,18 +45,18 @@
 }
 
 .toggle-background.lounge {
-  transform: translateX(73px);
+  transform: translateX(76px);
 }
 
 .toggle-btn {
   flex: 1;
   background: none;
   border: none;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   z-index: 2;
   cursor: pointer;
-  color: #888;
+  color: #6b7280;
   transition: color 0.3s;
 }
 
@@ -72,182 +69,167 @@
   display: flex;
   gap: 10px;
   margin-bottom: 25px;
-  border-bottom: 1px solid #e0e0e0;
   padding-left: 5px;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 5px !important;
 }
 
-/* 서브 탭 기본 스타일 */
 .tab-item {
-  padding: 12px 16px;
+  padding: 10px 20px;
   font-size: 14px;
   font-weight: 600;
-
-  color: #a0a0a0;
+  color: #94a3b8;
   background: none;
   border: none;
   cursor: pointer;
-
-  position: relative;
-  transition: color 0.2s;
+  transition: all 0.2s;
 }
 
-/* 서브 탭 활성화 상태 */
 .tab-item.active {
-  color: #000000;
+  color: #1e3a5f;
+  border-bottom: 2px solid #1e3a5f;
 }
 
-.tab-item.active::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-
-  width: 100%;
-  height: 3px;
-  background-color: #333333;
-}
-
-/* 하단 탭 5칸 나누기 */
+/* 하단 테이블 레이아웃 */
 .reservation-row {
   display: grid;
-  grid-template-columns: 35px 120px 1fr 65px 100px;
-  gap: 4px;
+  grid-template-columns: 35px 80px 1fr 50px 100px;
+  gap: 12px;
   align-items: center;
-  padding: 12px 8px;
-  border-bottom: 1px solid #f5f5f5;
+  padding: 14px 8px;
+  border-bottom: 2px solid #e2e8f0;
   font-size: 13px;
 }
 
-/* 테이블 헤더 구격 */
+/* 1. 헤더 행 전체를 중앙 정렬하도록 설정 */
 .reservation-row.header {
-  font-weight: bold;
-  background-color: #fafafa;
-  border-bottom: 1px solid #ddd;
-  color: #555;
+  display: grid;
+  grid-template-columns: 35px 90px 1fr 50px 100px;
+  gap: 12px;
+  align-items: center;
+  justify-items: center;
+  background-color: #f8fafc;
+  font-weight: 700;
+  color: #1e3a5f;
+  border-bottom: 2px solid #e2e8f0;
 }
 
-/* 번호 스타일 */
+/* 2. 좌측 정렬이 필요한 특정 컬럼만 따로 왼쪽 정렬 강제 */
+.reservation-row.header div:nth-child(2),
+.reservation-row.header div:nth-child(3) {
+  justify-self: start;
+  /* Grid 셀 내에서 왼쪽으로 붙임 */
+  padding-left: 10px;
+  /* 약간의 여백 추가 */
+}
+
+/*헤더 글 중앙 정렬*/
+.reservation-row.header .header-row-col {
+  text-align: center !important;
+  width: 100%;
+  display: block;
+}
+
+/* 데이터 스타일 */
 .col-num {
-  color: #888;
-  font-weight: 500;
+  color: #1e3a5f;
+  font-size: 16px;
   text-align: center;
 }
 
-/* 신청자 + 장소 세로 배치 디자인 */
 .col-user-room {
   display: flex;
   flex-direction: column;
-  text-align: left;
   padding-left: 4px;
 }
-/* 학번 */
+
 .user-name {
   font-weight: 600;
   color: #333;
-  font-size: 13px;
 }
-/* 장소(강의실) */
+
 .room-name {
   color: #666;
   font-size: 11px;
   margin-top: 2px;
 }
 
-/* 이용시간 + 로그타임 세로 배치 디자인 */
 .col-time-info {
   display: flex;
   flex-direction: column;
-  text-align: left;
   padding-left: 6px;
 }
-/* 사용시간 */
+
 .use-time {
   font-weight: 500;
   color: #222;
 }
-/* 신청한 시간*/
+
 .log-time-stamp {
   font-size: 11px;
   color: #0066cc;
   margin-top: 2px;
-  margin-right: 3px;
 }
 
-/* 상태 메세지 디자인 */
 .col-status {
   font-weight: bold;
   font-size: 12px;
   text-align: center;
 }
 
-
-/* 대기중 */
 .status-0 {
-  color: #ffa940;
+  color: #d97706;
 }
 
-/* 승인 */
 .status-1 {
-  color: #52c41a;
+  color: #16a34a;
 }
 
-/* 거절 */
 .status-2 {
-  color: #ff4d4f;
+  color: #dc2626;
 }
 
-/* 버튼 및 액션 스타일 */
+/* 버튼 스타일 */
 .col-actions {
   display: flex;
   gap: 4px;
   justify-content: center;
 }
 
-/* lec,lon의 승인 버튼 */
 .accept-btn {
-  background-color: #333333;
+  background-color: #1e3a5f;
   color: white;
   border: none;
-
-  padding: 5px 10px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
+  transition: background 0.2s;
 }
+
 .accept-btn:hover {
-  background-color: #000;
-}
-/* lec,lon의 삭제 버튼*/
-.reject-btn {
-  background-color: white;
-  color: #ff4d4f;
-  border: 1px solid #ff4d4f;
-
-  padding: 4px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-}
-.reject-btn:hover {
-  background-color: #fff1f0;
+  background-color: #27384f;
 }
 
-/* lec, lon의 일괄 삭제 버튼 */
+.reject-btn,
 .delete-btn {
   background-color: white;
   color: #ff4d4f;
   border: 1px solid #ff4d4f;
-
-  padding: 4px 10px;
-  border-radius: 4px;
+  padding: 5px 11px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
-/* 목록 글 중앙 정렬 */
+.reject-btn:hover,
+.delete-btn:hover {
+  background-color: #fff1f0;
+}
+
 .table-text-align {
   text-align: center;
 }

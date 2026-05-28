@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
 import LectureMain from './LectureMain';
 import LoungeMain from './LoungeMain';
 import ProcessedMain from './ProcessedMain';
@@ -20,54 +21,22 @@ export default function Reservation() {
   // 대기중 / 처리완료 css
   function Wating() { return subTab === 'waiting' ? 'active' : ''; } // 대기중 활설화
   function Processed() { return subTab === 'processed' ? 'active' : ''; } // 처리완료 활설화
-
-  const [reservations, setReservations] = useState([
-    {
-      type: 'lecture',
-
-      num: 1,
-      user: '5711111',
-      lecture: '공1201',
-
-      date: '2026/05/10',
-      day: '월',
-      time: '13:00 ~ 14:00',
-
-      status: 0,
-      requestedAt: '05/19 14:22',
-      processedAt: null
-    },
-    {
-      type: 'lecture',
-
-      num: 2,
-      user: '5633333',
-      lecture: '공1202',
-
-      date: '2026/05/11',
-      day: '수',
-      time: '14:00 ~ 15:30',
-
-      status: 0,
-      requestedAt: '05/19 15:10',
-      processedAt: null
-    },
-    {
-      type: 'lounge',
-      num: 1,
-      user: '5755555',
-      desknum: '10',
-
-      date: '2026/05/10',
-      day: '월',
-      time: '13:00 ~ 14:00',
-
-      status: 0,
-      requestedAt: '05/19 13:00',
-      processedAt: null
-    },
-  ]);
+  const [reservations, setReservations] = useState([]); // 🌟 더미 데이터 대신 빈 배열로 시작
   
+  // 서버에서 데이터를 가져오는 함수
+  useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/reservations');
+      console.log("서버에서 받은 데이터:", response.data); // 👈 데이터 구조 확인용
+      setReservations(response.data);
+    } catch (error) {
+      console.error("데이터를 가져오는 중 에러 발생:", error);
+    }
+  };
+  fetchData();
+}, []);
+
   function setStatus(num, newStatus) {
     //1. [수락/거절] 버튼을 누른 바로 '지금' 이 순간의 날짜와 시간 구하기
     const now = new Date();

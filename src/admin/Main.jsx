@@ -7,6 +7,7 @@ import ReservationMain from './ReservationMain';
 import AdminMain from './AdminMain';
 
 
+
 export default function Main() {
   const navigate = useNavigate();
   // 🌟 새로 추가: 로그인한 사람이 관리자인가?"를 체크하는 것
@@ -23,11 +24,7 @@ export default function Main() {
   if (userRole !== 'ADMIN') {
     return null; // 관리자가 아니면 아예 아무것도 안 보여줌
   }
-  /* f12 > application > local stroage > http://localhost:3000 
-  key = userRole
-  value = admin
-  했을 시 로그인 화면이 나오는거 까지 확인 
-  */
+
   return (
     <div className="main-layout">
       {/* 왼쪽 섹션: 유저들의 예약 요청 처리 */}

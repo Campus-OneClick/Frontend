@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f6f8;
+}
+
+.App {
+  text-align: center;
+}
+
+.floor-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.floor-buttons button {
+  background: #2ecc71;
+  border-radius: 12px;
+  padding: 10px 14px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.floor-buttons button:hover {
+  background: #27ae60;
+}

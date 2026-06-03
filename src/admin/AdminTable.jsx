@@ -1,5 +1,3 @@
-import './AdminTable.css'
-
 // 삭제와 체크박스 관련 props를 모두 받아옵니다.
 export default function AdminTable({ 
   filteredSchedule, 

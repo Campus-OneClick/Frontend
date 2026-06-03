@@ -35,10 +35,26 @@ export default function AdminMain() {
     setEditingItem(null);
   }
 
+  // 단일 항목 삭제
   function handleDelete(code) {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       setSchedule(schedule.filter(item => item.code !== code));
       setSelectedCodes(selectedCodes.filter(c => c !== code));
+    }
+  }
+
+  // 🌟 [추가] 선택된 항목 일괄 삭제 로직
+  function handleDeleteSelected() {
+    if (selectedCodes.length === 0) {
+      alert("삭제할 항목을 선택해주세요.");
+      return;
+    }
+
+    if (window.confirm(`선택한 ${selectedCodes.length}개의 시간표를 정말 삭제하시겠습니까?`)) {
+      // 선택된 code들을 제외한 아이템들만 남기기
+      setSchedule(schedule.filter(item => !selectedCodes.includes(item.code)));
+      // 삭제가 완료되었으므로 선택된 배열 초기화
+      setSelectedCodes([]);
     }
   }
 
@@ -52,7 +68,7 @@ export default function AdminMain() {
       <AdminControl 
         handleText={(e) => setText(e.target.value)} 
         AddSchedule={() => { setEditingItem(null); setIsModalOpen(true); }} 
-        onDeleteSelected={() => { /* 일괄삭제 로직 */ }}
+        onDeleteSelected={handleDeleteSelected} // 일괄 삭제 함수 전달
         openRoomManager={() => setIsRoomModalOpen(true)} // 강의실 관리 열기
       />
       <AdminTable 

@@ -2,8 +2,7 @@
   display: flex;
   width: 100vw;
   height: 100vh;
-  gap: 10px; /* 좌우 사이 약간의 간격 */
-  padding: 10px;
+  gap: 10px;
   box-sizing: border-box;
 }
 
@@ -12,15 +11,16 @@
   flex: 1; 
   display: flex;
   flex-direction: column;
-  border: 1px solid #ccc; /* 영역 구분을 위한 선 */
+  border: 1px solid #ccc;
   padding: 15px;
-  overflow-y: auto; /* 데이터가 많아지면 개별 스크롤 생성 */
+  overflow-y: auto;
 }
 
 .title {
+  color: #1e3a5f;
   text-align: center;
   font-size: 1.5rem;
   margin-bottom: 20px;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid #1e3a5f;
   padding-bottom: 10px;
 }

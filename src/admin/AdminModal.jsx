@@ -50,7 +50,7 @@ export default function AdminModal({ onClose, handleSave, editingItem, classroom
             <input type="text" name="day1" placeholder="요일1" value={formData.day1} onChange={(e) => setFormData({...formData, day1: e.target.value})} onKeyDown={(e) => handleKeyDown(e, 'time1')} />
             <input type="text" name="time1" placeholder="시간1 (09:00 ~ 12:00)" value={formData.time1} onChange={(e) => setFormData({...formData, time1: e.target.value})} onKeyDown={(e) => handleKeyDown(e, 'room1')} />
             <select name="room1" value={formData.room1} onChange={(e) => setFormData({...formData, room1: e.target.value})} onKeyDown={(e) => handleKeyDown(e, 'day2')}>
-              <option value="">강의실1 선택</option>
+              <option value="">강의실1</option>
               {classrooms.map(r => <option key={r.id} value={r.name}>{r.name}</option>)}
             </select>
           </div>
@@ -59,7 +59,7 @@ export default function AdminModal({ onClose, handleSave, editingItem, classroom
             <input type="text" name="day2" placeholder="요일2 (선택)" value={formData.day2} onChange={(e) => setFormData({...formData, day2: e.target.value})} onKeyDown={(e) => handleKeyDown(e, 'time2')} />
             <input type="text" name="time2" placeholder="시간2 (선택)" value={formData.time2} onChange={(e) => setFormData({...formData, time2: e.target.value})} onKeyDown={(e) => handleKeyDown(e, 'room2')} />
             <select name="room2" value={formData.room2} onChange={(e) => setFormData({...formData, room2: e.target.value})} onKeyDown={(e) => handleKeyDown(e, 'submit')}>
-              <option value="">강의실2 선택</option>
+              <option value="">강의실2</option>
               {classrooms.map(r => <option key={r.id} value={r.name}>{r.name}</option>)}
             </select>
           </div>

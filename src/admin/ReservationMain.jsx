@@ -29,7 +29,19 @@ export default function Reservation({ reservationList, setStatus, deleteReservat
     }
   };
 
-  const deleteSelectedReservations = () => { /* 일괄 삭제 로직 유지 */ };
+  const deleteSelectedReservations = () => {
+    if (selectedNums.length === 0) {
+      alert("선택된 내역이 없습니다!");
+      return;
+    }
+    if (window.confirm("선택한 내역을 전부 삭제하시겠습니까?")) {
+      selectedNums.forEach(({ num, type }) => {
+        deleteReservation(num, type);
+      });
+      setSelectedNums([]);
+    }
+  };
+
 
   // 🌟 백엔드 실시간 데이터를 화면 조건(강의실/라운지, 대기중/처리완료)에 맞춰 정밀 필터링
   const filteredData = reservationList.filter(item => {
@@ -40,8 +52,6 @@ export default function Reservation({ reservationList, setStatus, deleteReservat
 
   return (
     <div className="admin-container">
-      
-      {/* 🎨 사라졌던 '강의실/라운지' 큰 글씨 영역을 원래 CSS 양식에 맞춰 완벽 복구했습니다! */}
       <div className="admin-header">
         {/* 현재 mode가 lecture면 '강의실', lounge면 '라운지'라고 큰 글씨가 동적으로 바뀝니다 */}
         <h1 className="admin-title">

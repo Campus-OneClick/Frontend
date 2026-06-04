@@ -16,7 +16,11 @@ function Login() {
   const [inputDepartment, setInputDepartment] = useState("");
   const [inputEmail, setInputEmail] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+  const [inputPasswordConfirm, setInputPasswordConfirm] = useState("");
   const [authMessage, setAuthMessage] = useState("");
+  const [emailCheckStatus, setEmailCheckStatus] = useState("idle");
+  const [emailCheckMessage, setEmailCheckMessage] = useState("");
+  const [passwordMatchMessage, setPasswordMatchMessage] = useState("");
   const navigate = useNavigate();
 
   const departments = [
@@ -60,11 +64,22 @@ function Login() {
   const handleInputEmail = (e) => {
     setAuthMessage("");
     setInputEmail(e.target.value);
+    setEmailCheckStatus("idle");
+    setEmailCheckMessage("");
   };
 
   const handleInputPassword = (e) => {
     setAuthMessage("");
-    setInputPassword(e.target.value);
+    const nextPassword = e.target.value;
+    setInputPassword(nextPassword);
+    updatePasswordMatch(nextPassword, inputPasswordConfirm);
+  };
+
+  const handleInputPasswordConfirm = (e) => {
+    setAuthMessage("");
+    const nextConfirm = e.target.value;
+    setInputPasswordConfirm(nextConfirm);
+    updatePasswordMatch(inputPassword, nextConfirm);
   };
 
   const resetFields = () => {
@@ -73,7 +88,68 @@ function Login() {
     setInputDepartment("");
     setInputEmail("");
     setInputPassword("");
+    setInputPasswordConfirm("");
     setAuthMessage("");
+    setEmailCheckStatus("idle");
+    setEmailCheckMessage("");
+    setPasswordMatchMessage("");
+  };
+
+  const updatePasswordMatch = (password, confirm) => {
+    if (confirm.trim() === "") {
+      setPasswordMatchMessage("");
+      return;
+    }
+
+    if (password === confirm) {
+      setPasswordMatchMessage("비밀번호가 일치합니다.");
+      return;
+    }
+
+    setPasswordMatchMessage("비밀번호가 일치하지 않습니다.");
+  };
+
+  const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email);
+
+  const handleCheckEmail = async () => {
+    const email = inputEmail.trim();
+
+    if (!email) {
+      setEmailCheckStatus("invalid");
+      setEmailCheckMessage("이메일을 입력해주세요.");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      setEmailCheckStatus("invalid");
+      setEmailCheckMessage("이메일 형식으로 입력해주세요.");
+      return;
+    }
+
+    try {
+      const res = await httpClient.get("/users/check-email", {
+        params: { email },
+      });
+
+      if (!res.data?.success) {
+        setEmailCheckStatus("invalid");
+        setEmailCheckMessage(res.data?.message || "이메일 확인에 실패했습니다.");
+        return;
+      }
+
+      if (res.data?.exists) {
+        setEmailCheckStatus("taken");
+        setEmailCheckMessage("중복되는 이메일이 있습니다.");
+        return;
+      }
+
+      setEmailCheckStatus("available");
+      setEmailCheckMessage("사용 가능한 이메일입니다.");
+    } catch (error) {
+      console.error(error);
+      setEmailCheckStatus("invalid");
+      setEmailCheckMessage("이메일 확인에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   const getFirebaseAuthMessage = (error) => {
@@ -162,9 +238,21 @@ function Login() {
       inputName.trim() === "" ||
       inputDepartment.trim() === "" ||
       inputEmail.trim() === "" ||
-      inputPassword.trim() === ""
+      inputPassword.trim() === "" ||
+      inputPasswordConfirm.trim() === ""
     ) {
       setAuthMessage("이메일, 비밀번호, 학번, 이름, 학과를 모두 입력해주세요.");
+      return;
+    }
+
+    if (emailCheckStatus !== "available") {
+      setEmailCheckStatus("invalid");
+      setEmailCheckMessage("이메일 중복확인을 해주세요.");
+      return;
+    }
+
+    if (inputPassword !== inputPasswordConfirm) {
+      setPasswordMatchMessage("비밀번호가 일치하지 않습니다.");
       return;
     }
 
@@ -241,6 +329,16 @@ function Login() {
       setAuthMessage(error?.response?.data?.message || error?.message || "로그인 처리에 실패했습니다.");
     }
   };
+
+  const isSignupDisabled =
+    !inputId.trim() ||
+    !inputName.trim() ||
+    !inputDepartment.trim() ||
+    !inputEmail.trim() ||
+    !inputPassword.trim() ||
+    !inputPasswordConfirm.trim() ||
+    emailCheckStatus !== "available" ||
+    inputPassword !== inputPasswordConfirm;
 
   return (
     <div className="login-shell">
@@ -337,15 +435,34 @@ function Login() {
             <>
               <label className="field-label">
                 이메일
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="example@example.com"
-                  value={inputEmail}
-                  onChange={handleInputEmail}
-                  autoComplete="email"
-                />
+                <div className="input-action-row">
+                  <input
+                    type="email"
+                    className="form-control"
+                    placeholder="example@example.com"
+                    value={inputEmail}
+                    onChange={handleInputEmail}
+                    autoComplete="email"
+                  />
+                  <button
+                    type="button"
+                    className="inline-button"
+                    onClick={handleCheckEmail}
+                    disabled={!inputEmail.trim()}
+                  >
+                    중복확인
+                  </button>
+                </div>
               </label>
+              {emailCheckMessage ? (
+                <p
+                  className={`field-message ${
+                    emailCheckStatus === "available" ? "success" : "error"
+                  }`}
+                >
+                  {emailCheckMessage}
+                </p>
+              ) : null}
 
               <label className="field-label">
                 비밀번호
@@ -358,6 +475,27 @@ function Login() {
                   autoComplete="new-password"
                 />
               </label>
+
+              <label className="field-label">
+                비밀번호 확인
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="비밀번호를 다시 입력해주세요"
+                  value={inputPasswordConfirm}
+                  onChange={handleInputPasswordConfirm}
+                  autoComplete="new-password"
+                />
+              </label>
+              {passwordMatchMessage ? (
+                <p
+                  className={`field-message ${
+                    inputPassword === inputPasswordConfirm ? "success" : "error"
+                  }`}
+                >
+                  {passwordMatchMessage}
+                </p>
+              ) : null}
 
               <div className="field-row">
                 <label className="field-label">
@@ -402,7 +540,12 @@ function Login() {
                 </select>
               </label>
 
-              <button type="button" className="primary-button" onClick={onClickSignup}>
+              <button
+                type="button"
+                className="primary-button"
+                onClick={onClickSignup}
+                disabled={isSignupDisabled}
+              >
                 회원가입
               </button>
             </>

@@ -1,19 +1,108 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { api } from "../api/api";
+import "./Floor.css";
 
-export default function Floor4Map({ onSelectRoom }) {
+export default function Floor4Map() {
+  const navigate = useNavigate();
+
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [activeRoom, setActiveRoom] = useState(null);
+  const [roomStatus, setRoomStatus] = useState([]);
+
+  const rooms = {
+    "401": { name: "401호", capacity: 40, projector: true, computer: true },
+    "402": { name: "402호", capacity: 35, projector: false, computer: true },
+    "403": { name: "403호", capacity: 50, projector: true, computer: false },
+    "404": { name: "404호", capacity: 30, projector: false, computer: false },
+  };
+
+  const fetchStatus = async () => {
+    try {
+      const res = await api.get("/room-usage/status");
+      setRoomStatus(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchStatus();
+  }, []);
+
+  const handleRoomClick = async (room) => {
+    setSelectedRoom(room);
+
+    try {
+      await api.post("/room-usage/start", {
+        roomName: room.name,
+        status: "STUDY",
+      });
+
+      setActiveRoom(room);
+      fetchStatus();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleEnd = async () => {
+    try {
+      await api.post("/room-usage/end", {
+        roomName: selectedRoom.name,
+      });
+
+      setActiveRoom(null);
+      setSelectedRoom(null);
+      fetchStatus();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const isUsed = (roomName) =>
+    roomStatus.find((r) => r.roomName === roomName)?.status === "USED";
+
   return (
-    <div>
-      <h2>4층 도면</h2>
+    <div className="toss_container floor4">
+      <h1>4층</h1>
 
-      <div className="map-container">
-        <img className="map-img" src="/floor4.png" alt="4층 도면" />
+      <button onClick={() => navigate("/Basement")}>지하</button>
+      <button onClick={() => navigate("/")}>2층</button>
+      <button onClick={() => navigate("/floor3")}>3층</button>
+      <button onClick={() => navigate("/floor4")}>4층</button>
 
-        <button
-          className="room-hitbox"
-          style={{ left: 100, top: 100, width: 70, height: 50 }}
-          onClick={() => onSelectRoom("공1401")}
-        />
+      <div className="map_wrapper">
+        <img src="/floor4.png" className="floor_img" />
+
+        <button className={`toss_pin room1 ${isUsed("401호") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["401"])}>401</button>
+        <button className={`toss_pin room2 ${isUsed("402호") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["402"])}>402</button>
+        <button className={`toss_pin room3 ${isUsed("403호") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["403"])}>403</button>
+        <button className={`toss_pin room4 ${isUsed("404호") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["404"])}>404</button>
       </div>
+
+      {selectedRoom && (
+        <div className="popup_overlay">
+          <div className="popup">
+            <h2>{selectedRoom.name}</h2>
+            <p>수용인원: {selectedRoom.capacity}명</p>
+            <p>빔프로젝터: {selectedRoom.projector ? "있음" : "없음"}</p>
+            <p>컴퓨터: {selectedRoom.computer ? "있음" : "없음"}</p>
+
+            <button onClick={() => navigate(`/timetable/${selectedRoom.name}`)}>
+              예약하기
+            </button>
+
+            {activeRoom?.name === selectedRoom?.name && (
+              <button onClick={handleEnd} className="end_btn">
+                사용 종료
+              </button>
+            )}
+
+            <button onClick={() => setSelectedRoom(null)}>닫기</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

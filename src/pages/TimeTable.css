@@ -1,0 +1,64 @@
+.tt_container {
+  padding: 20px;
+  background: #f5f6f8;
+  min-height: 100vh;
+}
+
+/* 헤더 */
+.tt_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* GRID 핵심 */
+.tt_grid {
+  display: grid;
+  grid-template-columns: 80px repeat(5, 1fr);
+  gap: 1px;
+  background: #ddd;
+}
+
+.tt_row {
+  display: contents;
+}
+
+/* 셀 기본 */
+.tt_cell {
+  background: white;
+  padding: 10px;
+  min-height: 45px;
+  font-size: 13px;
+}
+
+/* 요일 헤더 */
+.tt_head {
+  font-weight: bold;
+  text-align: center;
+  background: #f0f2f5;
+}
+
+/* 시간 */
+.tt_time {
+  text-align: center;
+  font-weight: bold;
+  background: #f8f9fb;
+}
+
+/* 블록 */
+.tt_block {
+  cursor: pointer;
+}
+
+.tt_block:hover {
+  background: #e8f1ff;
+}
+
+.busy {
+  background-color: red;
+}
+
+.empty {
+  background-color: green;
+}

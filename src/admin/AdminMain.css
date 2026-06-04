@@ -1,0 +1,56 @@
+.admin-main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* 상단 헤더 영역 배치 */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.search-group, .action-group {
+  display: flex;
+  gap: 8px;
+}
+
+.search-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  width: 200px;
+}
+
+/* 엑셀 스타일 테이블 */
+.admin-list-container {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin-table th, .admin-table td {
+  border: 1px solid #ddd;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.admin-table th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+}
+
+.admin-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* 버튼 포인트 컬러 */
+.search-btn, .reg-btn, .edit-btn { background: #333; color: white; border: none; padding: 5px 12px; cursor: pointer; }
+.del-btn { background: #fff; border: 1px solid red; color: red; padding: 5px 12px; cursor: pointer; }

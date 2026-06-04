@@ -21,3 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
+=======
+
+.vercel
+.env*
+>>>>>>> a1cdfe68d701592594529459ad17efb71bcb4da1

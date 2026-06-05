@@ -5,7 +5,7 @@ import ProcessedMain from './ProcessedMain';
 import './ReservationMain.css';
 
 // 부모(Main.jsx)로부터 실시간 데이터와 제어 함수를 안전하게 전달받습니다.
-export default function Reservation({ reservationList, setStatus, deleteReservation }) {
+export default function ReservationMain({ reservationList, setStatus, deleteReservation }) {
   const [mode, setMode] = useState('lecture'); // 'lecture' 또는 'lounge'
   const [subTab, setSubTab] = useState('waiting'); // 'waiting'(대기중) 또는 'processed'(처리완료)
   const [selectedNums, setSelectedNums] = useState([]);

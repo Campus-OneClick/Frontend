@@ -21,18 +21,6 @@ export default function AdminModal({ onClose, handleSave, editingItem, classroom
     }
   }, [editingItem]);
 
-  const handleKeyDown = (e, nextField) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      if (nextField === 'submit') {
-        Accept();
-      } else {
-        const nextInput = document.querySelector(`[name="${nextField}"]`);
-        if (nextInput) nextInput.focus();
-      }
-    }
-  };
-
   const Accept = () => {
     if (!formData.subject) return alert("과목명을 입력해주세요.");
     if (!formData.day1 || !formData.startTime1 || !formData.endTime1 || !formData.classroomId1)
@@ -53,9 +41,23 @@ export default function AdminModal({ onClose, handleSave, editingItem, classroom
         classroomId: formData.classroomId2,
       });
     }
-
     handleSave({ subject: formData.subject, professor: formData.professor, schedules });
   };
+
+
+  const handleKeyDown = (e, nextField) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (nextField === 'submit') {
+        Accept();
+      } else {
+        const nextInput = document.querySelector(`[name="${nextField}"]`);
+        if (nextInput) nextInput.focus();
+      }
+    }
+  };
+
+
 
   const update = (field) => (e) => setFormData({ ...formData, [field]: e.target.value });
 

@@ -36,18 +36,10 @@ export default function AdminTable({
             <div>{sch.subject}</div>
             <div className='ouline-text'>{sch.professor || '-'}</div>
 
-      <div>
-              {sch.schedules && sch.schedules.length > 0 ? (
-                sch.schedules.map((subSch, index) => (
-                  <div key={index} style={{ marginBottom: '4px' }}>
-                    {subSch.day} ({subSch.startTime} ~ {subSch.endTime})
-                    {subSch.classroomEntity?.roomName ? ` / ${subSch.classroomEntity.roomName}` : ' / -'}
-                  </div>
-                ))
-              ) : (
-                '-'
-              )}
-      </div>
+            <div>
+              {sch.day} ({sch.startTime} ~ {sch.endTime}) / {sch.classroomEntity?.roomName || '-'}
+            </div>
+            
             <div>
               <button className="edit-btn" onClick={() => onEdit(sch)}>수정</button>
               <button className='del-btn' onClick={() => onDelete(sch)}>삭제</button>

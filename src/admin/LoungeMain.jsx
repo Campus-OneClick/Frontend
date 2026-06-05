@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function LoungeMain({
   data,
-  Wating,
+  Waiting,
   Processed,
   handleWaitingClick,
   handleProcessedClick,
@@ -12,7 +12,7 @@ export default function LoungeMain({
     <div className="admin-container">
       {/* 상단 서브 탭 */}
       <div className="tab-wrapper">
-        <button className={`tab-item ${Wating}`} onClick={handleWaitingClick}>
+        <button className={`tab-item ${Waiting}`} onClick={handleWaitingClick}>
           대기중
         </button>
         <button className={`tab-item ${Processed}`} onClick={handleProcessedClick}>

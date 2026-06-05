@@ -16,7 +16,7 @@ export default function Reservation({ reservationList, setStatus, deleteReservat
   function louActive() { return mode === 'lounge' ? 'active' : ''; }
   function handleWaitingClick() { setSubTab('waiting'); }
   function handleProcessedClick() { setSubTab('processed'); }
-  function Wating() { return subTab === 'waiting' ? 'active' : ''; }
+  function Waiting() { return subTab === 'waiting' ? 'active' : ''; }
   function Processed() { return subTab === 'processed' ? 'active' : ''; }
 
   // 체크박스 핸들러
@@ -75,7 +75,7 @@ export default function Reservation({ reservationList, setStatus, deleteReservat
         {subTab === 'waiting' ? (
           mode === 'lecture' ? (
             <LectureMain
-              Wating={Wating()}
+              Waiting={Waiting()}
               Processed={Processed()}
               handleWaitingClick={handleWaitingClick}
               handleProcessedClick={handleProcessedClick}
@@ -83,7 +83,7 @@ export default function Reservation({ reservationList, setStatus, deleteReservat
               data={filteredData} />
           ) : (
             <LoungeMain
-              Wating={Wating()}
+              Waiting={Waiting()}
               Processed={Processed()}
               handleWaitingClick={handleWaitingClick}
               handleProcessedClick={handleProcessedClick}
@@ -94,7 +94,7 @@ export default function Reservation({ reservationList, setStatus, deleteReservat
           <ProcessedMain
             mode={mode}
             data={filteredData}
-            Wating={Wating()}
+            Waiting={Waiting()}
             Processed={Processed()}
             handleWaitingClick={handleWaitingClick}
             handleProcessedClick={handleProcessedClick}

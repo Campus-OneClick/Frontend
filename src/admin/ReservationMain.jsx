@@ -8,15 +8,15 @@ import './ReservationMain.css';
 export default function Reservation({ reservationList, setStatus, deleteReservation }) {
   const [mode, setMode] = useState('lecture'); // 'lecture' 또는 'lounge'
   const [subTab, setSubTab] = useState('waiting'); // 'waiting'(대기중) 또는 'processed'(처리완료)
-  const [selectedNums, setSelectedNums] = useState([]);  
+  const [selectedNums, setSelectedNums] = useState([]);
 
   // 🎨 css 슬라이더와 100% 매칭되는 오리지널 함수들
-  function ToggleMode() { setMode(mode === 'lecture' ? 'lounge' : 'lecture'); } 
-  function lecActive() { return mode === 'lecture' ? 'active' : ''; } 
-  function louActive() { return mode === 'lounge' ? 'active' : ''; } 
-  function handleWaitingClick() { setSubTab('waiting'); } 
-  function handleProcessedClick() { setSubTab('processed'); } 
-  function Wating() { return subTab === 'waiting' ? 'active' : ''; } 
+  function ToggleMode() { setMode(mode === 'lecture' ? 'lounge' : 'lecture'); }
+  function lecActive() { return mode === 'lecture' ? 'active' : ''; }
+  function louActive() { return mode === 'lounge' ? 'active' : ''; }
+  function handleWaitingClick() { setSubTab('waiting'); }
+  function handleProcessedClick() { setSubTab('processed'); }
+  function Wating() { return subTab === 'waiting' ? 'active' : ''; }
   function Processed() { return subTab === 'processed' ? 'active' : ''; }
 
   // 체크박스 핸들러
@@ -42,7 +42,6 @@ export default function Reservation({ reservationList, setStatus, deleteReservat
     }
   };
 
-
   // 🌟 백엔드 실시간 데이터를 화면 조건(강의실/라운지, 대기중/처리완료)에 맞춰 정밀 필터링
   const filteredData = reservationList.filter(item => {
     const isSubTabMatch = subTab === 'waiting' ? item.status === 0 : (item.status === 1 || item.status === 2);
@@ -52,12 +51,13 @@ export default function Reservation({ reservationList, setStatus, deleteReservat
 
   return (
     <div className="admin-container">
+
       <div className="admin-header">
         {/* 현재 mode가 lecture면 '강의실', lounge면 '라운지'라고 큰 글씨가 동적으로 바뀝니다 */}
         <h1 className="admin-title">
           {mode === 'lecture' ? '강의실' : '라운지'}
         </h1>
-        
+
         {/* 슬라이드 토글 버튼 우측 배치 */}
         <div className="mode-toggle-container" onClick={ToggleMode}>
           <div className={`toggle-background ${mode}`} />
@@ -79,7 +79,7 @@ export default function Reservation({ reservationList, setStatus, deleteReservat
               Processed={Processed()}
               handleWaitingClick={handleWaitingClick}
               handleProcessedClick={handleProcessedClick}
-              setStatus={(num, status) => setStatus(num, status, 'lecture')} 
+              setStatus={(num, status) => setStatus(num, status, 'lecture')}
               data={filteredData} />
           ) : (
             <LoungeMain
@@ -87,7 +87,7 @@ export default function Reservation({ reservationList, setStatus, deleteReservat
               Processed={Processed()}
               handleWaitingClick={handleWaitingClick}
               handleProcessedClick={handleProcessedClick}
-              setStatus={(num, status) => setStatus(num, status, 'lounge')} 
+              setStatus={(num, status) => setStatus(num, status, 'lounge')}
               data={filteredData} />
           )
         ) : (

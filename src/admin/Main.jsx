@@ -11,7 +11,7 @@ export default function Main() {
   const [reservationList, setReservationList] = useState([]); // 실시간 데이터를 담을 상태
 
   useEffect(() => {
-    const userRole = sessionStorage.getItem('role'); 
+    const userRole = sessionStorage.getItem('role');
     if (userRole !== 'ADMIN') {
       alert('권한이 없습니다!');
       navigate('/');
@@ -20,24 +20,22 @@ export default function Main() {
     }
   }, [navigate]);
 
-  // 1. 🌟 데이터 가져오는 곳 주소 수정
+  // 1. 🌟 데이터 가져오는 곳 주소
   const fetchReservations = async () => {
     try {
-      // /api/admin/reservations 대신 백엔드 진짜 포트와 주소로 매핑!
-      const response = await axios.get('http://localhost:8080/reservations'); 
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/reservations`);
       setReservationList(response.data);
     } catch (error) {
       console.error("데이터 가져오기 실패:", error);
     }
   };
 
-  // 2. 🌟 수락/거절 상태 처리 주소 수정
+  // 2. 🌟 수락/거절 상태 처리 주소
   const setStatus = async (num, status, type) => {
     try {
-      // 백엔드 컨트롤러 규칙인 /reservations/{type}/{num} 형태로 주소 전달!
-      await axios.put(`http://localhost:8080/reservations/${type}/${num}`, { status });
+      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/reservations/${type}/${num}`, { status });
       alert(status === 1 ? "신청을 수락했습니다." : "신청을 거절했습니다.");
-      fetchReservations(); // 갱신
+      fetchReservations();
     } catch (error) {
       console.error("상태 처리 실패:", error);
     }
@@ -47,8 +45,7 @@ export default function Main() {
   const deleteReservation = async (num, type) => {
     if (!window.confirm("해당 내역을 완전히 삭제하시겠습니까?")) return;
     try {
-      // 여기도 백엔드 규칙에 맞게 주소 전달!
-      await axios.delete(`http://localhost:8080/reservations/${type}/${num}`);
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/reservations/${type}/${num}`);
       fetchReservations();
     } catch (error) {
       console.error("삭제 실패:", error);
@@ -62,15 +59,15 @@ export default function Main() {
     <div className="main-layout">
       <div className="layout-side">
         <h2 className="title">예약 신청 승인</h2>
-        <ReservationMain 
-          reservationList={reservationList} 
+        <ReservationMain
+          reservationList={reservationList}
           setStatus={setStatus}
           deleteReservation={deleteReservation}
         />
       </div>
       <div className="layout-side">
         <h2 className="title">강의실 시간표 관리</h2>
-        <AdminMain /> 
+        <AdminMain />
       </div>
     </div>
   );

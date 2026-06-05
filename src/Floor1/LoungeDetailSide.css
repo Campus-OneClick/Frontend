@@ -10,28 +10,29 @@
     margin-bottom: 30px;
     padding: 10px 20px;
     cursor: pointer;
-    background-color: #333;
+    background-color: #1e3a5f;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 999px;
     font-size: 16px;
+    font-weight: 700;
     transition: background-color 0.2s ease;
 }
 
 .back_btn:hover {
-    background-color: #555;
+    background-color: #27384f;
 }
 
 .title {
     margin-bottom: 40px;
 }
 
-/* 🏢 전체 공간 (큰 테두리) */
+/* 🏢 전체 공간 */
 .room_box {
-    border: 3px solid #333;
     padding: 60px 40px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+    border-radius: 22px;
+    background-color: #f4f6f8;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     display: flex;
     flex-direction: column;
     gap: 60px;
@@ -134,9 +135,9 @@
 .modal_content {
     background-color: white;
     padding: 30px;
-    border-radius: 10px;
+    border-radius: 22px;
     width: 300px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
     text-align: center;
 }
 
@@ -149,33 +150,37 @@
 
 .close_btn {
     padding: 10px 20px;
-    background-color: #aaa;
-    color: white;
+    background-color: #eef2f7;
+    color: #1e3a5f;
     border: none;
-    border-radius: 5px;
+    border-radius: 999px;
     cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.2s ease;
 }
 
 .assign_btn {
     padding: 10px 20px;
-    background-color: #007BFF;
+    background-color: #1e3a5f;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 999px;
     cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.2s ease;
 }
 
-.close_btn:hover { background-color: #888; }
-.assign_btn:hover { background-color: #0056b3; }
+.close_btn:hover { background-color: #dce6f2; }
+.assign_btn:hover { background-color: #27384f; }
 
 .modern_badge {
     font-size: 13px;
     font-weight: bold;
-    background-color: #333;
+    background-color: #1e3a5f;
     color: white;
     display: inline-block;
     padding: 4px 12px;
-    border-radius: 20px;
+    border-radius: 999px;
     margin-bottom: 16px;
 }
 

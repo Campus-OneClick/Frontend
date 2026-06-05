@@ -13,6 +13,7 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/floor1" element={<Floor1 />} />
+        <Route path="/floor1/:lounge" element={<Floor1 />} />
         <Route path="/admin" element={<AdminMain />} />
         <Route path="/classrooms" element={<ClassroomModal />} />
         <Route path="/my-info" element={<MyInfoPage />} />

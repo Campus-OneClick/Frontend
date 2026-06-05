@@ -1,41 +1,61 @@
 /* Floor1.css */
 
-/* 전체 배경: 토스 특유의 옅은 회색 */
-.toss_container {
-    background-color: #f2f4f6;
+/* 전체 배경 */
+.f1_container {
+    background-color: #f4f6f8;
     min-height: 100vh;
     padding: 40px 20px;
-    font-family: 'Pretendard', -apple-system, sans-serif; /* 깔끔한 폰트 추천 */
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 /* 헤더 텍스트 스타일 */
-.toss_header {
+.f1_header {
     width: 100%;
     max-width: 800px;
     margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.toss_title {
+.floor1_main_btn {
+    height: 42px;
+    border: none;
+    border-radius: 999px;
+    background: #1e3a5f;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 0 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+
+.floor1_main_btn:hover {
+    background: #27384f;
+}
+
+.f1_title {
     font-size: 28px;
     font-weight: 800;
-    color: #191f28; /* 완전한 검은색보다 부드러운 짙은 회색 */
+    color: #111827;
     margin: 0 0 8px 0;
 }
 
-.toss_subtitle {
+.f1_subtitle {
     font-size: 16px;
-    color: #8b95a1;
+    color: #6b7280;
     margin: 0;
 }
 
 /* 공통 하얀색 카드 스타일 */
-.toss_card {
+.f1_card {
     background-color: #ffffff;
-    border-radius: 24px; /* 토스 느낌의 둥근 모서리 */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border-radius: 22px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     padding: 20px;
     width: 100%;
     max-width: 800px;
@@ -47,7 +67,7 @@
     position: relative;
     width: 100%;
     border-radius: 16px;
-    overflow: hidden; /* 이미지가 카드 밖으로 삐져나가지 않게 */
+    overflow: hidden;
 }
 
 .floor_img {
@@ -57,79 +77,114 @@
 }
 
 /* 도면 위 마커 핀 스타일 */
-.toss_pin {
+.map_pin {
     position: absolute;
     transform: translate(-50%, -50%);
     padding: 10px 16px;
-    background-color: #3182f6; /* 토스 블루 */
+    background-color: #1e3a5f;
     color: white;
     font-weight: bold;
     font-size: 15px;
     border: none;
-    border-radius: 30px; /* 알약 모양 */
+    border-radius: 999px;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(49, 130, 246, 0.3);
+    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.25);
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
-.toss_pin:hover {
-    transform: translate(-50%, -50%) scale(1.05); /* 살짝 커지는 효과 */
-    background-color: #1b64da;
+.map_pin:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+    background-color: #27384f;
 }
 
-/* 각 버튼의 개별 위치 (기존 좌표 유지) */
+/* 각 버튼의 개별 위치 */
 .center_pin { top: 25.3%; left: 57.7%; }
-.side_pin { 
-    top: 39.9%; left: 6.7%; 
-    background-color: #00c853; /* 다른 색상을 원하면 여기서 변경 */
-    box-shadow: 0 4px 12px rgba(0, 200, 83, 0.3);
+.side_pin {
+    top: 39.9%; left: 6.7%;
+    background-color: #27384f;
+    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.15);
 }
-.side_pin:hover { background-color: #00a042; }
+.side_pin:hover { background-color: #1e3a5f; }
+
+/* 프로그레스 바 */
+.progress_bg {
+    flex: 1;
+    height: 12px;
+    background-color: #e8ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress_fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease-out, background-color 0.5s ease;
+}
 
 /* 하단 리스트 영역 */
-.toss_list_container {
+.f1_list_container {
     width: 100%;
     max-width: 850px;
-    box-sizing:  border-box;
+    box-sizing: border-box;
 }
 
 .list_title {
     font-size: 20px;
     font-weight: 700;
-    color: #191f28;
+    color: #111827;
     margin-bottom: 16px;
 }
 
 /* 클릭 가능한 리스트 카드 */
-.toss_list_card {
+.f1_list_card {
     background-color: #ffffff;
-    border-radius: 16px;
+    border-radius: 22px;
     padding: 20px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 12px;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
-    transition: background-color 0.2s ease, transform 0.2s ease;
-
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     width: 100%;
     box-sizing: border-box;
 }
 
-.toss_list_card:hover {
-    background-color: #f9f9f9;
-    transform: translateY(-2px); /* 마우스 올렸을 때 살짝 떠오름 */
+.f1_list_card:hover {
+    background-color: #f4f6f8;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
 }
 
 .card_text h3 {
     margin: 0 0 4px 0;
     font-size: 18px;
-    color: #333d4b;
+    color: #1f2937;
 }
 
 .card_text p {
     margin: 0;
     font-size: 14px;
-    color: #8b95a1;
+    color: #6b7280;
+}
+
+.card_congestion {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    min-width: 140px;
+}
+
+.card_congestion .progress_bg {
+    flex: none;
+    width: 100%;
+}
+
+.card_congestion_count {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    white-space: nowrap;
 }

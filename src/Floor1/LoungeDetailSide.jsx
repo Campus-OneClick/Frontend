@@ -106,9 +106,10 @@ export function LoungeDetailSide({
                     </div>
                 </div>
 
-                <CongestionBar 
+                <CongestionBar
                     total={TOTAL_SEATS}
                     reserved={reservedSeats.length}
+                    title="옆 라운지 혼잡도"
                     myReservedSeat={myReservedSeat}
                     bookingEndTime={bookingEndTime}
                     onReturn={onReturn}

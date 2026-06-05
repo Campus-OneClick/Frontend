@@ -2,7 +2,7 @@
 import React from 'react';
 import './CongestionBar.css';
 
-export function CongestionBar({ total, reserved, myReservedSeat, bookingEndTime, onReturn, onExtend }) {
+export function CongestionBar({ total, reserved, title = '혼잡도', showMySeat = true, myReservedSeat, bookingEndTime, onReturn, onExtend }) {
     const percent = Math.floor((reserved / total) * 100);
 
     // 혼잡도 색상 계산
@@ -22,7 +22,7 @@ export function CongestionBar({ total, reserved, myReservedSeat, bookingEndTime,
         <div className="congestion_sidebar">
             {/* 1. 혼잡도 지표 영역 (가로형 프로그레스 바) */}
             <div className="status_card">
-                <h3 className="card_title">중앙 라운지 혼잡도</h3>
+                <h3 className="card_title">{title}</h3>
                 <div className="progress_container">
                     <div 
                         className="progress_fill" 
@@ -35,8 +35,8 @@ export function CongestionBar({ total, reserved, myReservedSeat, bookingEndTime,
                 </div>
             </div>
 
-            {/* 2. ⭐️ 내 좌석 관리 영역 (예약이 있을 때만 띄움) */}
-            {myReservedSeat !== null && (
+            {/* 2. 내 좌석 관리 영역 (showMySeat이 true이고 예약이 있을 때만) */}
+            {showMySeat && myReservedSeat !== null && (
                 <div className="my_seat_card">
                     <h4 className="card_title">내 이용 정보</h4>
                     <p className="my_seat_info">
@@ -45,7 +45,6 @@ export function CongestionBar({ total, reserved, myReservedSeat, bookingEndTime,
                     <p className="my_seat_info">
                         종료 시간: <span className="time_txt">{formatTime(bookingEndTime)}</span>
                     </p>
-                    
                     <div className="sidebar_btn_group">
                         <button className="extend_btn" onClick={onExtend}>시간 연장</button>
                         <button className="return_btn" onClick={onReturn}>좌석 반납</button>

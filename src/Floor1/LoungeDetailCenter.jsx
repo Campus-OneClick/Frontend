@@ -95,9 +95,10 @@ export function LoungeDetailCenter({
                 </div>
 
                 {/* 부모에게서 받은 함수들을 그대로 넘겨줍니다 */}
-                <CongestionBar 
+                <CongestionBar
                     total={TOTAL_SEATS}
                     reserved={reservedSeats.length}
+                    title="중앙 라운지 혼잡도"
                     myReservedSeat={myReservedSeat}
                     bookingEndTime={bookingEndTime}
                     onReturn={onReturn}

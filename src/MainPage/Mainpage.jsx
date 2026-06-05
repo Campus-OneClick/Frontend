@@ -14,6 +14,7 @@ function MainPage() {
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [seats, setSeats] = useState(0); //남은 좌석 수
+  const [mySeat, setMySeat] = useState(null);
 
   const isAdmin = role === "ADMIN";
 
@@ -38,6 +39,7 @@ function MainPage() {
         });
 
         setSeats(Number(res.data.availableSeats || 0));
+        setMySeat(res.data.mySeat || null);
       } catch (err) {
         console.error("좌석 정보를 불러오지 못했습니다.", err);
       }
@@ -58,8 +60,18 @@ function MainPage() {
       setIsLogin(false);
       setRole("");
       setName("");
+      setMySeat(null);
       navigate("/login");
     }
+  };
+
+  const handleMyReservationClick = () => {
+    if (mySeat?.lounge) {
+      navigate(`/floor1/${mySeat.lounge}`);
+      return;
+    }
+
+    navigate("/floor1");
   };
 
   return (
@@ -72,9 +84,6 @@ function MainPage() {
 
         {isLogin ? (
           <div className="profile-menu-wrap">
-            <div className="profile-circle">
-              {name ? name.charAt(0) : "?"}
-            </div>
             <div className="profile-actions">
               <button
                 className="profile-action-btn"
@@ -152,10 +161,6 @@ function MainPage() {
               좌석 현황, 강의실 시간표, 예약 요청을 확인하고 관리할 수
               있습니다.
             </p>
-
-            <button className="main-btn" onClick={() => navigate("/admin")}>
-              관리자 페이지 이동
-            </button>
           </section>
 
           <section className="status-section">
@@ -187,7 +192,7 @@ function MainPage() {
               현재 전체 좌석 중 {occupiedRate}%가 사용 중입니다.
             </p>
 
-            <button className="main-btn" onClick={() => navigate("/floor1")}>
+            <button className="main-btn" onClick={handleMyReservationClick}>
               내 예약 확인하기
             </button>
           </section>
@@ -195,8 +200,16 @@ function MainPage() {
           <section className="status-section">
             <div className="status-card">
               <span>내 예약 상태</span>
-              <strong>예약 없음</strong>
-              <p>현재 진행 중인 예약이 없습니다.</p>
+              <strong>
+                {mySeat
+                  ? `${mySeat.lounge === "center" ? "중앙" : "옆"} 라운지 ${mySeat.seatId}번`
+                  : "예약 없음"}
+              </strong>
+              <p>
+                {mySeat
+                  ? "현재 이용 중인 좌석이 있습니다."
+                  : "현재 진행 중인 예약이 없습니다."}
+              </p>
             </div>
 
             <div className="status-card">
@@ -211,32 +224,14 @@ function MainPage() {
       <section className="menu-section">
         <h3>{isAdmin ? "관리자 기능" : "주요 기능"}</h3>
 
-        <div className="menu-list">
+        <div className={isAdmin ? "menu-list admin-menu-list" : "menu-list"}>
           {isAdmin ? (
             <>
-              <div className="menu-item" onClick={() => navigate("/admin")}>
-                <div className="icon-box">⚙️</div>
-                <div>
-                  <h4>관리자 시간표 관리</h4>
-                  <p>강의실 시간표를 조회하고 수정합니다.</p>
-                </div>
-                <span>›</span>
-              </div>
-
               <div className="menu-item" onClick={() => navigate("/admin")}>
                 <div className="icon-box">📋</div>
                 <div>
                   <h4>예약 요청 관리</h4>
                   <p>학생 예약 요청과 좌석 상태를 관리합니다.</p>
-                </div>
-                <span>›</span>
-              </div>
-
-              <div className="menu-item" onClick={() => navigate("/classrooms")}>
-                <div className="icon-box">🏫</div>
-                <div>
-                  <h4>강의실 현황 관리</h4>
-                  <p>사용 가능한 강의실 정보를 확인합니다.</p>
                 </div>
                 <span>›</span>
               </div>

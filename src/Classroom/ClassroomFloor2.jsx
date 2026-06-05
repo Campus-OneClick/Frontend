@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ClassroomModal from "./ClassroomModal";
+import "./ClassroomFloor2.css"
 import floor2Image from "./floor2.png"
 
 

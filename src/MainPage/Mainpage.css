@@ -49,18 +49,6 @@ body {
   background-color: #27384f;
 }
 
-.profile-circle {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: #1e3a5f;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-}
-
 .profile-menu-wrap {
   display: flex;
   align-items: center;
@@ -184,6 +172,10 @@ body {
   gap: 20px;
 }
 
+.admin-menu-list {
+  grid-template-columns: 1fr;
+}
+
 .menu-item {
   min-height: 120px;
   background-color: white;
@@ -251,11 +243,6 @@ body {
     font-size: 26px;
   }
 
-  .profile-circle {
-    width: 42px;
-    height: 42px;
-  }
-
   .profile-menu-wrap {
     align-items: flex-end;
     flex-direction: column;
@@ -294,6 +281,10 @@ body {
   }
 
   .menu-list {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-menu-list {
     grid-template-columns: 1fr;
   }
 

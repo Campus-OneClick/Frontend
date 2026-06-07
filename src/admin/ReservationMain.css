@@ -1,0 +1,235 @@
+/* 상단 헤더 영역 */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5px;
+  border-bottom: 2px solid #e2e8f0 !important;
+  margin-bottom: 5px !important;
+}
+
+/* 강의실/라운지 타이틀 */
+.admin-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e3a5f;
+}
+
+/* 상단 메뉴 토글 (슬라이드형) */
+.mode-toggle-container {
+  position: relative;
+  display: flex;
+  background-color: #eef2f7;
+  border-radius: 20px;
+  width: 160px;
+  height: 40px;
+  padding: 4px;
+  cursor: pointer;
+  border: 1px solid rgba(30, 58, 95, 0.1);
+}
+
+.toggle-background {
+  position: absolute;
+  width: 76px;
+  height: 32px;
+  background-color: #1e3a5f;
+  border-radius: 16px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-background.lecture {
+  transform: translateX(0);
+}
+
+.toggle-background.lounge {
+  transform: translateX(76px);
+}
+
+.toggle-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  z-index: 2;
+  cursor: pointer;
+  color: #6b7280;
+  transition: color 0.3s;
+}
+
+.toggle-btn.active {
+  color: #ffffff;
+}
+
+/* 탭 메뉴 */
+.tab-wrapper {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  padding-left: 5px;
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 5px !important;
+}
+
+.tab-item {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #94a3b8;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-item.active {
+  color: #1e3a5f;
+  border-bottom: 2px solid #1e3a5f;
+}
+
+/* 하단 테이블 레이아웃 */
+.reservation-row {
+  display: grid;
+  grid-template-columns: 35px 80px 1fr 50px 100px;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 8px;
+  border-bottom: 2px solid #e2e8f0;
+  font-size: 13px;
+}
+
+/* 1. 헤더 행 전체를 중앙 정렬하도록 설정 */
+.reservation-row.header {
+  display: grid;
+  grid-template-columns: 35px 90px 1fr 50px 100px;
+  gap: 12px;
+  align-items: center;
+  justify-items: center;
+  background-color: #f8fafc;
+  font-weight: 700;
+  color: #1e3a5f;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* 2. 좌측 정렬이 필요한 특정 컬럼만 따로 왼쪽 정렬 강제 */
+.reservation-row.header div:nth-child(2),
+.reservation-row.header div:nth-child(3) {
+  justify-self: start;
+  /* Grid 셀 내에서 왼쪽으로 붙임 */
+  padding-left: 10px;
+  /* 약간의 여백 추가 */
+}
+
+/*헤더 글 중앙 정렬*/
+.reservation-row.header .header-row-col {
+  text-align: center !important;
+  width: 100%;
+  display: block;
+}
+
+/* 데이터 스타일 */
+.col-num {
+  color: #1e3a5f;
+  font-size: 16px;
+  text-align: center;
+}
+
+.col-user-room {
+  display: flex;
+  flex-direction: column;
+  padding-left: 4px;
+}
+
+.user-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.room-name {
+  color: #666;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.col-time-info {
+  display: flex;
+  flex-direction: column;
+  padding-left: 6px;
+}
+
+.use-time {
+  font-weight: 500;
+  color: #222;
+}
+
+.log-time-stamp {
+  font-size: 11px;
+  color: #0066cc;
+  margin-top: 2px;
+}
+
+.col-status {
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
+}
+
+.status-0 {
+  color: #d97706;
+}
+
+.status-1 {
+  color: #16a34a;
+}
+
+.status-2 {
+  color: #dc2626;
+}
+
+/* 버튼 스타일 */
+.col-actions {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+.accept-btn {
+  background-color: #1e3a5f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.accept-btn:hover {
+  background-color: #27384f;
+}
+
+.reject-btn,
+.delete-btn {
+  background-color: white;
+  color: #ff4d4f;
+  border: 1px solid #ff4d4f;
+  padding: 5px 11px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.reject-btn:hover,
+.delete-btn:hover {
+  background-color: #fff1f0;
+}
+
+.table-text-align {
+  text-align: center;
+}

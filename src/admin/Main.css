@@ -1,0 +1,26 @@
+.main-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+/* 좌우 동일한 비율로 나누기 */
+.layout-side {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.title {
+  color: #1e3a5f;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #1e3a5f;
+  padding-bottom: 10px;
+}

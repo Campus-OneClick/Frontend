@@ -1,0 +1,101 @@
+/* --- 1. 메인 컨테이너 --- */
+.admin-main {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* --- 2. 헤더 영역 (reservation.css와 동일) --- */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5px;
+  border-bottom: 2px solid #e2e8f0 !important;
+  margin-bottom: 5px !important;
+}
+
+.search-group, .action-group {
+  display: flex;
+  gap: 8px;
+}
+
+.search-input {
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  width: 200px;
+}
+
+/* --- 3. 리스트/테이블 영역 --- */
+.admin-list-container {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* 헤더(목차) */
+.title-outline {
+  display: grid;
+  grid-template-columns: 30px 120px 100px 1fr 100px;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 8px;
+  border-bottom: 2px solid #e2e8f0;
+  font-size: 13px;
+}
+
+/* 목록(데이터) */
+.admin-outline {
+  display: grid;
+  grid-template-columns: 30px 120px 100px 1fr 100px;
+  gap: 12px;
+  font-size: 12px;
+  padding: 14px 8px;
+  align-items: center;
+  justify-items: center;
+  background-color: #f8fafc;
+  font-weight: 700;
+  color: #1e3a5f;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.admin-outline:hover {
+  background-color: #f1f5f9;
+}
+
+.ouline-text {
+  text-align: center;
+}
+
+/* --- 4. 버튼 통합 스타일 (모든 페이지 일치) --- */
+/* 수정/등록/기타 버튼 */
+.room-btn, .reg-btn, .edit-btn {
+  background-color: #1e3a5f;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.room-btn:hover, .reg-btn:hover, .edit-btn:hover { 
+  background-color: #27384f; 
+}
+
+/* 삭제 버튼 */
+.del-btn {
+  background-color: white;
+  border: 1px solid #ff4d4f;
+  color: #ff4d4f;
+  padding: 5px 11px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.del-btn:hover {
+  background-color: #fff1f0;
+}

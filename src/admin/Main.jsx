@@ -31,9 +31,12 @@ export default function Main() {
   };
 
   // 2. 🌟 수락/거절 상태 처리 주소
-  const setStatus = async (num, status, type) => {
+  const setStatus = async (num, status, type, rejectionReason) => {
     try {
-      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/reservations/${type}/${num}`, { status });
+      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/reservations/${type}/${num}`, {
+        status,
+        rejectionReason: rejectionReason || null,
+      });
       alert(status === 1 ? "신청을 수락했습니다." : "신청을 거절했습니다.");
       fetchReservations();
     } catch (error) {
@@ -56,18 +59,24 @@ export default function Main() {
   if (userRole !== 'ADMIN') { return null; }
 
   return (
-    <div className="main-layout">
-      <div className="layout-side">
-        <h2 className="title">예약 신청 승인</h2>
-        <ReservationMain
-          reservationList={reservationList}
-          setStatus={setStatus}
-          deleteReservation={deleteReservation}
-        />
+    <div className="admin-page-wrapper">
+      <div className="admin-topbar">
+        <span className="admin-topbar-title">관리자 페이지</span>
+        <button className="admin-topbar-btn" onClick={() => navigate('/')}>메인으로</button>
       </div>
-      <div className="layout-side">
-        <h2 className="title">강의실 시간표 관리</h2>
-        <AdminMain />
+      <div className="main-layout">
+        <div className="layout-side">
+          <h2 className="title">예약 신청 승인</h2>
+          <ReservationMain
+            reservationList={reservationList}
+            setStatus={setStatus}
+            deleteReservation={deleteReservation}
+          />
+        </div>
+        <div className="layout-side">
+          <h2 className="title">강의실 시간표 관리</h2>
+          <AdminMain />
+        </div>
       </div>
     </div>
   );

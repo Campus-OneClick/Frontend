@@ -118,6 +118,24 @@
 
 .tt_dur_btn:focus { outline: none; }
 
+.tt_memo_input {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 13px;
+  resize: none;
+  box-sizing: border-box;
+  color: #374151;
+  background: #f8fafc;
+}
+.tt_memo_input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: #fff;
+}
+
 .tt_panel_actions {
   display: flex;
   gap: 10px;

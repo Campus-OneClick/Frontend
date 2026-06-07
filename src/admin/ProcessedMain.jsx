@@ -7,6 +7,7 @@ export default function ProcessedMain({
   Processed,
   handleWaitingClick,
   handleProcessedClick,
+  setStatus,
   deleteReservation,
   deleteSelectedReservations,
   handleSelectToggle,
@@ -96,7 +97,14 @@ export default function ProcessedMain({
           </span>
 
           <div className="col-actions">
-            {/* 삭제 시 type 전달 */}
+            {item.status === 1 && (
+              <button
+                className="edit-btn"
+                onClick={() => setStatus(item.num, 0, item.type)}
+              >
+                승인 취소
+              </button>
+            )}
             <button
               className="delete-btn"
               onClick={() => deleteReservation(item.num, item.type)}

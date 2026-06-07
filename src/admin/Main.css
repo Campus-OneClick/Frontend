@@ -1,9 +1,48 @@
-.main-layout {
+.admin-page-wrapper {
   display: flex;
+  flex-direction: column;
   width: 100vw;
   height: 100vh;
+}
+
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: #1e3a5f;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.admin-topbar-title {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.admin-topbar-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.admin-topbar-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.main-layout {
+  display: flex;
+  flex: 1;
   gap: 10px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 /* 좌우 동일한 비율로 나누기 */

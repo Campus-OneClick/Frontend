@@ -79,7 +79,7 @@ export default function ReservationMain({ reservationList, setStatus, deleteRese
               Processed={Processed()}
               handleWaitingClick={handleWaitingClick}
               handleProcessedClick={handleProcessedClick}
-              setStatus={(num, status) => setStatus(num, status, 'lecture')}
+              setStatus={(num, status, reason) => setStatus(num, status, 'lecture', reason)}
               data={filteredData} />
           ) : (
             <LoungeMain

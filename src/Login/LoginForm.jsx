@@ -10,6 +10,7 @@ function LoginForm() {
   const [inputPassword, setInputPassword] = useState("");
   const [authMessage, setAuthMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [rejectedItems, setRejectedItems] = useState([]);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -48,6 +49,21 @@ function LoginForm() {
       sessionStorage.setItem("role", user.role || "USER");
       sessionStorage.setItem("authProvider", "firebase");
 
+      // 거절된 예약 확인 (처음 보는 것만)
+      try {
+        const seenKey = `seenRejections_${user.studentId}`;
+        const seenIds = JSON.parse(sessionStorage.getItem(seenKey) || "[]");
+        const rejRes = await httpClient.get(`/reservations/rejected/${user.studentId}`);
+        const unseen = rejRes.data.filter(r => !seenIds.includes(r.id));
+        if (unseen.length > 0) {
+          sessionStorage.setItem(seenKey, JSON.stringify([...seenIds, ...unseen.map(r => r.id)]));
+          setRejectedItems(unseen);
+          return; // 팝업 표시, 아직 이동 안 함
+        }
+      } catch (_) {
+        // 알림 조회 실패는 무시하고 정상 이동
+      }
+
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -65,6 +81,53 @@ function LoginForm() {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") handleLogin();
   };
+
+  if (rejectedItems.length > 0) {
+    return (
+      <div style={{
+        position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)",
+        display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999
+      }}>
+        <div style={{
+          background: "#fff", borderRadius: "16px", padding: "32px",
+          width: "440px", maxWidth: "90vw", boxShadow: "0 12px 40px rgba(0,0,0,0.2)"
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "16px" }}>
+            <span style={{ fontSize: "22px" }}>🔔</span>
+            <h3 style={{ margin: 0, fontSize: "18px" }}>예약 거절 알림</h3>
+          </div>
+          <p style={{ color: "#666", fontSize: "14px", marginBottom: "20px" }}>
+            다음 강의실 예약 신청이 거절되었습니다.
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px" }}>
+            {rejectedItems.map(r => (
+              <div key={r.id} style={{
+                background: "#fff5f5", border: "1px solid #fed7d7",
+                borderRadius: "10px", padding: "14px"
+              }}>
+                <div style={{ fontWeight: "600", marginBottom: "4px" }}>
+                  {r.lecture} &nbsp;<span style={{ color: "#888", fontWeight: 400, fontSize: "13px" }}>({r.day} {r.time})</span>
+                </div>
+                <div style={{ fontSize: "14px", color: "#c53030" }}>
+                  거절 사유: {r.rejectionReason || "사유 없음"}
+                </div>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={() => { setRejectedItems([]); navigate("/"); }}
+            style={{
+              width: "100%", padding: "12px", borderRadius: "10px",
+              border: "none", background: "#3182ce", color: "#fff",
+              fontSize: "15px", fontWeight: "600", cursor: "pointer"
+            }}
+          >
+            확인
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

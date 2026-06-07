@@ -3,7 +3,9 @@ import Login from "./Login/Login";
 import MainPage from "./MainPage/Mainpage";
 import { Floor1 } from "./Floor1/Floor1";
 import AdminMain from "./admin/Main";
-import ClassroomFloor2  from "./Classroom/ClassroomFloor2";
+import ClassroomReservationPage from "./Classroom/ClassroomReservationPage";
+import TimeTablePage from "./Classroom/TimeTablePage";
+import RoomDetailPage from "./Classroom/RoomDetailPage";
 import MyInfoPage from "./MyInfo/MyInfoPage";
 import "./App.css";
 
@@ -26,7 +28,9 @@ function PageRoutes() {
         <Route path="/floor1" element={<Floor1 />} />
         <Route path="/floor1/:lounge" element={<Floor1 />} />
         <Route path="/admin" element={<AdminMain />} />
-        <Route path="/classrooms" element={<ClassroomFloor2 />} />
+        <Route path="/classrooms" element={<ClassroomReservationPage />} />
+        <Route path="/timetable/:roomId" element={<TimeTablePage />} />
+        <Route path="/room/:roomId" element={<RoomDetailPage />} />
         <Route path="/my-info" element={<MyInfoPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

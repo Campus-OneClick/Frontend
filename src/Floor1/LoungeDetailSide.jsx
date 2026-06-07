@@ -3,14 +3,14 @@ import './LoungeDetailSide.css';
 import { CongestionBar } from './CongestionBar';
 import { SeatBox } from './SeatBox';
 
-export function LoungeDetailSide({ 
-    reservedSeats, 
-    myReservedSeat, 
-    bookingEndTime, 
-    onReserve, 
-    onReturn, 
-    onExtend, 
-    onBack 
+export function LoungeDetailSide({
+    reservedSeats,
+    myReservedSeat,
+    bookingEndTime,
+    onReserve,
+    onReturn,
+    onExtend,
+    onBack
 }) {
     const [selectedSeat, setSelectedSeat] = useState(null);
 

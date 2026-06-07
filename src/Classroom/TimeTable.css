@@ -1,0 +1,328 @@
+/* TimeTable.css */
+
+.tt_container {
+  background: #f4f6f8;
+  min-height: 100vh;
+  padding: 40px 24px;
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+  box-sizing: border-box;
+}
+
+/* 헤더 */
+.tt_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tt_title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.tt_subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.tt_back_btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+  background: #1e3a5f;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.tt_back_btn:hover { background: #27384f; }
+.tt_back_btn:focus { outline: none; }
+
+/* 예약 패널 */
+.tt_panel {
+  max-width: 960px;
+  margin: 0 auto 20px;
+  background: white;
+  border-radius: 20px;
+  padding: 20px 24px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tt_panel_info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tt_panel_badge {
+  background: #eef2ff;
+  color: #1e3a5f;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.tt_panel_time {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.tt_duration_row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tt_dur_btn {
+  padding: 8px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 999px;
+  background: white;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+}
+
+.tt_dur_btn:hover:not(:disabled) {
+  border-color: #1e3a5f;
+  color: #1e3a5f;
+}
+
+.tt_dur_btn.active {
+  background: #1e3a5f;
+  border-color: #1e3a5f;
+  color: white;
+}
+
+.tt_dur_btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.tt_dur_btn:focus { outline: none; }
+
+.tt_panel_actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.tt_cancel_btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  background: #f3f4f6;
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+}
+
+.tt_cancel_btn:hover { background: #e5e7eb; }
+.tt_cancel_btn:focus { outline: none; }
+
+.tt_confirm_btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 12px;
+  background: #1e3a5f;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+}
+
+.tt_confirm_btn:hover:not(:disabled) { background: #27384f; }
+.tt_confirm_btn:focus { outline: none; }
+.tt_confirm_btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.tt_limit_msg {
+  font-size: 13px;
+  color: #ef4444;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* 그리드 래퍼 */
+.tt_grid_wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+}
+
+/* 그리드 */
+.tt_grid {
+  display: grid;
+  grid-template-columns: 64px repeat(5, 1fr);
+  border-left: 1px solid #e5e7eb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.tt_row {
+  display: contents;
+}
+
+/* 셀 기본 */
+.tt_cell {
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  min-height: 36px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+/* 요일 헤더 */
+.tt_head {
+  font-weight: 700;
+  text-align: center;
+  background: #f8f9fb;
+  color: #374151;
+  padding: 12px 0;
+  font-size: 14px;
+}
+
+/* 시간 열 */
+.tt_time {
+  text-align: center;
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 12px;
+  background: #f8f9fb;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 6px;
+}
+
+/* :30 시간 셀 - 라벨 없음 */
+.tt_half_time {
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+/* 블록 셀 */
+.tt_block {
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.tt_block:hover {
+  background: #f0f4ff;
+}
+
+/* :30 구분선 */
+.tt_half_block {
+  border-top: 1px dashed #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* 강의 셀 */
+.tt_lecture {
+  background: #f3f4f6 !important;
+  cursor: not-allowed;
+}
+
+.tt_lecture:hover {
+  background: #f3f4f6 !important;
+}
+
+.tt_lecture_label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #374151;
+  padding: 2px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 범례 */
+.tt_legend {
+  max-width: 960px;
+  margin: 0 auto 12px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.tt_legend_item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.tt_legend_item::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.tt_legend_item.lecture::before  { background: #f3f4f6; border: 1px solid #d1d5db; }
+.tt_legend_item.pending::before  { background: #fef9c3; border: 1px solid #fde047; }
+.tt_legend_item.empty::before    { background: white; border: 1px solid #d1d5db; }
+
+/* 승인 대기 셀 */
+.tt_pending {
+  background: #fef9c3 !important;
+  cursor: not-allowed;
+}
+
+.tt_pending:hover {
+  background: #fef9c3 !important;
+}
+
+.tt_pending_label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #854d0e;
+  padding: 2px 4px;
+}
+
+/* 선택된 셀 */
+.tt_selected {
+  background: #bfdbfe !important;
+  cursor: pointer;
+}
+
+/* 선택 시작 셀 */
+.tt_selected_start {
+  background: #1e3a5f !important;
+  cursor: pointer;
+}
+
+.tt_selected_start:hover {
+  background: #27384f !important;
+}

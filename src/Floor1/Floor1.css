@@ -107,10 +107,14 @@
     background-color: #27384f;
 }
 
+.map_pin:focus {
+    outline: none;
+}
+
 /* 각 버튼의 개별 위치 */
 .center_pin { top: 25.3%; left: 57.7%; }
 .side_pin {
-    top: 39.9%; left: clamp(58px, 6.7%, 100%);
+    top: 39.9%; left: 8%;
     background-color: #27384f;
     box-shadow: 0 4px 12px rgba(30, 58, 95, 0.15);
 }

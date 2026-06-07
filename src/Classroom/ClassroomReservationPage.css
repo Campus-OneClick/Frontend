@@ -1,0 +1,98 @@
+/* ClassroomReservationPage.css */
+
+.cr_container {
+    background-color: #f4f6f8;
+    min-height: 100vh;
+    width: 100%;
+    padding: 40px 20px;
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.cr_header {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cr_title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111827;
+    margin: 0 0 8px 0;
+}
+
+.cr_subtitle {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.cr_main_btn {
+    height: 42px;
+    border: none;
+    border-radius: 999px;
+    background: #1e3a5f;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 0 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+
+.cr_main_btn:hover {
+    background: #27384f;
+}
+
+/* 탭 버튼 */
+.cr_tabs {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 16px;
+}
+
+.cr_tab {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 999px;
+    background-color: #e5e7eb;
+    color: #6b7280;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cr_tab:hover {
+    background-color: #d1d5db;
+}
+
+.cr_tab.active {
+    background-color: #1e3a5f;
+    color: #ffffff;
+}
+
+.cr_tab:focus {
+    outline: none;
+}
+
+/* 지도 카드 */
+.cr_card {
+    background-color: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+    overflow: hidden;
+}

@@ -3,16 +3,16 @@ import './LoungeDetailCenter.css';
 import { CongestionBar } from './CongestionBar';
 import { SeatBox } from './SeatBox'; 
 
-export function LoungeDetailCenter({ 
-    reservedSeats, 
-    myReservedSeat, 
-    bookingEndTime, 
-    onReserve, 
-    onReturn, 
-    onExtend, 
-    onBack 
+export function LoungeDetailCenter({
+    reservedSeats,
+    myReservedSeat,
+    bookingEndTime,
+    onReserve,
+    onReturn,
+    onExtend,
+    onBack
 }) {
-    // 모달용 상태 (화면 UI 조작용이므로 여기에 남겨둡니다)
+
     const [selectedSeat, setSelectedSeat] = useState(null);
     const TOTAL_SEATS = 38;
 

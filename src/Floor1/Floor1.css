@@ -1,0 +1,261 @@
+/* Floor1.css */
+
+/* 전체 배경 */
+.f1_container {
+    background-color: #f4f6f8;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 100vw;
+    padding: 40px 20px;
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* 헤더 텍스트 스타일 */
+.f1_header {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.floor1_main_btn {
+    height: 42px;
+    border: none;
+    border-radius: 999px;
+    background: #1e3a5f;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 0 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+}
+
+.floor1_main_btn:hover {
+    background: #27384f;
+}
+
+.f1_title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111827;
+    margin: 0 0 8px 0;
+}
+
+.f1_subtitle {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* 공통 하얀색 카드 스타일 */
+.f1_card {
+    background-color: #ffffff;
+    border-radius: 22px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 30px;
+}
+
+.map_card {
+    overflow: hidden;
+}
+
+/* 도면 래퍼 (버튼의 기준점이 됨) */
+.map_wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.floor_img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+/* 도면 위 마커 핀 스타일 */
+.map_pin {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    max-width: calc(100% - 24px);
+    padding: 10px 16px;
+    background-color: #1e3a5f;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.25);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.map_pin:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+    background-color: #27384f;
+}
+
+/* 각 버튼의 개별 위치 */
+.center_pin { top: 25.3%; left: 57.7%; }
+.side_pin {
+    top: 39.9%; left: clamp(58px, 6.7%, 100%);
+    background-color: #27384f;
+    box-shadow: 0 4px 12px rgba(30, 58, 95, 0.15);
+}
+.side_pin:hover { background-color: #1e3a5f; }
+
+/* 프로그레스 바 */
+.progress_bg {
+    flex: 1;
+    height: 12px;
+    background-color: #e8ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress_fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease-out, background-color 0.5s ease;
+}
+
+/* 하단 리스트 영역 */
+.f1_list_container {
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+    .f1_container {
+        padding: 28px 16px;
+    }
+
+    .f1_header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .f1_card {
+        padding: 12px;
+        border-radius: 18px;
+    }
+
+    .map_pin {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    .side_pin {
+        left: 52px;
+    }
+
+    .f1_list_card {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .card_congestion {
+        width: 100%;
+        min-width: 0;
+        align-items: stretch;
+    }
+}
+
+.list_title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 16px;
+}
+
+/* 클릭 가능한 리스트 카드 */
+.f1_list_card {
+    background-color: #ffffff;
+    border-radius: 22px;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.f1_list_card:hover {
+    background-color: #f4f6f8;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+}
+
+.card_text h3 {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    color: #1f2937;
+}
+
+.card_text p {
+    margin: 0;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.card_congestion {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    min-width: 140px;
+}
+
+.card_congestion .progress_bg {
+    flex: none;
+    width: 100%;
+}
+
+.card_congestion_count {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b7280;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .f1_list_card {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .card_text {
+        width: 100%;
+        text-align: left;
+    }
+
+    .card_congestion {
+        width: 100%;
+        min-width: 0;
+        align-items: stretch;
+    }
+
+    .card_congestion_count {
+        text-align: right;
+    }
+}

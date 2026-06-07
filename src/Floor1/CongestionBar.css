@@ -1,0 +1,107 @@
+/* CongestionBar.css */
+.congestion_sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 280px;
+}
+
+/* 카드 공통 스타일 */
+.status_card, .my_seat_card {
+    background-color: #fff;
+    border-radius: 22px;
+    padding: 20px;
+    text-align: left;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.card_title {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #111827;
+}
+
+/* 📊 가로형 프로그레스 바 (주신 사진 참고) */
+.progress_container {
+    width: 100%;
+    height: 12px;
+    background-color: #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress_fill {
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease-out, background-color 0.5s ease;
+}
+
+.status_txt_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.percent_text {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.count_text {
+    font-size: 16px;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+/* 🎫 내 이용 정보 카드 스타일 */
+.my_seat_info {
+    margin: 8px 0;
+    font-size: 15px;
+    color: #1f2937;
+}
+
+.my_seat_info strong {
+    color: #1e3a5f;
+    font-size: 16px;
+}
+
+.time_txt {
+    font-weight: bold;
+    color: #ef5350;
+}
+
+/* 🔘 버튼 그룹 스타일 */
+.sidebar_btn_group {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.extend_btn, .return_btn {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 999px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.extend_btn {
+    background-color: #eef2f7;
+    color: #1e3a5f;
+}
+.extend_btn:hover {
+    background-color: #dce6f2;
+}
+
+.return_btn {
+    background-color: #1e3a5f;
+    color: #fff;
+}
+.return_btn:hover {
+    background-color: #27384f;
+}

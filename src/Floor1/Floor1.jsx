@@ -19,6 +19,7 @@ export function Floor1() {
     const [sideMyReservedSeat, setSideMyReservedSeat] = useState(null);
     const [sideBookingEndTime, setSideBookingEndTime] = useState(null);
 
+
     const getStudentId = () => sessionStorage.getItem('studentId');
 
 const loadSeatState = useCallback(async () => {
@@ -42,7 +43,7 @@ const loadSeatState = useCallback(async () => {
         if (mySeat?.lounge === 'center') {
             setCenterMyReservedSeat(mySeat.seatId ?? null);
             setCenterBookingEndTime(
-                mySeat.endTime ? new Date(mySeat.endTime) : null
+                mySeat.endTime ? new Date(mySeat.endTime + 'Z') : null
             );
 
             setSideMyReservedSeat(null);
@@ -52,7 +53,7 @@ const loadSeatState = useCallback(async () => {
 
             setSideMyReservedSeat(mySeat.seatId ?? null);
             setSideBookingEndTime(
-                mySeat.endTime ? new Date(mySeat.endTime) : null
+                mySeat.endTime ? new Date(mySeat.endTime + 'Z') : null
             );
 
             setCenterMyReservedSeat(null);

@@ -1,10 +1,7 @@
-/* 1. 화면 전체를 어둡게 채우는 배경 */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -12,100 +9,118 @@
   z-index: 1000;
 }
 
-/* 2. 중앙의 흰색 팝업 상자 */
 .modal-content {
   background-color: white;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  width: 400px;
-  text-align: center;
-}
-
-/* 입력창 및 선택창 통일 스타일 */
-.modal-content input, 
-.modal-content select {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  border: 1.5px solid #d1d9e6;
-  border-radius: 12px;
-  font-size: 14px;
-  transition: all 0.2s;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 800px !important;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
-/* select 디자인 */
-select {
-  background-color: #ffffff;
-  color: #1e3a5f;
-  cursor: pointer;
-  appearance: none;
-  /* 화살표 색상을 네이비로 설정 */
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-}
-
-/* 포커스 효과 (깔끔하게 수정) */
-input:focus, select:focus {
-  outline: none;
-  border-color: #1e3a5f;
-  box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.15);
-}
-
-/* 레이아웃 */
-.input-group {
+/* 각 행 공통 스타일 — 도안의 가로 구분선 핵심 부분 */
+.modal-row {
+  padding: 14px 24px;
+  border-bottom: 1px solid #e8edf4;
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.input-row {
-  display: flex;
+  align-items: center;
   gap: 10px;
 }
 
-.modal-btns {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
+/* 맨 마지막 행은 밑줄 제거 */
+.modal-row:last-child {
+  border-bottom: none;
 }
 
-/* 버튼 공통 스타일 */
-.save-btn, .close-btn {
+/* 제목 행 배경색 및 디자인 */
+.modal-title-row {
+  justify-content: center;
+  padding: 20px 24px;
+  background-color: #f8fafc;
+}
+
+.modal-title-row h2 {
+  margin: 0;
+  font-size: 25px;
+  font-weight: 700;
+  color: #1e3a5f;
+}
+
+/* input / select 입력창 공통 세팅 */
+.modal-content input,
+.modal-content select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #d1d9e6;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #333;
+  box-sizing: border-box;
+  background-color: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+  outline: none;
+  border-color: #1e3a5f;
+  box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.12);
+}
+
+/* 🌟 3열 구조 행 비율 확실하게 잡기 (요일 | 시간 | 강의실) */
+.modal-row-3col input,
+.modal-row-3col select {
+  width: auto;         
+  min-width: 0;
+}
+
+.modal-row-3col input:nth-child(1) { 
+  flex: 0.7;           /* 💥 요일 크기를 1에서 0.6으로 대폭 축소! */
+}   
+.modal-row-3col input:nth-child(2) { 
+  flex: 2.2;           /* 시간 상자가 글자(09:00 ~ 12:00) 때문에 길므로 비율 증가 */
+}   
+.modal-row-3col select { 
+  flex: 1.2;           /* 강의실 선택 상자 비율 */
+}
+
+/* 버튼 행 디자인 */
+.modal-btns {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;   /* 세로 중앙 정렬로 높낮이 일치 */
+  justify-content: center !important;
+  padding: 16px 24px;
+  gap: 12px;
+  background-color: #f8fafc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.save-btn,
+.close-btn {
   flex: 1;
-  padding: 12px;
-  border-radius: 12px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 44px;         
+  padding: 0 12px;        
+  border-radius: 10px;
   border: none;
+  font-size: 15px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s, background 0.2s;
+  box-sizing: border-box;
+  margin: 0 !important;
+  transition: transform 0.15s, background 0.15s;
 }
 
-.save-btn {
+.save-btn, .close-btn{
   background: #1e3a5f;
-  color: #ffffff;
+  color: #fff;
 }
 
-.save-btn:hover {
-  transform: translateY(-2px);
-  background: #27384f;
-}
-
-.close-btn {
-  background: #eef2f7;
-  color: #1e3a5f;
-  border: 1px solid rgba(30, 58, 95, 0.12);
-}
-
-.close-btn:hover {
-  transform: translateY(-2px);
-  background: #dce6f2;
-}
-
-.modal-text {
-  text-align: right;
-  color: gray;
-  font-size: 12px;
-  margin-top: 10px;
+.save-btn:hover, .close-btn:hover {
+  background: #27486e;
+  transform: translateY(-1px);
 }

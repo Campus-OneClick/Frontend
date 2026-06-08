@@ -106,7 +106,7 @@ function LoginForm() {
                 borderRadius: "10px", padding: "14px"
               }}>
                 <div style={{ fontWeight: "600", marginBottom: "4px" }}>
-                  {r.lecture} &nbsp;<span style={{ color: "#888", fontWeight: 400, fontSize: "13px" }}>({r.day} {r.time})</span>
+                  {r.classroomId} &nbsp;<span style={{ color: "#888", fontWeight: 400, fontSize: "13px" }}>({r.day} {r.time})</span>
                 </div>
                 <div style={{ fontSize: "14px", color: "#c53030" }}>
                   거절 사유: {r.rejectionReason || "사유 없음"}

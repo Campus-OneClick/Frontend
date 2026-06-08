@@ -91,7 +91,7 @@ export default function ProcessedMain({
 
           <div className="col-user-room">
             <span className="user-name">{item.user}</span>
-            <span className="room-name">{item.lecture || item.desknum}</span>
+            <span className="room-name">{item.classroomId}</span>
           </div>
 
           <div className="col-time-info">

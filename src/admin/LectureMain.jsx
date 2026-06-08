@@ -51,7 +51,7 @@ export default function LectureMain({
 
           <div className="col-user-room">
             <span className="user-name">{item.user}</span>
-            <span className="room-name">{item.lecture}</span>
+            <span className="room-name">{item.classroomId}</span>
           </div>
 
           <div className="col-time-info">
@@ -86,7 +86,7 @@ export default function LectureMain({
           }}>
             <h3 style={{ marginBottom: "8px" }}>예약 거절</h3>
             <p style={{ color: "#666", marginBottom: "16px", fontSize: "14px" }}>
-              <strong>{rejectingItem.user}</strong> — {rejectingItem.lecture} ({rejectingItem.day} {rejectingItem.time})
+              <strong>{rejectingItem.user}</strong> — {rejectingItem.classroomId} ({rejectingItem.day} {rejectingItem.time})
             </p>
             <textarea
               placeholder="거절 사유를 입력하세요."

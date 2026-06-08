@@ -52,11 +52,11 @@ function LoginForm() {
       // 거절된 예약 확인 (처음 보는 것만)
       try {
         const seenKey = `seenRejections_${user.studentId}`;
-        const seenIds = JSON.parse(sessionStorage.getItem(seenKey) || "[]");
+        const seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]");
         const rejRes = await httpClient.get(`/reservations/rejected/${user.studentId}`);
         const unseen = rejRes.data.filter(r => !seenIds.includes(r.id));
         if (unseen.length > 0) {
-          sessionStorage.setItem(seenKey, JSON.stringify([...seenIds, ...unseen.map(r => r.id)]));
+          localStorage.setItem(seenKey, JSON.stringify([...seenIds, ...unseen.map(r => r.id)]));
           setRejectedItems(unseen);
           return; // 팝업 표시, 아직 이동 안 함
         }

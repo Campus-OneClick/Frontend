@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import LectureMain from './LectureMain';
-import LoungeMain from './LoungeMain';
+import LoungeActiveSeats from './LoungeActiveSeats';
 import ProcessedMain from './ProcessedMain';
 import './ReservationMain.css';
 
@@ -11,7 +11,10 @@ export default function ReservationMain({ reservationList, setStatus, deleteRese
   const [selectedNums, setSelectedNums] = useState([]);
 
   // 🎨 css 슬라이더와 100% 매칭되는 오리지널 함수들
-  function ToggleMode() { setMode(mode === 'lecture' ? 'lounge' : 'lecture'); }
+  function ToggleMode() {
+    setMode(mode === 'lecture' ? 'lounge' : 'lecture');
+    setSubTab('waiting');
+  }
   function lecActive() { return mode === 'lecture' ? 'active' : ''; }
   function louActive() { return mode === 'lounge' ? 'active' : ''; }
   function handleWaitingClick() { setSubTab('waiting'); }
@@ -70,26 +73,18 @@ export default function ReservationMain({ reservationList, setStatus, deleteRese
         </div>
       </div>
 
-      {/* 대기중/처리완료 서브탭 및 강의실/라운지에 따른 데이터 출력 화면 */}
+      {/* 라운지: 현재 사용 현황만 표시 / 강의실: 대기중·처리완료 서브탭 */}
       <div>
-        {subTab === 'waiting' ? (
-          mode === 'lecture' ? (
-            <LectureMain
-              Waiting={Waiting()}
-              Processed={Processed()}
-              handleWaitingClick={handleWaitingClick}
-              handleProcessedClick={handleProcessedClick}
-              setStatus={(num, status, reason) => setStatus(num, status, 'lecture', reason)}
-              data={filteredData} />
-          ) : (
-            <LoungeMain
-              Waiting={Waiting()}
-              Processed={Processed()}
-              handleWaitingClick={handleWaitingClick}
-              handleProcessedClick={handleProcessedClick}
-              setStatus={(num, status) => setStatus(num, status, 'lounge')}
-              data={filteredData} />
-          )
+        {mode === 'lounge' ? (
+          <LoungeActiveSeats />
+        ) : subTab === 'waiting' ? (
+          <LectureMain
+            Waiting={Waiting()}
+            Processed={Processed()}
+            handleWaitingClick={handleWaitingClick}
+            handleProcessedClick={handleProcessedClick}
+            setStatus={(num, status, reason) => setStatus(num, status, 'lecture', reason)}
+            data={filteredData} />
         ) : (
           <ProcessedMain
             mode={mode}

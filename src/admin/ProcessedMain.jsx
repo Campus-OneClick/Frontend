@@ -42,6 +42,18 @@ export default function ProcessedMain({
         <button className={`tab-item ${Processed}`} onClick={handleProcessedClick}>처리완료</button>
       </div>
 
+      <div style={{
+        margin: '8px 0 4px',
+        padding: '8px 12px',
+        background: '#fffbeb',
+        border: '1px solid #fcd34d',
+        borderRadius: '8px',
+        fontSize: '13px',
+        color: '#92400e',
+      }}>
+        처리 완료 후 <strong>7일</strong>이 지난 내역은 자동으로 삭제됩니다.
+      </div>
+
       <div className="checkbox-wrapper">
         <span>총 개수: {data ? data.length : 0}</span>
         <span>선택 된 개수: {selectedNums.length}</span>

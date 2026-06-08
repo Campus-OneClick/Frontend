@@ -66,7 +66,7 @@ export default function Main() {
       </div>
       <div className="main-layout">
         <div className="layout-side">
-          <h2 className="title">예약 신청 승인</h2>
+          <h2 className="title">강의실 예약 신청 & 라운지 사용 현황 관리</h2>
           <ReservationMain
             reservationList={reservationList}
             setStatus={setStatus}

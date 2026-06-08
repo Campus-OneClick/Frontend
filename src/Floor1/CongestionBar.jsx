@@ -10,12 +10,14 @@ export function CongestionBar({ total, reserved, title = '혼잡도', showMySeat
     if (percent >= 41 && percent <= 70) barColor = '#FFC107'; // 노랑
     if (percent >= 71) barColor = '#F44336'; // 빨강
 
-    // 날짜 객체를 HH:MM 형식의 텍스트로 바꾸는 함수
-    const formatTime = (date) => {
+    const formatRemaining = (date) => {
         if (!date) return '';
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        return `${hours}:${minutes}`;
+        const ms = date - new Date();
+        if (ms <= 0) return '만료';
+        const totalMinutes = Math.floor(ms / 60000);
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        return hours > 0 ? `${hours}시간 ${minutes}분` : `${minutes}분`;
     };
 
     return (
@@ -43,7 +45,7 @@ export function CongestionBar({ total, reserved, title = '혼잡도', showMySeat
                         이용 좌석: <strong>{myReservedSeat}번</strong>
                     </p>
                     <p className="my_seat_info">
-                        종료 시간: <span className="time_txt">{formatTime(bookingEndTime)}</span>
+                        남은 시간: <span className="time_txt">{formatRemaining(bookingEndTime)}</span>
                     </p>
                     <div className="sidebar_btn_group">
                         <button className="extend_btn" onClick={onExtend}>시간 연장</button>

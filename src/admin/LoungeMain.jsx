@@ -6,6 +6,7 @@ export default function LoungeMain({
   Processed,
   handleWaitingClick,
   handleProcessedClick,
+  handleActiveClick,
   setStatus,
 }) {
   return (
@@ -17,6 +18,9 @@ export default function LoungeMain({
         </button>
         <button className={`tab-item ${Processed}`} onClick={handleProcessedClick}>
           처리완료
+        </button>
+        <button className="tab-item" onClick={handleActiveClick}>
+          현재 사용 현황
         </button>
       </div>
 

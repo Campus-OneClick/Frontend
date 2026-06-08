@@ -222,6 +222,180 @@ body {
   color: #9ca3af;
 }
 
+.reservation-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1000;
+}
+
+.reservation-modal {
+  width: min(100%, 460px);
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+}
+
+.reservation-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.reservation-modal-header span {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.reservation-modal-close {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: #eef2f7;
+  color: #1e3a5f;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.reservation-modal-title {
+  display: block;
+  color: #1e3a5f;
+  font-size: 30px;
+  margin-bottom: 18px;
+}
+
+.reservation-modal-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.reservation-modal-section {
+  min-width: 0;
+}
+
+.reservation-modal-subtitle {
+  display: block;
+  color: #1e3a5f;
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.reservation-modal-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.reservation-modal-info div {
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.reservation-modal-info span {
+  display: block;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.reservation-modal-info p {
+  margin: 0;
+  color: #111827;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.classroom-reservation-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.classroom-reservation-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  background: #f8fafc;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.classroom-reservation-item strong {
+  display: block;
+  color: #111827;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.classroom-reservation-item p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.classroom-reservation-status {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.classroom-reservation-status.status-0 {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.classroom-reservation-status.status-1 {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.reservation-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.reservation-modal-primary,
+.reservation-modal-secondary {
+  height: 42px;
+  border: none;
+  border-radius: 12px;
+  padding: 0 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reservation-modal-primary {
+  background: #1e3a5f;
+  color: #ffffff;
+}
+
+.reservation-modal-primary.classroom {
+  background: #2563eb;
+}
+
+.reservation-modal-secondary {
+  background: #eef2f7;
+  color: #1e3a5f;
+}
+
 @media (max-width: 900px) {
   .main-page {
     max-width: 720px;
@@ -290,6 +464,32 @@ body {
 
   .menu-item {
     padding: 18px;
+  }
+
+  .reservation-modal {
+    padding: 20px;
+  }
+
+  .reservation-modal-title {
+    font-size: 26px;
+  }
+
+  .reservation-modal-info {
+    grid-template-columns: 1fr;
+  }
+
+  .classroom-reservation-item {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .reservation-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .reservation-modal-primary,
+  .reservation-modal-secondary {
+    width: 100%;
   }
 }
 

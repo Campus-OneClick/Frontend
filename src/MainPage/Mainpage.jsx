@@ -15,11 +15,33 @@ function MainPage() {
   const [name, setName] = useState("");
   const [seats, setSeats] = useState(0); //남은 좌석 수
   const [mySeat, setMySeat] = useState(null);
+  const [myClassroomReservations, setMyClassroomReservations] = useState([]);
+  const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
 
   const isAdmin = role === "ADMIN";
+  const hasReservation = Boolean(mySeat) || myClassroomReservations.length > 0;
 
   const occupiedSeats = TOTAL_SEATS - seats;
   const occupiedRate = Math.round((occupiedSeats / TOTAL_SEATS) * 100);
+  const myLoungeName = mySeat?.lounge === "center" ? "중앙 라운지" : "옆 라운지";
+
+  const formatDateTime = (value) => {
+    if (!value) {
+      return "-";
+    }
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return date.toLocaleString("ko-KR", {
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
 
   useEffect(() => {
     const savedName = sessionStorage.getItem("name");
@@ -34,14 +56,27 @@ function MainPage() {
 
     const loadSeats = async () => {
       try {
-        const res = await httpClient.get("/seats", {
-          params: savedStudentId ? { studentId: savedStudentId } : undefined,
-        });
+        const [seatRes, reservationRes] = await Promise.all([
+          httpClient.get("/seats", {
+            params: savedStudentId ? { studentId: savedStudentId } : undefined,
+          }),
+          savedStudentId
+            ? httpClient.get("/reservations")
+            : Promise.resolve({ data: [] }),
+        ]);
 
-        setSeats(Number(res.data.availableSeats || 0));
-        setMySeat(res.data.mySeat || null);
+        setSeats(Number(seatRes.data.availableSeats || 0));
+        setMySeat(seatRes.data.mySeat || null);
+        setMyClassroomReservations(
+          reservationRes.data.filter(
+            (reservation) =>
+              reservation.type === "lecture" &&
+              reservation.user === savedStudentId &&
+              (reservation.status === 0 || reservation.status === 1)
+          )
+        );
       } catch (err) {
-        console.error("좌석 정보를 불러오지 못했습니다.", err);
+        console.error("예약 정보를 불러오지 못했습니다.", err);
       }
     };
 
@@ -61,17 +96,33 @@ function MainPage() {
       setRole("");
       setName("");
       setMySeat(null);
+      setMyClassroomReservations([]);
+      setIsReservationModalOpen(false);
       navigate("/login");
     }
   };
 
   const handleMyReservationClick = () => {
-    if (mySeat?.lounge) {
-      navigate(`/floor1/${mySeat.lounge}`);
+    if (hasReservation) {
+      setIsReservationModalOpen(true);
       return;
     }
 
     navigate("/floor1");
+  };
+
+  const handleMoveToReservedLounge = () => {
+    if (!mySeat?.lounge) {
+      return;
+    }
+
+    setIsReservationModalOpen(false);
+    navigate(`/floor1/${mySeat.lounge}`);
+  };
+
+  const handleMoveToClassrooms = () => {
+    setIsReservationModalOpen(false);
+    navigate("/classrooms");
   };
 
   return (
@@ -189,34 +240,12 @@ function MainPage() {
             </h2>
 
             <p className="hero-desc">
-              현재 전체 좌석 중 {occupiedRate}%가 사용 중입니다.
+              현재 전체 좌석 중 {occupiedRate}%가 사용 중이며, 예약 가능 좌석은 {seats}석입니다.
             </p>
 
             <button className="main-btn" onClick={handleMyReservationClick}>
               내 예약 확인하기
             </button>
-          </section>
-
-          <section className="status-section">
-            <div className="status-card">
-              <span>내 예약 상태</span>
-              <strong>
-                {mySeat
-                  ? `${mySeat.lounge === "center" ? "중앙" : "옆"} 라운지 ${mySeat.seatId}번`
-                  : "예약 없음"}
-              </strong>
-              <p>
-                {mySeat
-                  ? "현재 이용 중인 좌석이 있습니다."
-                  : "현재 진행 중인 예약이 없습니다."}
-              </p>
-            </div>
-
-            <div className="status-card">
-              <span>예약 가능 좌석</span>
-              <strong>{seats}석</strong>
-              <p>전체 {TOTAL_SEATS}석 기준</p>
-            </div>
           </section>
         </>
       )}
@@ -260,6 +289,113 @@ function MainPage() {
           )}
         </div>
       </section>
+
+      {isReservationModalOpen && hasReservation && (
+        <div
+          className="reservation-modal-overlay"
+          onClick={() => setIsReservationModalOpen(false)}
+        >
+          <div
+            className="reservation-modal"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="reservation-modal-header">
+              <span>내 예약 상태</span>
+              <button
+                className="reservation-modal-close"
+                type="button"
+                onClick={() => setIsReservationModalOpen(false)}
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="reservation-modal-sections">
+              {mySeat && (
+                <section className="reservation-modal-section">
+                  <strong className="reservation-modal-title">
+                    {myLoungeName} {mySeat.seatId}번
+                  </strong>
+
+                  <div className="reservation-modal-info">
+                    <div>
+                      <span>예약 유형</span>
+                      <p>라운지 좌석</p>
+                    </div>
+                    <div>
+                      <span>좌석 번호</span>
+                      <p>{mySeat.seatId}번</p>
+                    </div>
+                    <div>
+                      <span>시작 시간</span>
+                      <p>{formatDateTime(mySeat.startTime)}</p>
+                    </div>
+                    <div>
+                      <span>종료 시간</span>
+                      <p>{formatDateTime(mySeat.endTime)}</p>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {myClassroomReservations.length > 0 && (
+                <section className="reservation-modal-section">
+                  <strong className="reservation-modal-subtitle">
+                    강의실 예약
+                  </strong>
+
+                  <div className="classroom-reservation-list">
+                    {myClassroomReservations.map((reservation) => (
+                      <div
+                        className="classroom-reservation-item"
+                        key={`${reservation.type}-${reservation.num}`}
+                      >
+                        <div>
+                          <strong>{reservation.lecture}</strong>
+                          <p>
+                            {reservation.date}({reservation.day}) {reservation.time}
+                          </p>
+                        </div>
+                        <span className={`classroom-reservation-status status-${reservation.status}`}>
+                          {reservation.status === 1 ? "승인됨" : "승인 대기"}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </div>
+
+            <div className="reservation-modal-actions">
+              <button
+                className="reservation-modal-secondary"
+                type="button"
+                onClick={() => setIsReservationModalOpen(false)}
+              >
+                닫기
+              </button>
+              {mySeat && (
+                <button
+                  className="reservation-modal-primary"
+                  type="button"
+                  onClick={handleMoveToReservedLounge}
+                >
+                  라운지로 이동
+                </button>
+              )}
+              {myClassroomReservations.length > 0 && (
+                <button
+                  className="reservation-modal-primary classroom"
+                  type="button"
+                  onClick={handleMoveToClassrooms}
+                >
+                  강의실 예약 보기
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

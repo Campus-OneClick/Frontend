@@ -165,6 +165,14 @@ function LoginForm() {
       >
         {isLoading ? "로그인 중..." : "로그인"}
       </button>
+
+      <button
+        type="button"
+        className="secondary-button"
+        onClick={() => navigate("/")}
+      >
+        메인으로
+      </button>
     </>
   );
 }

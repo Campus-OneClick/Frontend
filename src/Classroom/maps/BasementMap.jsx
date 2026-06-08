@@ -67,7 +67,7 @@ export default function Basement() {
   return (
     <div className="toss_container basement">
       <div className="map_wrapper">
-        <img src="/basement.png" className="floor_img" />
+        <img src="/basement.png" className="floor_img" alt="" />
 
         <button className={`toss_pin room1 ${isUsed("B101") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["B101"])}>B101</button>
         <button className={`toss_pin room2 ${isUsed("B102") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["B102"])}>B102</button>

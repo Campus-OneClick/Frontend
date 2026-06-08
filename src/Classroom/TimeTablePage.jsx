@@ -244,7 +244,6 @@ export default function TimeTablePage() {
             <div key={day} className="tt_cell tt_head">{day}</div>
           ))}
 
-          //slot
           {SLOTS.map((slot, slotIdx) => {
             const isHalf = slot.endsWith(":30");
             return (

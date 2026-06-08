@@ -66,7 +66,7 @@ export default function Floor3Map() {
   return (
     <div className="toss_container floor3">
       <div className="map_wrapper">
-        <img src="/floor3.png" className="floor_img" />
+        <img src="/floor3.png" className="floor_img" alt="" />
 
         <button className={`toss_pin room1 ${isUsed("301호") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["301"])}>301</button>
         <button className={`toss_pin room2 ${isUsed("302호") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["302"])}>302</button>

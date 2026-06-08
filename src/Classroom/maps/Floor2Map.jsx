@@ -73,7 +73,7 @@ export default function Floor2Map() {
     <div className="toss_container floor2">
       {/* 지도 */}
       <div className="map_wrapper">
-        <img src="/floor2.png" className="floor_img" />
+        <img src="/floor2.png" className="floor_img" alt="" />
 
         <button
           className={`toss_pin room1 ${isUsed("201호") ? "used" : ""}`}

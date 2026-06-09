@@ -3,17 +3,17 @@ import { useState, useEffect } from "react";
 import { api } from "../api/api";
 import "./Floor.css";
 
+const rooms = {
+  "공1301": { name: "공1301", capacity: 40, projector: true, computer: true },
+  "공1302": { name: "공1302", capacity: 35, projector: false, computer: true },
+  "공1303": { name: "공1303", capacity: 50, projector: true, computer: false },
+  "공1304": { name: "공1304", capacity: 30, projector: false, computer: false },
+};
+
 export default function Floor3Map() {
   const navigate = useNavigate();
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [roomStatus, setRoomStatus] = useState({});
-
-  const rooms = {
-    "공1301": { name: "공1301", capacity: 40, projector: true, computer: true },
-    "공1302": { name: "공1302", capacity: 35, projector: false, computer: true },
-    "공1303": { name: "공1303", capacity: 50, projector: true, computer: false },
-    "공1304": { name: "공1304", capacity: 30, projector: false, computer: false },
-  };
 
   useEffect(() => {
     Promise.all(

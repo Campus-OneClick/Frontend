@@ -3,18 +3,18 @@ import { useState, useEffect } from "react";
 import { api } from "../api/api";
 import "./Floor.css";
 
+const rooms = {
+  "공1011": { name: "공1011", capacity: 40, projector: true, computer: true },
+  "공1012": { name: "공1012", capacity: 30, projector: true, computer: false },
+  "공1013": { name: "공1013", capacity: 20, projector: false, computer: true },
+  "공1014": { name: "공1014", capacity: 50, projector: true, computer: true },
+  "공1015": { name: "공1015", capacity: 25, projector: false, computer: false },
+};
+
 export default function Basement() {
   const navigate = useNavigate();
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [roomStatus, setRoomStatus] = useState({});
-
-  const rooms = {
-    "공1011": { name: "공1011", capacity: 40, projector: true, computer: true },
-    "공1012": { name: "공1012", capacity: 30, projector: true, computer: false },
-    "공1013": { name: "공1013", capacity: 20, projector: false, computer: true },
-    "공1014": { name: "공1014", capacity: 50, projector: true, computer: true },
-    "공1015": { name: "공1015", capacity: 25, projector: false, computer: false },
-  };
 
   useEffect(() => {
     Promise.all(

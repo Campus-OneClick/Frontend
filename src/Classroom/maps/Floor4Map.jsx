@@ -3,18 +3,18 @@ import { useState, useEffect } from "react";
 import { api } from "../api/api";
 import "./Floor.css";
 
+const rooms = {
+  "공1401": { name: "공1401", capacity: 40, projector: true, computer: true },
+  "공1402": { name: "공1402", capacity: 35, projector: false, computer: true },
+  "공1403": { name: "공1403", capacity: 50, projector: true, computer: false },
+  "공1404": { name: "공1404", capacity: 30, projector: false, computer: false },
+  "공1405": { name: "공1405", capacity: 30, projector: false, computer: false },
+};
+
 export default function Floor4Map() {
   const navigate = useNavigate();
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [roomStatus, setRoomStatus] = useState({});
-
-  const rooms = {
-    "공1401": { name: "공1401", capacity: 40, projector: true, computer: true },
-    "공1402": { name: "공1402", capacity: 35, projector: false, computer: true },
-    "공1403": { name: "공1403", capacity: 50, projector: true, computer: false },
-    "공1404": { name: "공1404", capacity: 30, projector: false, computer: false },
-    "공1405": { name: "공1405", capacity: 30, projector: false, computer: false },
-  };
 
   useEffect(() => {
     Promise.all(

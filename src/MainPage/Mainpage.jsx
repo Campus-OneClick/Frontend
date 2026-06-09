@@ -264,6 +264,24 @@ function MainPage() {
                 </div>
                 <span>›</span>
               </div>
+
+              <div className="menu-item" onClick={() => navigate("/floor1")}>
+                <div className="icon-box">📚</div>
+                <div>
+                  <h4>열람실 좌석 현황</h4>
+                  <p>좌석 상태를 확인하고 예약합니다.</p>
+                </div>
+                <span>›</span>
+              </div>
+
+              <div className="menu-item" onClick={() => navigate("/classrooms")}>
+                <div className="icon-box">🏫</div>
+                <div>
+                  <h4>빈 강의실 조회</h4>
+                  <p>사용 가능한 강의실을 찾습니다.</p>
+                </div>
+                <span>›</span>
+              </div>
             </>
           ) : (
             <>

@@ -102,6 +102,11 @@ export default function ProcessedMain({
                 <span className="processed-time-stamp"> / 처리: {item.processedAt}</span>
               )}
             </div>
+            {item.status === 2 && (
+              <span className="rejection-reason-text">
+                거절 사유: {item.rejectionReason || '(사유 없음)'}
+              </span>
+            )}
           </div>
 
           <span className={`col-status status-${item.status}`}>

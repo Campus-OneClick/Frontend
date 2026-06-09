@@ -82,13 +82,19 @@ export default function AdminModal({ onClose, handleSave, editingItem, classroom
         </div>
 
         <div className="modal-row modal-row-4col">
-          <input type="text" name="day1" placeholder="요일1 (예: 월요일)"
-            value={formData.day1} onChange={update('day1')}
-            onKeyDown={(e) => handleKeyDown(e, 'startTime1')} />
-          <input type="time" name="startTime1"
+          <select name="day1" value={formData.day1} onChange={update('day1')}
+            onKeyDown={(e) => handleKeyDown(e, 'startTime1')}>
+            <option value="">요일1</option>
+            <option value="월요일">월요일</option>
+            <option value="화요일">화요일</option>
+            <option value="수요일">수요일</option>
+            <option value="목요일">목요일</option>
+            <option value="금요일">금요일</option>
+          </select>
+          <input type="text" name="startTime1" placeholder="시작 (09:00)"
             value={formData.startTime1} onChange={update('startTime1')}
             onKeyDown={(e) => handleKeyDown(e, 'endTime1')} />
-          <input type="time" name="endTime1"
+          <input type="text" name="endTime1" placeholder="종료 (10:30)"
             value={formData.endTime1} onChange={update('endTime1')}
             onKeyDown={(e) => handleKeyDown(e, 'classroomId1')} />
           <select name="classroomId1" value={formData.classroomId1} onChange={update('classroomId1')}
@@ -99,13 +105,19 @@ export default function AdminModal({ onClose, handleSave, editingItem, classroom
         </div>
 
         <div className="modal-row modal-row-4col">
-          <input type="text" name="day2" placeholder="요일2 (선택)"
-            value={formData.day2} onChange={update('day2')}
-            onKeyDown={(e) => handleKeyDown(e, 'startTime2')} />
-          <input type="time" name="startTime2"
+          <select name="day2" value={formData.day2} onChange={update('day2')}
+            onKeyDown={(e) => handleKeyDown(e, 'startTime2')}>
+            <option value="">요일2 (선택)</option>
+            <option value="월요일">월요일</option>
+            <option value="화요일">화요일</option>
+            <option value="수요일">수요일</option>
+            <option value="목요일">목요일</option>
+            <option value="금요일">금요일</option>
+          </select>
+          <input type="text" name="startTime2" placeholder="시작 (09:00)"
             value={formData.startTime2} onChange={update('startTime2')}
             onKeyDown={(e) => handleKeyDown(e, 'endTime2')} />
-          <input type="time" name="endTime2"
+          <input type="text" name="endTime2" placeholder="종료 (10:30)"
             value={formData.endTime2} onChange={update('endTime2')}
             onKeyDown={(e) => handleKeyDown(e, 'classroomId2')} />
           <select name="classroomId2" value={formData.classroomId2} onChange={update('classroomId2')}

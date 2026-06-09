@@ -49,7 +49,7 @@ export default function TimeTablePage() {
 
   // 시간표 state
   const [schedule, setSchedule] = useState([]);
-  const [pending, setPending] = useState([]);
+  const [allPending, setAllPending] = useState([]);
   const [selected, setSelected] = useState(null);
   const [duration, setDuration] = useState(2);
   const [memo, setMemo] = useState("");
@@ -84,6 +84,7 @@ export default function TimeTablePage() {
             return {
               id: r.id,
               day: DAY_KO_TO_EN[r.day] || r.day,
+              date: r.date,
               startSlot,
               durationSlots: endSlot - startSlot,
               subject: r.status === 0 ? "승인 대기" : "승인됨",
@@ -91,7 +92,7 @@ export default function TimeTablePage() {
           });
 
         setSchedule(roomSchedules);
-        setPending(roomReservations);
+        setAllPending(roomReservations);
       } catch (err) {
         console.error("시간표 로드 실패:", err);
       }
@@ -158,13 +159,19 @@ export default function TimeTablePage() {
       alert("로그인이 필요합니다.");
       return;
     }
+
+    // 선택한 주의 실제 날짜 계산
+    const DAY_KO_INDEX = { "월": 0, "화": 1, "수": 2, "목": 3, "금": 4 };
+    const slotDate = weekDates[DAY_KO_INDEX[selected.day]];
+    const dateStr = `${slotDate.getFullYear()}/${String(slotDate.getMonth() + 1).padStart(2, "0")}/${String(slotDate.getDate()).padStart(2, "0")}`;
+
     try {
       await httpClient.post("/classrooms/reserve", {
-        roomId, day: apiDay, startTime, endTime, studentId, memo,
+        roomId, day: apiDay, date: dateStr, startTime, endTime, studentId, memo,
       });
-      setPending(prev => [
+      setAllPending(prev => [
         ...prev,
-        { day: apiDay, startSlot: selected.slotIdx, durationSlots: effectiveDuration, subject: "승인 대기" },
+        { day: apiDay, date: dateStr, startSlot: selected.slotIdx, durationSlots: effectiveDuration, subject: "승인 대기" },
       ]);
       setSelected(null);
       setMemo("");
@@ -176,6 +183,20 @@ export default function TimeTablePage() {
   };
 
   const weekDates = selectedDate ? getWeekDates(selectedDate) : null;
+
+  // 선택한 주의 날짜 문자열 집합 ("yyyy/MM/dd" 형식)
+  const weekDateStrings = weekDates
+    ? new Set(weekDates.map(d => {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        return `${y}/${m}/${dd}`;
+      }))
+    : new Set();
+
+  // 선택한 주에 해당하는 예약만 필터링
+  const pending = allPending.filter(r => weekDateStrings.has(r.date));
+
   const maxDuration = selected ? SLOTS.length - selected.slotIdx : 6;
   const effectiveDuration = Math.min(duration, maxDuration);
 

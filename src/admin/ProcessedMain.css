@@ -23,7 +23,7 @@
 /* 6칸 그리드 레이아웃 */
 .process-reservation-row {
   display: grid;
-  grid-template-columns: 30px 50px 80px 1fr 70px 50px;
+  grid-template-columns: 30px 50px 80px 1fr 90px 140px;
   gap: 12px;
   align-items: center;
   padding: 14px 8px;
@@ -56,9 +56,45 @@
   font-size: 12px;
   font-weight: 600;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 .delete-btn:hover {
   background-color: #fff1f0;
+}
+
+.edit-btn {
+  background-color: #ffffff;
+  color: #f59e0b;
+  border: 1px solid #f59e0b;
+  padding: 5px 11px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.edit-btn:hover {
+  background-color: #fffbeb;
+}
+
+.col-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.col-status-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.rejection-reason-text {
+  font-size: 11px;
+  color: #ef4444;
+  word-break: break-all;
 }
 
 /* 정렬 클래스 */

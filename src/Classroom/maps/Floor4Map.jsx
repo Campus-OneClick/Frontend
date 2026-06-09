@@ -5,10 +5,8 @@ import "./Floor.css";
 
 export default function Floor4Map() {
   const navigate = useNavigate();
-
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const [activeRoom, setActiveRoom] = useState(null);
-  const [roomStatus, setRoomStatus] = useState([]);
+  const [roomStatus, setRoomStatus] = useState({});
 
   const rooms = {
     "공1401": { name: "공1401", capacity: 40, projector: true, computer: true },
@@ -18,62 +16,31 @@ export default function Floor4Map() {
     "공1405": { name: "공1405", capacity: 30, projector: false, computer: false },
   };
 
-  const fetchStatus = async () => {
-    try {
-      const res = await api.get("/room-usage/status");
-      setRoomStatus(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
-    fetchStatus();
+    Promise.all(
+      Object.keys(rooms).map(name =>
+        api.get(`/room-usage/status/${encodeURIComponent(name)}`)
+          .then(res => res.data)
+          .catch(() => ({ roomName: name, status: "FREE" }))
+      )
+    ).then(results => {
+      const map = {};
+      results.forEach(r => { map[r.roomName] = r.status; });
+      setRoomStatus(map);
+    });
   }, []);
 
-  const handleRoomClick = async (room) => {
-    setSelectedRoom(room);
-
-    try {
-      await api.post("/room-usage/start", {
-        roomName: room.name,
-        status: "STUDY",
-      });
-
-      setActiveRoom(room);
-      fetchStatus();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleEnd = async () => {
-    try {
-      await api.post("/room-usage/end", {
-        roomName: selectedRoom.name,
-      });
-
-      setActiveRoom(null);
-      setSelectedRoom(null);
-      fetchStatus();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const isUsed = (roomName) =>
-    roomStatus.find((r) => r.roomName === roomName)?.status === "USED";
+  const isUsed = (roomName) => roomStatus[roomName] === "USED";
 
   return (
     <div className="toss_container floor4">
       <div className="map_wrapper">
         <img src="/floor4.png" className="floor_img" alt="4층 도면" />
-
-        <button className={`toss_pin room1 ${isUsed("공1401") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1401"])}>공1401</button>
-        <button className={`toss_pin room2 ${isUsed("공1402") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1402"])}>공1402</button>
-        <button className={`toss_pin room3 ${isUsed("공1403") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1403"])}>공1403</button>
-        <button className={`toss_pin room4 ${isUsed("공1404") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1404"])}>공1404</button>
-        <button className={`toss_pin room5 ${isUsed("공1405") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1405"])}>공1405</button>
+        <button className={`toss_pin room1 ${isUsed("공1401") ? "used" : ""}`} onClick={() => setSelectedRoom(rooms["공1401"])}>공1401</button>
+        <button className={`toss_pin room2 ${isUsed("공1402") ? "used" : ""}`} onClick={() => setSelectedRoom(rooms["공1402"])}>공1402</button>
+        <button className={`toss_pin room3 ${isUsed("공1403") ? "used" : ""}`} onClick={() => setSelectedRoom(rooms["공1403"])}>공1403</button>
+        <button className={`toss_pin room4 ${isUsed("공1404") ? "used" : ""}`} onClick={() => setSelectedRoom(rooms["공1404"])}>공1404</button>
+        <button className={`toss_pin room5 ${isUsed("공1405") ? "used" : ""}`} onClick={() => setSelectedRoom(rooms["공1405"])}>공1405</button>
       </div>
 
       {selectedRoom && (
@@ -94,12 +61,7 @@ export default function Floor4Map() {
               <span className="popup_info_value">{selectedRoom.computer ? "있음" : "없음"}</span>
             </div>
             <div className="popup_buttons">
-              <button className="reserve_btn" onClick={() => navigate(`/timetable/${selectedRoom.name}`)}>
-                예약하기
-              </button>
-              {activeRoom?.name === selectedRoom?.name && (
-                <button className="end_btn" onClick={handleEnd}>사용 종료</button>
-              )}
+              <button className="reserve_btn" onClick={() => navigate(`/timetable/${selectedRoom.name}`)}>예약하기</button>
               <button className="close_btn" onClick={() => setSelectedRoom(null)}>닫기</button>
             </div>
           </div>

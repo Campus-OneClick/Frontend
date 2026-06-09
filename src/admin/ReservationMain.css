@@ -171,6 +171,12 @@
   margin-top: 2px;
 }
 
+.rejection-reason-text {
+  font-size: 11px;
+  color: #dc2626;
+  margin-top: 2px;
+}
+
 .col-status {
   font-weight: bold;
   font-size: 12px;

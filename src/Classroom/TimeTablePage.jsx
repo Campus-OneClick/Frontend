@@ -1,20 +1,16 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import httpClient from "../api/httpClient";
+import MonthCalendar from "./MonthCalendar";
+import ReservationPanel from "./ReservationPanel";
+import TimeTableGrid from "./TimeTableGrid";
 import "./TimeTable.css";
 
 const DAY_MAP = { "월": "MON", "화": "TUE", "수": "WED", "목": "THU", "금": "FRI" };
 const DAY_KO_TO_EN = { "월": "MON", "화": "TUE", "수": "WED", "목": "THU", "금": "FRI" };
+const MAX_RESERVATIONS_PER_WEEK = 2;
 
-const DURATION_OPTIONS = [
-  { label: "1시간",       slots: 2 },
-  { label: "1시간 30분",  slots: 3 },
-  { label: "2시간",       slots: 4 },
-  { label: "2시간 30분",  slots: 5 },
-  { label: "3시간",       slots: 6 },
-];
-
-// 9:00 ~ 19:00, 30분 단위 (21슬롯)
+// 9:00 ~ 19:00, 30분 단위
 const SLOTS = [];
 for (let h = 9; h <= 19; h++) {
   SLOTS.push(`${h}:00`);
@@ -26,17 +22,39 @@ function timeToSlot(timeStr) {
   return (h - 9) * 2 + (m >= 30 ? 1 : 0);
 }
 
+function getWeekDates(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  const monday = new Date(d);
+  monday.setDate(d.getDate() + diff);
+  return Array.from({ length: 5 }, (_, i) => {
+    const dd = new Date(monday);
+    dd.setDate(monday.getDate() + i);
+    return dd;
+  });
+}
+
 export default function TimeTablePage() {
   const { roomId } = useParams();
   const navigate = useNavigate();
-  const days = ["월", "화", "수", "목", "금"];
+  const today = new Date();
 
+  // 달력 state
+  const [currentMonth, setCurrentMonth] = useState({
+    year: today.getFullYear(),
+    month: today.getMonth(),
+  });
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  // 시간표 state
   const [schedule, setSchedule] = useState([]);
   const [pending, setPending] = useState([]);
   const [selected, setSelected] = useState(null);
   const [duration, setDuration] = useState(2);
   const [memo, setMemo] = useState("");
 
+  // API 호출
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -78,93 +96,75 @@ export default function TimeTablePage() {
         console.error("시간표 로드 실패:", err);
       }
     };
-
     fetchData();
   }, [roomId]);
 
-  // 해당 슬롯에 대기중 예약이 있는지 확인
-  const getPending = (day, slotIdx) => {
-    const apiDay = DAY_MAP[day];
-    return pending.find(
-      (p) => p.day === apiDay &&
-             slotIdx >= p.startSlot &&
-             slotIdx < p.startSlot + p.durationSlots
-    ) || null;
+  // 달력 월 이동
+  const prevMonth = () => setCurrentMonth(prev =>
+    prev.month === 0
+      ? { year: prev.year - 1, month: 11 }
+      : { year: prev.year, month: prev.month - 1 }
+  );
+
+  const nextMonth = () => setCurrentMonth(prev =>
+    prev.month === 11
+      ? { year: prev.year + 1, month: 0 }
+      : { year: prev.year, month: prev.month + 1 }
+  );
+
+  // 날짜 클릭 (주말 제외)
+  const handleDateClick = (day) => {
+    if (!day) return;
+    const date = new Date(currentMonth.year, currentMonth.month, day);
+    const dow = date.getDay();
+    if (dow === 0 || dow === 6) return;
+    setSelectedDate(date);
+    setSelected(null);
+    setMemo("");
   };
 
-  // 해당 슬롯에 강의가 있는지 확인 → { subject } or null
-  const getLecture = (day, slotIdx) => {
-    const apiDay = DAY_MAP[day];
-    const found = schedule.find(
-      (s) => s.day === apiDay &&
-             slotIdx >= s.startSlot &&
-             slotIdx < s.startSlot + s.durationSlots
+  // 시간표 셀 클릭
+  const handleCellClick = (dayKo, slotIdx) => {
+    const apiDay = DAY_MAP[dayKo];
+    const hasLecture = schedule.find(
+      s => s.day === apiDay && slotIdx >= s.startSlot && slotIdx < s.startSlot + s.durationSlots
     );
-    return found || null;
-  };
+    const hasPending = pending.find(
+      p => p.day === apiDay && slotIdx >= p.startSlot && slotIdx < p.startSlot + p.durationSlots
+    );
+    if (hasLecture || hasPending) return;
 
-  const isLectureStart = (day, slotIdx) => {
-    const apiDay = DAY_MAP[day];
-    return schedule.find((s) => s.day === apiDay && s.startSlot === slotIdx) || null;
-  };
-
-  const isInRange = (day, slotIdx) => {
-    if (!selected || selected.day !== day) return false;
-    return slotIdx >= selected.slotIdx && slotIdx < selected.slotIdx + effectiveDuration;
-  };
-
-  const isStart = (day, slotIdx) =>
-    selected?.day === day && selected?.slotIdx === slotIdx;
-
-  const maxDuration = selected ? SLOTS.length - selected.slotIdx : 6;
-  const effectiveDuration = Math.min(duration, maxDuration);
-
-  const handleCellClick = (day, slotIdx) => {
-    // 강의 또는 대기중 예약이 있는 슬롯은 클릭 불가
-    if (getLecture(day, slotIdx) || getPending(day, slotIdx)) return;
-
-    if (isStart(day, slotIdx)) {
+    if (selected?.day === dayKo && selected?.slotIdx === slotIdx) {
       setSelected(null);
       setMemo("");
     } else {
-      setSelected({ day, slotIdx });
+      setSelected({ day: dayKo, slotIdx });
       setMemo("");
     }
   };
 
-  const MAX_RESERVATIONS_PER_WEEK = 2;
-
+  // 예약 신청
   const handleReserve = async () => {
     if (!selected) return;
-
     if (pending.length >= MAX_RESERVATIONS_PER_WEEK) {
       alert(`일주일에 최대 ${MAX_RESERVATIONS_PER_WEEK}개의 강의실만 예약 신청할 수 있습니다.`);
       return;
     }
-
     const apiDay = DAY_MAP[selected.day];
     const startTime = SLOTS[selected.slotIdx];
     const endTime = SLOTS[Math.min(selected.slotIdx + effectiveDuration, SLOTS.length - 1)];
     const studentId = sessionStorage.getItem("studentId");
-
     if (!studentId) {
       alert("로그인이 필요합니다.");
       return;
     }
-
     try {
       await httpClient.post("/classrooms/reserve", {
         roomId, day: apiDay, startTime, endTime, studentId, memo,
       });
-
-      setPending((prev) => [
+      setPending(prev => [
         ...prev,
-        {
-          day: apiDay,
-          startSlot: selected.slotIdx,
-          durationSlots: effectiveDuration,
-          subject: "승인 대기",
-        },
+        { day: apiDay, startSlot: selected.slotIdx, durationSlots: effectiveDuration, subject: "승인 대기" },
       ]);
       setSelected(null);
       setMemo("");
@@ -175,6 +175,10 @@ export default function TimeTablePage() {
     }
   };
 
+  const weekDates = selectedDate ? getWeekDates(selectedDate) : null;
+  const maxDuration = selected ? SLOTS.length - selected.slotIdx : 6;
+  const effectiveDuration = Math.min(duration, maxDuration);
+
   return (
     <div className="tt_container">
 
@@ -182,113 +186,65 @@ export default function TimeTablePage() {
       <div className="tt_header">
         <div>
           <h2 className="tt_title">강의실 {roomId}</h2>
-          <p className="tt_subtitle">빈 칸을 클릭해 예약 시간을 선택하세요</p>
+          <p className="tt_subtitle">날짜를 선택하면 해당 주 시간표가 표시됩니다</p>
         </div>
         <button className="tt_back_btn" onClick={() => navigate(-1)}>돌아가기</button>
       </div>
 
-      <div className="tt_legend">
-        <span className="tt_legend_item lecture">강의</span>
-        <span className="tt_legend_item pending">승인 대기</span>
-        <span className="tt_legend_item empty">빈 강의실</span>
-      </div>
+      {/* 달력 컴포넌트 */}
+      <MonthCalendar
+        currentMonth={currentMonth}
+        selectedDate={selectedDate}
+        today={today}
+        onPrevMonth={prevMonth}
+        onNextMonth={nextMonth}
+        onDateClick={handleDateClick}
+      />
 
-      {selected && (
-        <div className="tt_panel">
-          <div className="tt_panel_info">
-            <span className="tt_panel_badge">{selected.day}요일</span>
-            <span className="tt_panel_time">
-              {SLOTS[selected.slotIdx]} ~ {SLOTS[Math.min(selected.slotIdx + effectiveDuration, SLOTS.length - 1)]}
-            </span>
+      {/* 날짜 선택 후 */}
+      {selectedDate && weekDates && (
+        <>
+          <div className="tt_week_label">
+            {weekDates[0].getMonth() + 1}/{weekDates[0].getDate()}(월) ~ {weekDates[4].getMonth() + 1}/{weekDates[4].getDate()}(금) 시간표
           </div>
-          <div className="tt_duration_row">
-            {DURATION_OPTIONS.map((d) => (
-              <button
-                key={d.slots}
-                className={`tt_dur_btn ${effectiveDuration === d.slots ? "active" : ""}`}
-                onClick={() => setDuration(d.slots)}
-                disabled={d.slots > maxDuration}
-              >
-                {d.label}
-              </button>
-            ))}
+
+          <div className="tt_legend">
+            <span className="tt_legend_item lecture">강의</span>
+            <span className="tt_legend_item pending">승인 대기</span>
+            <span className="tt_legend_item empty">빈 강의실</span>
           </div>
-          <textarea
-            className="tt_memo_input"
-            placeholder="사용 사유를 간단히 입력해주세요. (선택)"
-            value={memo}
-            onChange={(e) => setMemo(e.target.value)}
-            rows={2}
-          />
-          {pending.length >= MAX_RESERVATIONS_PER_WEEK && (
-            <p className="tt_limit_msg">이번 주 예약 신청 횟수({MAX_RESERVATIONS_PER_WEEK}회)를 모두 사용했습니다.</p>
+
+          {/* 예약 패널 컴포넌트 */}
+          {selected && (
+            <ReservationPanel
+              selected={selected}
+              duration={duration}
+              setDuration={setDuration}
+              memo={memo}
+              setMemo={setMemo}
+              effectiveDuration={effectiveDuration}
+              maxDuration={maxDuration}
+              pendingCount={pending.length}
+              maxReservations={MAX_RESERVATIONS_PER_WEEK}
+              slots={SLOTS}
+              onReserve={handleReserve}
+              onCancel={() => { setSelected(null); setMemo(""); }}
+            />
           )}
-          <div className="tt_panel_actions">
-            <button className="tt_cancel_btn" onClick={() => { setSelected(null); setMemo(""); }}>취소</button>
-            <button
-              className="tt_confirm_btn"
-              onClick={handleReserve}
-              disabled={pending.length >= MAX_RESERVATIONS_PER_WEEK}
-            >
-              예약하기
-            </button>
-          </div>
-        </div>
+
+          {/* 시간표 그리드 컴포넌트 */}
+          <TimeTableGrid
+            weekDates={weekDates}
+            slots={SLOTS}
+            schedule={schedule}
+            pending={pending}
+            selected={selected}
+            effectiveDuration={effectiveDuration}
+            onCellClick={handleCellClick}
+          />
+        </>
       )}
 
-      <div className="tt_grid_wrap">
-        <div className="tt_grid">
-
-          <div className="tt_cell tt_head"></div>
-          {days.map((day) => (
-            <div key={day} className="tt_cell tt_head">{day}</div>
-          ))}
-
-          {SLOTS.map((slot, slotIdx) => {
-            const isHalf = slot.endsWith(":30");
-            return (
-              <div key={slot} className="tt_row">
-                <div className={`tt_cell tt_time ${isHalf ? "tt_half_time" : ""}`}>
-                  {!isHalf ? slot : ""}
-                </div>
-                {days.map((day) => {
-                  const lecture = getLecture(day, slotIdx);
-                  const lectureStart = isLectureStart(day, slotIdx);
-                  const pendingSlot = getPending(day, slotIdx);
-                  const isPendingStart = pending.find(
-                    (p) => p.day === DAY_MAP[day] && p.startSlot === slotIdx
-                  );
-                  const inRange = isInRange(day, slotIdx);
-                  const isStartCell = isStart(day, slotIdx);
-
-                  return (
-                    <div
-                      key={day + slot}
-                      className={[
-                        "tt_cell tt_block",
-                        isHalf ? "tt_half_block" : "",
-                        lecture ? "tt_lecture" : "",
-                        pendingSlot ? "tt_pending" : "",
-                        inRange ? (isStartCell ? "tt_selected_start" : "tt_selected") : "",
-                      ].join(" ")}
-                      onClick={() => handleCellClick(day, slotIdx)}
-                      title={lecture?.subject || (pendingSlot ? "승인 대기중" : "")}
-                    >
-                      {lectureStart && (
-                        <span className="tt_lecture_label">{lectureStart.subject}</span>
-                      )}
-                      {isPendingStart && !lecture && (
-                        <span className="tt_pending_label">승인 대기</span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
-
-        </div>
-      </div>
     </div>
   );
 }

@@ -59,9 +59,7 @@ export function LoungeDetailCenter({
     // 모달에서 '배정하기'를 눌렀을 때 실행되는 함수
     const handleConfirmReserve = () => {
         if (selectedSeat !== null) {
-            // 부모가 넘겨준 예약 함수를 호출합니다
             onReserve(selectedSeat);
-            // 예약 완료 후 모달 닫기
             setSelectedSeat(null);
         }
     };
@@ -94,7 +92,6 @@ export function LoungeDetailCenter({
                     </div>
                 </div>
 
-                {/* 부모에게서 받은 함수들을 그대로 넘겨줍니다 */}
                 <CongestionBar
                     total={TOTAL_SEATS}
                     reserved={reservedSeats.length}

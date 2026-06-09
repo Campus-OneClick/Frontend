@@ -11,11 +11,11 @@ export default function Basement() {
   const [roomStatus, setRoomStatus] = useState([]);
 
   const rooms = {
-    "B101": { name: "B101", capacity: 40, projector: true, computer: true },
-    "B102": { name: "B102", capacity: 30, projector: true, computer: false },
-    "B103": { name: "B103", capacity: 20, projector: false, computer: true },
-    "B104": { name: "B104", capacity: 50, projector: true, computer: true },
-    "B105": { name: "B105", capacity: 25, projector: false, computer: false },
+    "공1011": { name: "공1011", capacity: 40, projector: true, computer: true },
+    "공1012": { name: "공1012", capacity: 30, projector: true, computer: false },
+    "공1013": { name: "공1013", capacity: 20, projector: false, computer: true },
+    "공1014": { name: "공1014", capacity: 50, projector: true, computer: true },
+    "공1015": { name: "공1015", capacity: 25, projector: false, computer: false },
   };
 
   const fetchStatus = async () => {
@@ -69,11 +69,11 @@ export default function Basement() {
       <div className="map_wrapper">
         <img src="/basement.png" className="floor_img" alt="" />
 
-        <button className={`toss_pin room1 ${isUsed("B101") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["B101"])}>B101</button>
-        <button className={`toss_pin room2 ${isUsed("B102") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["B102"])}>B102</button>
-        <button className={`toss_pin room3 ${isUsed("B103") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["B103"])}>B103</button>
-        <button className={`toss_pin room4 ${isUsed("B104") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["B104"])}>B104</button>
-        <button className={`toss_pin room5 ${isUsed("B105") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["B105"])}>B105</button>
+        <button className={`toss_pin room1 ${isUsed("공1011") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1011"])}>공1011</button>
+        <button className={`toss_pin room2 ${isUsed("공1012") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1012"])}>공1012</button>
+        <button className={`toss_pin room3 ${isUsed("공1013") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1013"])}>공1013</button>
+        <button className={`toss_pin room4 ${isUsed("공1014") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1014"])}>공1014</button>
+        <button className={`toss_pin room5 ${isUsed("공1015") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1015"])}>공1015</button>
       </div>
 
       {selectedRoom && (

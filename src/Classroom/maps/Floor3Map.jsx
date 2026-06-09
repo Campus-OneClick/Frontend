@@ -11,10 +11,10 @@ export default function Floor3Map() {
   const [roomStatus, setRoomStatus] = useState([]);
 
   const rooms = {
-    "301": { name: "301호", capacity: 40, projector: true, computer: true },
-    "302": { name: "302호", capacity: 35, projector: false, computer: true },
-    "303": { name: "303호", capacity: 50, projector: true, computer: false },
-    "304": { name: "304호", capacity: 30, projector: false, computer: false },
+    "공1301": { name: "공1301", capacity: 40, projector: true, computer: true },
+    "공1302": { name: "공1302", capacity: 35, projector: false, computer: true },
+    "공1303": { name: "공1303", capacity: 50, projector: true, computer: false },
+    "공1304": { name: "공1304", capacity: 30, projector: false, computer: false },
   };
 
   const fetchStatus = async () => {
@@ -68,10 +68,10 @@ export default function Floor3Map() {
       <div className="map_wrapper">
         <img src="/floor3.png" className="floor_img" alt="" />
 
-        <button className={`toss_pin room1 ${isUsed("301호") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["301"])}>301</button>
-        <button className={`toss_pin room2 ${isUsed("302호") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["302"])}>302</button>
-        <button className={`toss_pin room3 ${isUsed("303호") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["303"])}>303</button>
-        <button className={`toss_pin room4 ${isUsed("304호") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["304"])}>304</button>
+        <button className={`toss_pin room1 ${isUsed("공1301") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1301"])}>공1301</button>
+        <button className={`toss_pin room2 ${isUsed("공1302") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1302"])}>공1302</button>
+        <button className={`toss_pin room3 ${isUsed("공1303") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1303"])}>공1303</button>
+        <button className={`toss_pin room4 ${isUsed("공1304") ? "used" : ""}`} onClick={() => handleRoomClick(rooms["공1304"])}>공1304</button>
       </div>
 
       {selectedRoom && (

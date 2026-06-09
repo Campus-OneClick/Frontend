@@ -344,3 +344,120 @@
 .tt_selected_start:hover {
   background: #27384f !important;
 }
+
+/* ── 달력 ── */
+.tt_calendar_wrap {
+  max-width: 960px;
+  margin: 0 auto 24px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+  padding: 20px 24px;
+}
+
+.tt_cal_nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.tt_cal_nav_btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #374151;
+  padding: 4px 10px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.tt_cal_nav_btn:hover { background: #f3f4f6; }
+.tt_cal_nav_btn:focus { outline: none; }
+
+.tt_cal_title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.tt_cal_grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.tt_cal_day_header {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  padding: 6px 0;
+}
+
+.tt_cal_sat { color: #3b82f6; }
+.tt_cal_sun { color: #ef4444; }
+
+.tt_cal_cell {
+  text-align: center;
+  padding: 8px 0;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.15s;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tt_cal_cell:hover:not(.tt_cal_empty):not(.tt_cal_weekend) {
+  background: #f0f4ff;
+}
+
+.tt_cal_empty {
+  cursor: default;
+}
+
+.tt_cal_weekend {
+  color: #d1d5db;
+  cursor: default;
+}
+
+.tt_cal_today {
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.tt_cal_selected {
+  background: #1e3a5f !important;
+  color: white !important;
+  font-weight: 700;
+}
+
+.tt_cal_week {
+  background: #eff6ff;
+  color: #1e3a5f;
+  font-weight: 600;
+}
+
+/* 주 범위 레이블 */
+.tt_week_label {
+  max-width: 960px;
+  margin: 0 auto 12px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e3a5f;
+}
+
+/* 시간표 요일 헤더 날짜 서브텍스트 */
+.tt_head_date {
+  font-size: 11px;
+  font-weight: 500;
+  color: #9ca3af;
+  margin-top: 2px;
+}

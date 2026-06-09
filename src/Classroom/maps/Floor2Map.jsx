@@ -11,12 +11,12 @@ export default function Floor2Map() {
   const [roomStatus, setRoomStatus] = useState([]);
 
   const rooms = {
-    "201": { name: "201호", capacity: 40, projector: true, computer: true },
-    "202": { name: "202호", capacity: 30, projector: true, computer: false },
-    "203": { name: "203호", capacity: 25, projector: false, computer: true },
-    "204": { name: "204호", capacity: 50, projector: true, computer: true },
-    "205": { name: "205호", capacity: 20, projector: false, computer: false },
-    "206": { name: "206호", capacity: 35, projector: true, computer: true },
+    "공1201": { name: "공1201", capacity: 40, projector: true, computer: true },
+    "공1202": { name: "공1202", capacity: 30, projector: true, computer: false },
+    "공1203": { name: "공1203", capacity: 25, projector: false, computer: true },
+    "공1204": { name: "공1204", capacity: 50, projector: true, computer: true },
+    "공1205": { name: "공1205", capacity: 20, projector: false, computer: false },
+    "공1206": { name: "공1206", capacity: 35, projector: true, computer: true },
   };
 
   // 상태 조회 API
@@ -76,45 +76,45 @@ export default function Floor2Map() {
         <img src="/floor2.png" className="floor_img" alt="" />
 
         <button
-          className={`toss_pin room1 ${isUsed("201호") ? "used" : ""}`}
-          onClick={() => handleRoomClick(rooms["201"])}
+          className={`toss_pin room1 ${isUsed("공1201") ? "used" : ""}`}
+          onClick={() => handleRoomClick(rooms["공1201"])}
         >
-          201
+          공1201
         </button>
 
         <button
-          className={`toss_pin room2 ${isUsed("202호") ? "used" : ""}`}
-          onClick={() => handleRoomClick(rooms["202"])}
+          className={`toss_pin room2 ${isUsed("공1202") ? "used" : ""}`}
+          onClick={() => handleRoomClick(rooms["공1202"])}
         >
-          202
+          공1202
         </button>
 
         <button
-          className={`toss_pin room3 ${isUsed("203호") ? "used" : ""}`}
-          onClick={() => handleRoomClick(rooms["203"])}
+          className={`toss_pin room3 ${isUsed("공1203") ? "used" : ""}`}
+          onClick={() => handleRoomClick(rooms["공1203"])}
         >
-          203
+          공1203
         </button>
 
         <button
-          className={`toss_pin room4 ${isUsed("204호") ? "used" : ""}`}
-          onClick={() => handleRoomClick(rooms["204"])}
+          className={`toss_pin room4 ${isUsed("공1204") ? "used" : ""}`}
+          onClick={() => handleRoomClick(rooms["공1204"])}
         >
-          204
+          공1204
         </button>
 
         <button
-          className={`toss_pin room5 ${isUsed("205호") ? "used" : ""}`}
-          onClick={() => handleRoomClick(rooms["205"])}
+          className={`toss_pin room5 ${isUsed("공1205") ? "used" : ""}`}
+          onClick={() => handleRoomClick(rooms["공1205"])}
         >
-          205
+          공1205
         </button>
 
         <button
-          className={`toss_pin room6 ${isUsed("206호") ? "used" : ""}`}
-          onClick={() => handleRoomClick(rooms["206"])}
+          className={`toss_pin room6 ${isUsed("공1206") ? "used" : ""}`}
+          onClick={() => handleRoomClick(rooms["공1206"])}
         >
-          206
+          공1206
         </button>
       </div>
 

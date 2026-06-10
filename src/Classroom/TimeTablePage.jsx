@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import httpClient from "../api/httpClient";
 import MonthCalendar from "./MonthCalendar";
 import ReservationPanel from "./ReservationPanel";
@@ -54,51 +54,56 @@ export default function TimeTablePage() {
   const [duration, setDuration] = useState(2);
   const [memo, setMemo] = useState("");
 
-  // API 호출
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [scheduleRes, reservationRes] = await Promise.all([
-          httpClient.get("/schedules"),
-          httpClient.get(`/classrooms/${roomId}/reservations`),
-        ]);
+  // API 호출 (useEffect 밖으로 추출해서 재사용 가능하게)
+  const fetchData = useCallback(async () => {
+    try {
+      const [scheduleRes, reservationRes] = await Promise.all([
+        httpClient.get("/schedules"),
+        httpClient.get(`/classrooms/${roomId}/reservations`),
+      ]);
 
-        const roomSchedules = scheduleRes.data
-          .filter(s =>
-            s.classroomEntity?.classroomId === roomId ||
-            s.classroomEntity?.roomName === roomId
-          )
-          .map(s => ({
-            day: s.day,
-            startSlot: timeToSlot(s.startTime),
-            durationSlots: timeToSlot(s.endTime) - timeToSlot(s.startTime),
-            subject: s.subject,
-          }));
+      const roomSchedules = scheduleRes.data
+        .filter(s =>
+          s.classroomEntity?.classroomId === roomId ||
+          s.classroomEntity?.roomName === roomId
+        )
+        .map(s => ({
+          day: s.day,
+          startSlot: timeToSlot(s.startTime),
+          durationSlots: timeToSlot(s.endTime) - timeToSlot(s.startTime),
+          subject: s.subject,
+        }));
 
-        const roomReservations = reservationRes.data
-          .filter(r => r.status === 0 || r.status === 1)
-          .map(r => {
-            const [startStr, endStr] = r.time.split(" ~ ");
-            const startSlot = timeToSlot(startStr.trim());
-            const endSlot = timeToSlot(endStr.trim());
-            return {
-              id: r.id,
-              day: DAY_KO_TO_EN[r.day] || r.day,
-              date: r.date,
-              startSlot,
-              durationSlots: endSlot - startSlot,
-              subject: r.status === 0 ? "승인 대기" : "승인됨",
-            };
-          });
+      const roomReservations = reservationRes.data
+        .filter(r => r.status === 0 || r.status === 1)
+        .map(r => {
+          const [startStr, endStr] = r.time.split(" ~ ");
+          const startSlot = timeToSlot(startStr.trim());
+          const endSlot = timeToSlot(endStr.trim());
+          return {
+            id: r.id,
+            type: r.type,
+            num: r.num,
+            user: r.user,
+            day: DAY_KO_TO_EN[r.day] || r.day,
+            date: r.date,
+            startSlot,
+            durationSlots: endSlot - startSlot,
+            subject: r.status === 0 ? "승인 대기" : "승인됨",
+            isPending: r.status === 0,
+          };
+        });
 
-        setSchedule(roomSchedules);
-        setAllPending(roomReservations);
-      } catch (err) {
-        console.error("시간표 로드 실패:", err);
-      }
-    };
-    fetchData();
+      setSchedule(roomSchedules);
+      setAllPending(roomReservations);
+    } catch (err) {
+      console.error("시간표 로드 실패:", err);
+    }
   }, [roomId]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   // 달력 월 이동
   const prevMonth = () => setCurrentMonth(prev =>
@@ -169,16 +174,36 @@ export default function TimeTablePage() {
       await httpClient.post("/classrooms/reserve", {
         roomId, day: apiDay, date: dateStr, startTime, endTime, studentId, memo,
       });
-      setAllPending(prev => [
-        ...prev,
-        { day: apiDay, date: dateStr, startSlot: selected.slotIdx, durationSlots: effectiveDuration, subject: "승인 대기" },
-      ]);
+      await fetchData(); // 서버에서 재로딩 (id 포함)
       setSelected(null);
       setMemo("");
       alert(`예약 신청이 완료되었습니다.\n${selected.day}요일 ${startTime} ~ ${endTime}\n\n관리자 승인 후 예약이 확정됩니다.`);
     } catch (err) {
       console.error(err);
       alert("예약 신청에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  // 승인 대기 예약 취소
+  const handleCancelReservation = async (pendingItem) => {
+    if (!pendingItem.isPending) return; // 이미 승인된 예약은 취소 불가
+    if (!pendingItem.type || pendingItem.num == null) {
+      alert("예약 정보를 불러올 수 없습니다. 페이지를 새로고침 후 시도해주세요.");
+      return;
+    }
+    const studentId = sessionStorage.getItem("studentId");
+    if (pendingItem.user !== studentId) {
+      alert("이미 다른 학생이 신청한 시간대입니다.");
+      return;
+    }
+    if (!window.confirm("승인 대기중인 예약을 취소하시겠습니까?")) return;
+    try {
+      await httpClient.delete(`/reservations/${pendingItem.type}/${pendingItem.num}`);
+      setAllPending(prev => prev.filter(p => p.id !== pendingItem.id));
+      alert("예약이 취소되었습니다.");
+    } catch (err) {
+      console.error(err);
+      alert("예약 취소에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -231,7 +256,9 @@ export default function TimeTablePage() {
 
           <div className="tt_legend">
             <span className="tt_legend_item lecture">강의</span>
-            <span className="tt_legend_item pending">승인 대기</span>
+            <span className="tt_legend_item my_pending">내 신청</span>
+            <span className="tt_legend_item others_pending">타인 신청</span>
+            <span className="tt_legend_item approved">예약 완료</span>
             <span className="tt_legend_item empty">빈 강의실</span>
           </div>
 
@@ -262,6 +289,8 @@ export default function TimeTablePage() {
             selected={selected}
             effectiveDuration={effectiveDuration}
             onCellClick={handleCellClick}
+            onPendingClick={handleCancelReservation}
+            studentId={sessionStorage.getItem("studentId")}
           />
         </>
       )}

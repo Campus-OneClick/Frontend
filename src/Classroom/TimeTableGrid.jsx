@@ -11,6 +11,8 @@ export default function TimeTableGrid({
   selected,
   effectiveDuration,
   onCellClick,
+  onPendingClick,
+  studentId,
 }) {
   const getLecture = (dayKo, slotIdx) => {
     const apiDay = DAY_MAP[dayKo];
@@ -77,17 +79,35 @@ export default function TimeTableGrid({
                       "tt_cell tt_block",
                       isHalf ? "tt_half_block" : "",
                       lecture ? "tt_lecture" : "",
-                      pendingSlot ? "tt_pending" : "",
+                      pendingSlot && pendingSlot.isPending && pendingSlot.user === studentId ? "tt_my_pending" : "",
+                      pendingSlot && pendingSlot.isPending && pendingSlot.user !== studentId ? "tt_others_pending" : "",
+                      pendingSlot && !pendingSlot.isPending ? "tt_approved" : "",
+                      pendingSlot && pendingSlot.isPending && pendingSlot.user === studentId && !lecture ? "tt_pending_clickable" : "",
                       inRange ? (isStartCell ? "tt_selected_start" : "tt_selected") : "",
                     ].join(" ")}
-                    onClick={() => onCellClick(dayKo, slotIdx)}
-                    title={lecture?.subject || (pendingSlot ? "승인 대기중" : "")}
+                    onClick={() => {
+                      if (pendingSlot && !lecture) {
+                        onPendingClick && onPendingClick(pendingSlot);
+                      } else {
+                        onCellClick(dayKo, slotIdx);
+                      }
+                    }}
+                    title={
+                      lecture?.subject ||
+                      (pendingSlot?.isPending && pendingSlot.user === studentId ? "클릭하여 예약 취소" :
+                       pendingSlot?.isPending ? "다른 사람이 신청한 예약입니다" :
+                       pendingSlot ? "예약 완료된 시간입니다" : "")
+                    }
                   >
                     {lectureStart && (
                       <span className="tt_lecture_label">{lectureStart.subject}</span>
                     )}
                     {isPendingStart && !lecture && (
-                      <span className="tt_pending_label">승인 대기</span>
+                      <span className="tt_pending_label">
+                        {isPendingStart.isPending
+                          ? (isPendingStart.user === studentId ? "내 신청" : "승인 대기")
+                          : (isPendingStart.user === studentId ? "내 예약" : "예약됨")}
+                      </span>
                     )}
                   </div>
                 );

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Login from "./Login/Login";
 import MainPage from "./MainPage/Mainpage";
@@ -9,7 +10,18 @@ import RoomDetailPage from "./Classroom/RoomDetailPage";
 import MyInfoPage from "./MyInfo/MyInfoPage";
 import "./App.css";
 
+const PING_INTERVAL_MS = 10 * 60 * 1000; // 10분
+
 function App() {
+  useEffect(() => {
+    const ping = () => {
+      fetch(`${process.env.REACT_APP_API_BASE_URL}/health`).catch(() => {});
+    };
+    ping();
+    const id = setInterval(ping, PING_INTERVAL_MS);
+    return () => clearInterval(id);
+  }, []);
+
   return (
     <BrowserRouter>
       <PageRoutes />

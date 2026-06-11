@@ -211,7 +211,7 @@
 .tt_cell {
   border-right: 1px solid #e5e7eb;
   border-bottom: 1px solid #e5e7eb;
-  min-height: 36px;
+  min-height: 20px;
   font-size: 13px;
   box-sizing: border-box;
 }
@@ -226,22 +226,27 @@
   font-size: 14px;
 }
 
-/* 시간 열 */
+/* 시간 열 베이스 */
 .tt_time {
   text-align: center;
   font-weight: 600;
   color: #6b7280;
-  font-size: 12px;
+  font-size: 11px;
   background: #f8f9fb;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 6px;
+  padding-top: 3px;
 }
 
-/* :30 시간 셀 - 라벨 없음 */
-.tt_half_time {
-  border-bottom: 1px dashed #e5e7eb;
+/* 시간당 병합 셀 */
+.tt_time_hour {
+  font-size: 12px;
+  font-weight: 700;
+  color: #374151;
+  align-items: center;
+  padding-top: 0;
+  border-bottom: 1.5px solid #b8c0cc;
 }
 
 /* 블록 셀 */
@@ -254,20 +259,43 @@
   background: #f0f4ff;
 }
 
+/* :00 시간 경계선 (요일 셀) */
+.tt_hour_block {
+  border-top: 1.5px solid #b8c0cc;
+  border-bottom: none;   /* :15 셀과의 경계선 제거 */
+}
+
 /* :30 구분선 */
 .tt_half_block {
-  border-top: 1px dashed #e5e7eb;
-  border-bottom: 1px solid #e5e7eb;
+  border-top: 1px dashed #ced4dd;
+  border-bottom: none;   /* :45 셀과의 경계선 제거 */
+}
+
+/* :15 / :45 구분선 - 완전 제거 */
+.tt_quarter_block {
+  border-top: none;
+  border-bottom: none;
 }
 
 /* 강의 셀 */
 .tt_lecture {
-  background: #f3f4f6 !important;
+  background: #eceef1 !important;
   cursor: not-allowed;
+  border: 1.5px solid #9ca3af !important;
 }
 
 .tt_lecture:hover {
-  background: #f3f4f6 !important;
+  background: #eceef1 !important;
+}
+
+/* 강의: 마지막 셀 제외 → 아래쪽 경계선 숨김 */
+.tt_lecture:not(.tt_lecture_last) {
+  border-bottom: 1.5px solid #eceef1 !important;
+}
+
+/* 강의 연속 셀 - 위쪽 경계선 숨김 */
+.tt_lecture_cont {
+  border-top: 1.5px solid #eceef1 !important;
 }
 
 .tt_lecture_label {
@@ -317,13 +345,14 @@
 .tt_my_pending {
   background: #fef9c3 !important;
   cursor: not-allowed;
+  border: 1.5px solid #f59e0b !important;
 }
 
 .tt_my_pending .tt_pending_label {
   color: #1d4ed8;
 }
 
-/* 취소 가능한 내 승인 대기 */
+/* 취소 가능한 내 승인 대기 (시작 셀만) */
 .tt_pending_clickable {
   cursor: pointer !important;
 }
@@ -337,6 +366,7 @@
 .tt_others_pending {
   background: #f3f4f6 !important;
   cursor: not-allowed;
+  border: 1.5px solid #9ca3af !important;
 }
 
 .tt_others_pending:hover {
@@ -351,6 +381,7 @@
 .tt_approved {
   background: #dcfce7 !important;
   cursor: not-allowed;
+  border: 1.5px solid #22c55e !important;
 }
 
 .tt_approved:hover {
@@ -359,6 +390,28 @@
 
 .tt_approved .tt_pending_label {
   color: #166534;
+}
+
+/* 예약: 마지막 셀 제외 → 아래쪽 경계선 숨김 */
+.tt_my_pending:not(.tt_pending_last) {
+  border-bottom: 1.5px solid #fef9c3 !important;
+}
+.tt_others_pending:not(.tt_pending_last) {
+  border-bottom: 1.5px solid #f3f4f6 !important;
+}
+.tt_approved:not(.tt_pending_last) {
+  border-bottom: 1.5px solid #dcfce7 !important;
+}
+
+/* 예약 연속 셀 - 위쪽 경계선 숨김 */
+.tt_my_pending.tt_pending_cont {
+  border-top: 1.5px solid #fef9c3 !important;
+}
+.tt_others_pending.tt_pending_cont {
+  border-top: 1.5px solid #f3f4f6 !important;
+}
+.tt_approved.tt_pending_cont {
+  border-top: 1.5px solid #dcfce7 !important;
 }
 
 .tt_pending_label {

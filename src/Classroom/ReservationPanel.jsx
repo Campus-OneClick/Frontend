@@ -1,11 +1,12 @@
 import "./TimeTable.css";
 
 const DURATION_OPTIONS = [
-  { label: "1시간",      slots: 2 },
-  { label: "1시간 30분", slots: 3 },
-  { label: "2시간",      slots: 4 },
-  { label: "2시간 30분", slots: 5 },
-  { label: "3시간",      slots: 6 },
+  { label: "30분",       slots: 2  },
+  { label: "1시간",      slots: 4  },
+  { label: "1시간 30분", slots: 6  },
+  { label: "2시간",      slots: 8  },
+  { label: "2시간 30분", slots: 10 },
+  { label: "3시간",      slots: 12 },
 ];
 
 export default function ReservationPanel({

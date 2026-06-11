@@ -10,16 +10,20 @@ const DAY_MAP = { "월": "MON", "화": "TUE", "수": "WED", "목": "THU", "금":
 const DAY_KO_TO_EN = { "월": "MON", "화": "TUE", "수": "WED", "목": "THU", "금": "FRI" };
 const MAX_RESERVATIONS_PER_WEEK = 2;
 
-// 9:00 ~ 19:00, 30분 단위
+// 9:00 ~ 19:00, 15분 단위
 const SLOTS = [];
 for (let h = 9; h <= 19; h++) {
   SLOTS.push(`${h}:00`);
-  if (h < 19) SLOTS.push(`${h}:30`);
+  if (h < 19) {
+    SLOTS.push(`${h}:15`);
+    SLOTS.push(`${h}:30`);
+    SLOTS.push(`${h}:45`);
+  }
 }
 
 function timeToSlot(timeStr) {
   const [h, m] = timeStr.split(":").map(Number);
-  return (h - 9) * 2 + (m >= 30 ? 1 : 0);
+  return (h - 9) * 4 + Math.floor(m / 15);
 }
 
 function getWeekDates(date) {
@@ -51,7 +55,7 @@ export default function TimeTablePage() {
   const [schedule, setSchedule] = useState([]);
   const [allPending, setAllPending] = useState([]);
   const [selected, setSelected] = useState(null);
-  const [duration, setDuration] = useState(2);
+  const [duration, setDuration] = useState(4);
   const [memo, setMemo] = useState("");
 
   // API 호출 (useEffect 밖으로 추출해서 재사용 가능하게)
@@ -222,7 +226,7 @@ export default function TimeTablePage() {
   // 선택한 주에 해당하는 예약만 필터링
   const pending = allPending.filter(r => weekDateStrings.has(r.date));
 
-  const maxDuration = selected ? SLOTS.length - selected.slotIdx : 6;
+  const maxDuration = selected ? SLOTS.length - selected.slotIdx : 12;
   const effectiveDuration = Math.min(duration, maxDuration);
 
   return (

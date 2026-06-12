@@ -146,8 +146,6 @@ export function Floor1() {
     // 메인 도면 뷰
     return (
         <Floor1MainView
-            centerData={loungeData.center}
-            sideData={loungeData.side}
             onNavigate={navigate}
         />
     );

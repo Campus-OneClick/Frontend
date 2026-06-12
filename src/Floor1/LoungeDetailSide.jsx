@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './LoungeDetailSide.css';
 import { CongestionBar } from './CongestionBar';
+import { MySeatCard } from './MySeatCard';
 import { SeatBox } from './SeatBox';
 
 export function LoungeDetailSide({
@@ -106,15 +107,19 @@ export function LoungeDetailSide({
                     </div>
                 </div>
 
-                <CongestionBar
-                    total={TOTAL_SEATS}
-                    reserved={reservedSeats.length}
-                    title="옆 라운지 혼잡도"
-                    myReservedSeat={myReservedSeat}
-                    bookingEndTime={bookingEndTime}
-                    onReturn={onReturn}
-                    onExtend={onExtend}
-                />
+                <div className="congestion_sidebar">
+                    <CongestionBar
+                        total={TOTAL_SEATS}
+                        reserved={reservedSeats.length}
+                        title="옆 라운지 혼잡도"
+                    />
+                    <MySeatCard
+                        myReservedSeat={myReservedSeat}
+                        bookingEndTime={bookingEndTime}
+                        onReturn={onReturn}
+                        onExtend={onExtend}
+                    />
+                </div>
             </div>
 
             {selectedSeat !== null && (

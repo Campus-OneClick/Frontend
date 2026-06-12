@@ -4,6 +4,9 @@ import httpClient from "../api/httpClient";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 import "./Mainpage.css";
+import { CongestionBar } from "../Floor1/CongestionBar";
+
+const LOUNGE_TOTAL = { center: 38, side: 40 };
 
 function MainPage() {
   const navigate = useNavigate();
@@ -14,6 +17,8 @@ function MainPage() {
   const [role, setRole] = useState("");
   const [name, setName] = useState("");
   const [seats, setSeats] = useState(0); //남은 좌석 수
+  const [centerSeats, setCenterSeats] = useState([]);
+  const [sideSeats, setSideSeats] = useState([]);
   const [mySeat, setMySeat] = useState(null);
   const [myClassroomReservations, setMyClassroomReservations] = useState([]);
   const [isReservationModalOpen, setIsReservationModalOpen] = useState(false);
@@ -66,6 +71,8 @@ function MainPage() {
         ]);
 
         setSeats(Number(seatRes.data.availableSeats || 0));
+        setCenterSeats(seatRes.data.centerSeats ?? []);
+        setSideSeats(seatRes.data.sideSeats ?? []);
         setMySeat(seatRes.data.mySeat || null);
         setMyClassroomReservations(
           reservationRes.data.filter(
@@ -248,6 +255,16 @@ function MainPage() {
             </button>
           </section>
         </>
+      )}
+
+      {isLogin && (
+        <section className="lounge-section">
+          <h3>라운지 현황</h3>
+          <div className="lounge-cards">
+            <CongestionBar total={LOUNGE_TOTAL.center} reserved={centerSeats.length} title="중앙 라운지" />
+            <CongestionBar total={LOUNGE_TOTAL.side}   reserved={sideSeats.length}   title="옆 라운지" />
+          </div>
+        </section>
       )}
 
       <section className="menu-section">

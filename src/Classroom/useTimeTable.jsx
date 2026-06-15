@@ -87,11 +87,26 @@ export function useTimeTable(selectedDate) {
     // 그 주에 해당하는 예약만 필터링
     const pending = allPending.filter(r => weekDateStrings.has(r.date));
 
-    // 선택한 슬롯이 시간표 끝을 넘어가는 것을 막음 (7시 이후까지 예약이 넘어가는 것을 막음)
-    const maxDuration = selected ? SLOTS.length - selected.slotIdx : 12;
-    const effectiveDuration = Math.min(duration, maxDuration);
-
     const DAY_KO_INDEX = { "월": 0, "화": 1, "수": 2, "목": 3, "금": 4 };
+
+    // 선택된 슬롯 기준으로 다음 강의/예약까지의 최대 가능 duration 계산
+    const getMaxDurationFromSlot = (dayKo, slotIdx) => {
+        const apiDay = DAY_MAP[dayKo];
+        const blocksAfter = [
+            ...schedule.filter(s => s.day === apiDay && s.startSlot > slotIdx),
+            ...pending.filter(p => p.day === apiDay && p.startSlot > slotIdx),
+        ];
+        const nearestStart = blocksAfter.length > 0
+            ? Math.min(...blocksAfter.map(b => b.startSlot))
+            : SLOTS.length;
+        return Math.min(nearestStart - slotIdx, SLOTS.length - slotIdx);
+    };
+
+    // maxDuration: 선택된 슬롯 기준으로 다음 강의/예약까지의 한계
+    const maxDuration = selected
+        ? getMaxDurationFromSlot(selected.day, selected.slotIdx)
+        : 12;
+    const effectiveDuration = Math.min(duration, maxDuration);
 
     // 클릭한 셀에 대해서 유효한지 확인
     const handleCellClick = (dayKo, slotIdx) => {
@@ -102,24 +117,17 @@ export function useTimeTable(selectedDate) {
         // 지난 날짜의 시간인지 check
         if (slotDateTime < new Date()) return;
 
-        // schedule에서 같은 요일이면서 클릭한 스롨 인덱스가 강의 시작, 끝 범위에 있는지 확인
         const apiDay = DAY_MAP[dayKo];
-        // 강의시간표와 비교하여 겹치는 시간이 있는지 확인 (선택 범위 전체 체크)
-        const hasLecture = schedule.find(
-            s => s.day === apiDay &&
-                slotIdx < s.startSlot + s.durationSlots &&
-                endSlotIdx > s.startSlot
+
+        // 클릭한 시작 슬롯이 강의/예약 블록 안에 있으면 차단
+        const insideLecture = schedule.find(
+            s => s.day === apiDay && slotIdx >= s.startSlot && slotIdx < s.startSlot + s.durationSlots
         );
-        // 다른 사용자가 예약한 슬롯이랑 겹치는지 확인 (클릭한 시작 슬롯 + duration 범위 전체 체크)
-        const endSlotIdx = slotIdx + effectiveDuration;
-        const hasPending = pending.find(
-            p => p.day === apiDay &&
-                slotIdx < p.startSlot + p.durationSlots &&
-                endSlotIdx > p.startSlot
+        const insidePending = pending.find(
+            p => p.day === apiDay && slotIdx >= p.startSlot && slotIdx < p.startSlot + p.durationSlots
         );
 
-        // 겹치면 리턴하여 클릭 안되겠끔
-        if (hasLecture || hasPending) return;
+        if (insideLecture || insidePending) return;
 
         // 선택한 슬롯이 기존에 선택한 시간이면 취소 / 아니면 교체
         if (selected && selected.day === dayKo && selected.slotIdx === slotIdx) {

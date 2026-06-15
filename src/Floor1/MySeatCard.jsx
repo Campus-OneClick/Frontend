@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import './CongestionBar.css';
 
 export function MySeatCard({ myReservedSeat, bookingEndTime, onReturn, onExtend }) {
-    if (myReservedSeat === null) return null;
-
     const [tick, setTick] = useState(0);
 
     useEffect(() => {
@@ -13,6 +11,8 @@ export function MySeatCard({ myReservedSeat, bookingEndTime, onReturn, onExtend 
         }, 60000);
         return () => clearInterval(timer);
     }, []);
+
+    if (myReservedSeat === null) return null;
 
     const formatRemaining = (date) => {
         if (!date) return '';

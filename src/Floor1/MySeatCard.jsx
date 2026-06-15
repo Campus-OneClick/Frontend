@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './CongestionBar.css';
 
 export function MySeatCard({ myReservedSeat, bookingEndTime, onReturn, onExtend }) {
-    const [tick, setTick] = useState(0);
+    const [, setTick] = useState(0);
 
     useEffect(() => {
         const timer = setInterval(() => {

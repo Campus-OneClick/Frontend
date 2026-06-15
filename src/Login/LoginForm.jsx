@@ -49,15 +49,11 @@ function LoginForm() {
       sessionStorage.setItem("role", user.role || "USER");
       sessionStorage.setItem("authProvider", "firebase");
 
-      // 거절된 예약 확인 (처음 보는 것만)
+      // 거절된 예약 확인 (seen=false인 것만 서버에서 반환)
       try {
-        const seenKey = `seenRejections_${user.studentId}`;
-        const seenIds = JSON.parse(localStorage.getItem(seenKey) || "[]");
         const rejRes = await httpClient.get(`/reservations/rejected/${user.studentId}`);
-        const unseen = rejRes.data.filter(r => !seenIds.includes(r.id));
-        if (unseen.length > 0) {
-          localStorage.setItem(seenKey, JSON.stringify([...seenIds, ...unseen.map(r => r.id)]));
-          setRejectedItems(unseen);
+        if (rejRes.data.length > 0) {
+          setRejectedItems(rejRes.data);
           return; // 팝업 표시, 아직 이동 안 함
         }
       } catch (_) {
@@ -115,7 +111,13 @@ function LoginForm() {
             ))}
           </div>
           <button
-            onClick={() => { setRejectedItems([]); navigate("/"); }}
+            onClick={async () => {
+              await Promise.allSettled(
+                rejectedItems.map(r => httpClient.patch(`/reservations/rejected/${r.id}/seen`))
+              );
+              setRejectedItems([]);
+              navigate("/");
+            }}
             style={{
               width: "100%", padding: "12px", borderRadius: "10px",
               border: "none", background: "#3182ce", color: "#fff",

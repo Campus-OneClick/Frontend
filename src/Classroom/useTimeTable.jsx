@@ -104,13 +104,18 @@ export function useTimeTable(selectedDate) {
 
         // schedule에서 같은 요일이면서 클릭한 스롨 인덱스가 강의 시작, 끝 범위에 있는지 확인
         const apiDay = DAY_MAP[dayKo];
-        // 강의시간표와 비교하여 겹치는 시간이 있는지 확인
+        // 강의시간표와 비교하여 겹치는 시간이 있는지 확인 (선택 범위 전체 체크)
         const hasLecture = schedule.find(
-            s => s.day === apiDay && slotIdx >= s.startSlot && slotIdx < s.startSlot + s.durationSlots
+            s => s.day === apiDay &&
+                slotIdx < s.startSlot + s.durationSlots &&
+                endSlotIdx > s.startSlot
         );
-        // 다른 사용자가 예약한 슬롯이랑 겹치는지 확인
+        // 다른 사용자가 예약한 슬롯이랑 겹치는지 확인 (클릭한 시작 슬롯 + duration 범위 전체 체크)
+        const endSlotIdx = slotIdx + effectiveDuration;
         const hasPending = pending.find(
-            p => p.day === apiDay && slotIdx >= p.startSlot && slotIdx < p.startSlot + p.durationSlots
+            p => p.day === apiDay &&
+                slotIdx < p.startSlot + p.durationSlots &&
+                endSlotIdx > p.startSlot
         );
 
         // 겹치면 리턴하여 클릭 안되겠끔

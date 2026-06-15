@@ -29,20 +29,20 @@
 
 /* 🏢 전체 공간 */
 .room_box {
-    padding: 60px 40px;
+    padding: clamp(20px, 4vw, 60px) clamp(15px, 3vw, 40px);
     border-radius: 22px;
     background-color: #f4f6f8;
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     display: flex;
     flex-direction: column;
-    gap: 60px;
+    gap: clamp(20px, 4vw, 60px);
     align-items: center;
 }
 
 /* 🪑 좌석 공통 스타일 - 🟢 빈 좌석 = 초록 */
 .seat {
-    width: 45px;
-    height: 45px;
+    width: clamp(30px, 3.5vw, 45px);
+    height: clamp(30px, 3.5vw, 45px);
     border: 2px solid #2e7d32;
     border-radius: 4px;
     background-color: #4CAF50;
@@ -83,7 +83,7 @@
 /* 메인 구역 */
 .main_section {
     display: flex;
-    gap: 60px;
+    gap: clamp(15px, 4vw, 60px);
     align-items: center;
 }
 
@@ -91,20 +91,20 @@
 .side_column {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: clamp(8px, 1.5vw, 20px);
 }
 
 /* 중앙 컬럼 (블록 2개 세로 배치) */
 .center_column {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: clamp(15px, 2.5vw, 40px);
 }
 
 /* 3x2 좌석 그리드 (3열 2행) */
 .grid_3x2 {
     display: grid;
-    grid-template-columns: repeat(3, 45px);
+    grid-template-columns: repeat(3, clamp(30px, 3.5vw, 45px));
     gap: 10px;
 }
 
@@ -113,7 +113,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 40px;
+    gap: clamp(15px, 3vw, 40px);
     margin-top: 20px;
 }
 
@@ -212,3 +212,4 @@
     color: #333;
     margin: 4px 0 0;
 }
+

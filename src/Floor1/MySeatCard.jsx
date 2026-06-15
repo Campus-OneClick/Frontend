@@ -1,15 +1,24 @@
 // MySeatCard.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './CongestionBar.css';
 
 export function MySeatCard({ myReservedSeat, bookingEndTime, onReturn, onExtend }) {
     if (myReservedSeat === null) return null;
 
+    const [tick, setTick] = useState(0);
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setTick((t) => t + 1);
+        }, 60000);
+        return () => clearInterval(timer);
+    }, []);
+
     const formatRemaining = (date) => {
         if (!date) return '';
         const ms = date - new Date();
         if (ms <= 0) return '만료';
-        const totalMinutes = Math.floor(ms / 60000);
+        const totalMinutes = Math.floor(ms / 1000 / 60);
         const hours = Math.floor(totalMinutes / 60);
         const minutes = totalMinutes % 60;
         return hours > 0 ? `${hours}시간 ${minutes}분` : `${minutes}분`;

@@ -29,20 +29,20 @@
 
 /* 🏢 전체 공간 */
 .room_box {
-    padding: 60px 40px;
+    padding: clamp(20px, 4vw, 60px) clamp(15px, 3vw, 40px);
     border-radius: 22px;
     background-color: #f4f6f8;
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     display: flex;
     flex-direction: column;
-    gap: 60px;
+    gap: clamp(20px, 4vw, 60px);
     align-items: center;
 }
 
 /* 🪑 좌석 공통 스타일 - 🟢 빈 좌석 = 초록 */
 .seat {
-    width: 45px;
-    height: 45px;
+    width: clamp(30px, 3.5vw, 45px);
+    height: clamp(30px, 3.5vw, 45px);
     border: 2px solid #2e7d32;
     border-radius: 4px;
     background-color: #4CAF50;
@@ -56,7 +56,7 @@
 
 /* 좌석 번호 텍스트 */
 .seat_number_text {
-    font-size: 18px;
+    font-size: clamp(11px, 1.4vw, 18px);
     font-weight: 800;
     color: #fff;
     pointer-events: none;
@@ -83,7 +83,7 @@
 /* 🟢 상단 구역 */
 .top_section {
     display: flex;
-    gap: 50px;
+    gap: clamp(15px, 3vw, 50px);
 }
 
 .top_group {
@@ -94,7 +94,7 @@
 /* 🔵 메인 구역 (기둥 4개) */
 .main_section {
     display: flex;
-    gap: 80px;
+    gap: clamp(20px, 5vw, 80px);
     align-items: center;
 }
 
@@ -102,20 +102,20 @@
 .side_column {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: clamp(10px, 2vw, 30px);
 }
 
 /* 2번, 3번 기둥 (블록 세로 배치) */
 .center_column {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: clamp(15px, 2.5vw, 40px);
 }
 
 /* 2x3 좌석 배치를 위한 Grid */
 .grid_2x3 {
     display: grid;
-    grid-template-columns: repeat(2, 45px);
+    grid-template-columns: repeat(2, clamp(30px, 3.5vw, 45px));
     gap: 10px;
 }
 
@@ -124,7 +124,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 40px;
+    gap: clamp(15px, 3vw, 40px);
     margin-top: 20px;
 }
 
@@ -223,3 +223,4 @@
     color: #333;
     margin: 4px 0 0;
 }
+

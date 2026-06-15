@@ -30,15 +30,15 @@ export function Floor1() {
 
             setLoungeData({
                 center: {
-                    reservedSeats: res.data.centerSeats ?? [],
-                    myReservedSeat: mySeat?.lounge === 'center' ? (mySeat.seatId ?? null) : null,
-                    bookingEndTime: mySeat?.lounge === 'center' && mySeat.endTime
+                    reservedSeats: res.data.centerSeats || [],
+                    myReservedSeat: mySeat && mySeat.lounge === 'center' ? mySeat.seatId : null,
+                    bookingEndTime: mySeat && mySeat.lounge === 'center' && mySeat.endTime
                         ? new Date(mySeat.endTime) : null,
                 },
                 side: {
-                    reservedSeats: res.data.sideSeats ?? [],
-                    myReservedSeat: mySeat?.lounge === 'side' ? (mySeat.seatId ?? null) : null,
-                    bookingEndTime: mySeat?.lounge === 'side' && mySeat.endTime
+                    reservedSeats: res.data.sideSeats || [],
+                    myReservedSeat: mySeat && mySeat.lounge === 'side' ? mySeat.seatId : null,
+                    bookingEndTime: mySeat && mySeat.lounge === 'side' && mySeat.endTime
                         ? new Date(mySeat.endTime) : null,
                 },
             });
@@ -68,7 +68,8 @@ export function Floor1() {
             alert(res.data.message || `${seatId}번 좌석 배정이 완료되었습니다!`);
             await loadSeatState();
         } catch (err) {
-            alert(err.response?.data?.message || '예약에 실패했습니다. 다시 시도해주세요.');
+            alert(err.response && err.response.data ? err.response.data.message : '예약에 실패했습니다. 다시 시도해주세요.');
+            await loadSeatState();
             console.error(err);
         }
     };
@@ -86,7 +87,8 @@ export function Floor1() {
             alert(res.data.message || '반납이 완료되었습니다.');
             await loadSeatState();
         } catch (err) {
-            alert(err.response?.data?.message || '반납에 실패했습니다. 다시 시도해주세요.');
+            alert(err.response && err.response.data ? err.response.data.message : '반납에 실패했습니다. 다시 시도해주세요.');
+            await loadSeatState();
             console.error(err);
         }
     };
@@ -107,7 +109,8 @@ export function Floor1() {
             alert(res.data.message || '이용 시간이 1시간 연장되었습니다!');
             await loadSeatState();
         } catch (err) {
-            alert(err.response?.data?.message || '연장에 실패했습니다. 다시 시도해주세요.');
+            alert(err.response && err.response.data ? err.response.data.message : '연장에 실패했습니다. 다시 시도해주세요.');
+            await loadSeatState();
             console.error(err);
         }
     };
